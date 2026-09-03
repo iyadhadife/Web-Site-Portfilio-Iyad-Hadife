@@ -1,0 +1,69 @@
+{
+  "profile": {
+    "firstName": "IYAD",
+    "lastName": "HADIFÉ",
+    "title": "AI & Data Engineer",
+    "avatar": "/profile_picture.jpg",
+    "intro": "Je suis un étudiant en Master 2 spécialisé en Data et Intelligence Artificielle à l'ESILV. Mon parcours professionnel est centré sur le développement de solutions d'IA innovantes, allant des réseaux de neurones sur graphes (GNN) à la conception d'architectures multi-agents complexes.",
+    "vision": "Ma vision est de construire des ponts entre l'ingénierie des données robuste et les applications d'IA générative pour résoudre des problèmes industriels concrets, notamment dans les environnements 3D et l'automatisation."
+  },
+  "skills": [
+    {
+      "category": "AI & Machine Learning",
+      "items": ["PyTorch", "TensorFlow", "Scikit-Learn", "PyTorch Geometric", "Pandas", "NumPy"]
+    },
+    {
+      "category": "Backend & APIs",
+      "items": ["Python", "Flask", "Node.js", "Express", "FastMCP"]
+    },
+    {
+      "category": "Frontend & Web",
+      "items": ["React", "JavaScript", "Vite", "Streamlit"]
+    },
+    {
+      "category": "Cloud & DevOps",
+      "items": ["Docker", "Kubernetes", "Git", "Podman"]
+    },
+    {
+      "category": "Architecture & Data",
+      "items": ["RAG", "LangChain", "Agent-to-Agent", "PySpark"]
+    }
+  ],
+  "journey": [
+    {
+      "status": "Current",
+      "role": "Stagiaire Ingénieur R&D IA",
+      "company": "Dassault Systèmes",
+      "description": "Customer Strategic Partnership Innovation Lab. Détection d'assemblages 3D via Graph Neural Networks et architectures Agent-to-Agent.",
+      "date": "Jan 2026 - Août 2026"
+    },
+    {
+      "status": "Previously",
+      "role": "Data Scientist & Data Engineer",
+      "company": "SFR / Spacefit.ai",
+      "description": "Développement de pipelines de données, création de modèles ML et développement de solutions d'IA.",
+      "date": "Expériences précédentes"
+    },
+    {
+      "status": "Graduated",
+      "role": "Master 2 Data & Artificial Intelligence",
+      "company": "ESILV, Paris",
+      "description": "Spécialisation en ingénierie des données, machine learning et IA. Semestre d'échange au Dorset College (Dublin).",
+      "date": "Diplôme attendu en 2026"
+    }
+  ],
+  "projects": [
+    {
+      "id": "terra-sphere",
+      "title": "Terra Sphere",
+      "description": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous pour des paysagistes (n8n, ElevenLabs).",
+      "tech": ["Python", "n8n", "ElevenLabs"]
+    },
+    {
+      "id": "gnn-cad",
+      "title": "Détection d'Assemblages 3D",
+      "description": "Création d'architectures GNN pour l'extraction de caractéristiques géométriques et analyse de topologie B-Rep sur CATIA.",
+      "tech": ["PyTorch Geometric", "3DEXPERIENCE"]
+    }
+  ]
+}

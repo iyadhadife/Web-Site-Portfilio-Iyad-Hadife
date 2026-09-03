@@ -1,0 +1,220 @@
+/* Couleurs globales inspirées de la maquette */
+:root {
+  --bg-dark: #070b14;
+  --card-bg: #111827;
+  --neon-blue: #00d2ff;
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --border-light: rgba(0, 210, 255, 0.2);
+}
+
+.about-container {
+  padding: 40px;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  
+  /* Ajout pour centrer le contenu joliment sur les très grands écrans */
+  max-width: 1400px; 
+  margin: 0 auto; 
+}
+
+/* ÉTATS DE CHARGEMENT / ERREUR */
+.state-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--bg-dark);
+  color: var(--neon-blue);
+  font-size: 1.2rem;
+}
+.error { color: #ff4b4b; }
+
+/* HEADER PROFIL */
+.profile-header {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 60px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 40px;
+}
+
+.profile-image-container {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 4px solid var(--neon-blue);
+  padding: 5px;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.profile-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h1 {
+  font-size: 3rem;
+  line-height: 1.1;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.first-name { color: var(--neon-blue); font-weight: 300; }
+.last-name { font-weight: 700; }
+
+.profile-text p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 15px;
+  max-width: 800px;
+}
+
+.vision-text {
+  font-style: italic;
+  border-left: 3px solid var(--neon-blue);
+  padding-left: 15px;
+}
+
+/* GRILLE PRINCIPALE (COMPÉTENCES & PARCOURS) */
+.main-content-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 60px;
+}
+
+h2 {
+  color: #ffffff;
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 10px;
+}
+
+/* COMPÉTENCES */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.skill-category h3 {
+  color: var(--text-main);
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-pill {
+  background: linear-gradient(145deg, #162238, #111827);
+  border: 1px solid #1e3a8a;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  transition: all 0.3s ease;
+}
+
+.skill-pill:hover {
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* PARCOURS PROFESSIONNEL (TIMELINE) */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: relative;
+  border-left: 2px solid #1e3a8a;
+  padding-left: 25px;
+  margin-bottom: 40px;
+}
+
+.timeline-item { position: relative; }
+
+.timeline-dot {
+  position: absolute;
+  left: -32px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #1e3a8a;
+}
+
+.timeline-dot[data-status="Current"] {
+  background-color: var(--neon-blue);
+  box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.status-label {
+  color: var(--neon-blue);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.timeline-content h4 {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.company-name { font-weight: normal; color: var(--text-muted); }
+
+.timeline-content p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 5px 0;
+  line-height: 1.4;
+}
+
+.timeline-date {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* BOUTON PROJETS */
+.view-projects-btn {
+  display: inline-block;
+  background-color: var(--neon-blue);
+  color: #000;
+  padding: 12px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.view-projects-btn:hover {
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+  transform: scale(1.02);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .main-content-grid { grid-template-columns: 1fr; }
+}
+
