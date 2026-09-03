@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./iyad-portfolio/backend
+    ports:
+      - "5000:5000" # Ajustez ce port selon la configuration de votre app.py
+    restart: unless-stopped
+    environment:
+      - ENV=production
+
+  frontend:
+    build: ./iyad-portfolio/frontend
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
