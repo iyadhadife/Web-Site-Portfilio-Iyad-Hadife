@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import About from './About/About'; // Ajustez le chemin si vous l'avez mis dans un dossier 'pages'
 import './App.css';
+import Projects from './Projects/Projects'; // Ou le dossier approprié
+import ProjectDetail from './Projects/ProjectDetail';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             
             {/* Vous pourrez décommenter ceci quand vous créerez Projects.jsx */}
             {/* <Route path="/projects" element={<Projects />} /> */}
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
           </Routes>
         </main>
       </div>

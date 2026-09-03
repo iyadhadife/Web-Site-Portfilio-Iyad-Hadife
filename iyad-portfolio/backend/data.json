@@ -56,14 +56,38 @@
     {
       "id": "terra-sphere",
       "title": "Terra Sphere",
-      "description": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous pour des paysagistes (n8n, ElevenLabs).",
-      "tech": ["Python", "n8n", "ElevenLabs"]
+      "shortDescription": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous.",
+      "description": "Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.",
+      "category": "Voice AI & Automation",
+      "technologies": ["Python", "n8n", "ElevenLabs"],
+      "features": ["Gestion d'appels en temps réel", "Intégration d'agenda", "Workflows automatisés"]
     },
     {
-      "id": "gnn-cad",
-      "title": "Détection d'Assemblages 3D",
-      "description": "Création d'architectures GNN pour l'extraction de caractéristiques géométriques et analyse de topologie B-Rep sur CATIA.",
-      "tech": ["PyTorch Geometric", "3DEXPERIENCE"]
+      "id": "gnn-cad-3d",
+      "title": "Détection d'Assemblages 3D via GNN",
+      "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
+      "description": "Projet de R&D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des protocoles de communication Agent-to-Agent.",
+      "category": "Machine Learning & 3D",
+      "technologies": ["PyTorch Geometric", "3DEXPERIENCE", "Agent-to-Agent"],
+      "features": ["Extraction de graphes 3D", "Analyse topologique", "Systèmes multi-agents"]
+    },
+    {
+      "id": "tiktok-financial-dca",
+      "title": "Générateur de Vidéos Financières",
+      "shortDescription": "Pipeline automatisé de création de contenu d'animation financière pour les réseaux sociaux.",
+      "description": "Développement de scripts automatisés pour générer des animations de performances financières (DCA) destinées à TikTok. Le système combine la récupération de données boursières, la génération de graphiques animés, et un workflow LLM pour le montage vocal.",
+      "category": "Generative AI",
+      "technologies": ["Python", "Plotly", "yfinance", "n8n", "LLMs"],
+      "features": ["Génération de graphiques animés", "Synthèse vocale", "Automatisation de publication"]
+    },
+    {
+      "id": "pygame-rhythm",
+      "title": "Jeu Vidéo de Rythme",
+      "shortDescription": "Jeu de rythme développé en Python et synchronisé sur la musique.",
+      "description": "Création d'un jeu vidéo de rythme personnalisé où les mécaniques de gameplay sont générées et synchronisées directement à partir de l'analyse des pistes audio.",
+      "category": "Game Development",
+      "technologies": ["Python", "Pygame"],
+      "features": ["Analyse audio en temps réel", "Moteur de rendu 2D", "Gameplay synchronisé"]
     }
   ]
 }
