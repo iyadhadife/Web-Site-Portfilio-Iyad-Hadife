@@ -1,10 +1,11 @@
 /* Réinitialisation totale de la page */
 html, body, #root {
+  scroll-behavior: smooth; /* Ajoute l'effet de glissement fluide */
   width: 100%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: #070b14; /* Couleur de fond globale */
+  background-color: #070b14;
 }
 
 /* Écraser les paramètres par défaut de Vite sur la balise root */

@@ -8,14 +8,19 @@
   --border-light: rgba(0, 210, 255, 0.2);
 }
 
+.skills-section {
+  scroll-margin-top: 80px; /* Décale l'arrêt 80 pixels en dessous du haut de l'écran */
+}
+
 .about-container {
   padding: 40px;
+  /* Ajoutez cette ligne pour donner de la marge de manœuvre au scroll : */
+  padding-bottom: 200px; 
+  
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
-  
-  /* Ajout pour centrer le contenu joliment sur les très grands écrans */
   max-width: 1400px; 
   margin: 0 auto; 
 }

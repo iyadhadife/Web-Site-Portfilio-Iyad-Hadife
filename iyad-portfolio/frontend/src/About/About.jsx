@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './About.css';
 
 function About() {
@@ -23,7 +23,22 @@ function About() {
         setLoading(false);
       });
   }, []);
+  const location = useLocation();
 
+  // NOUVEAU : Effet pour centrer parfaitement la section
+  useEffect(() => {
+    if (location.hash === '#skills') {
+      const element = document.getElementById('skills');
+      if (element) {
+        // L'option block: 'center' est le secret pour centrer verticalement
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100); // Un léger délai pour s'assurer que la page est bien affichée
+      }
+    }
+  }, [location]);
+
+  
   if (loading) return <div className="state-container"><div className="loader"></div>Chargement des données...</div>;
   if (error) return <div className="state-container error">Erreur : {error}</div>;
   if (!data) return <div className="state-container empty">Aucune donnée disponible.</div>;

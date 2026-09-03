@@ -11,7 +11,7 @@ function App() {
         <nav className="top-navbar">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/" className="nav-link active">About</Link>
-          <Link to="#skills" className="nav-link">Skills</Link>
+          <Link to="/#skills" className="nav-link">Skills</Link>
           <Link to="/projects" className="nav-link">Projects</Link>
           <Link to="#contact" className="nav-link">Contact</Link>
         </nav>
