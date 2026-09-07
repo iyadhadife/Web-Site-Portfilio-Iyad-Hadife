@@ -8,20 +8,21 @@ function About() {
   const [loading, setLoading] = useState(true);
   const { isAdmin } = useAuth();
 
-  const [modalType, setModalType] = useState(null);
+  const [modalType, setModalType] = useState(null); // 'skill', 'education', 'experience'
   const [targetCategory, setTargetCategory] = useState('');
   const [newSkillName, setNewSkillName] = useState('');
   const [customCategoryName, setCustomCategoryName] = useState('');
   
-  const [jRole, setJRole] = useState('');
-  const [jCompany, setJCompany] = useState('');
-  const [jDesc, setJDesc] = useState('');
-  const [jDate, setJDate] = useState('');
-  const [jStatus, setJStatus] = useState('Current');
+  // Formulaire générique pour Education / Experience
+  const [itemRole, setItemRole] = useState('');
+  const [itemCompany, setItemCompany] = useState('');
+  const [itemDesc, setItemDesc] = useState('');
+  const [itemDate, setItemDate] = useState('');
+  const [itemStatus, setItemStatus] = useState('Current');
 
-  // États pour le plein écran
   const [isSkillsFullscreen, setIsSkillsFullscreen] = useState(false);
-  const [isJourneyFullscreen, setIsJourneyFullscreen] = useState(false);
+  const [isEduFullscreen, setIsEduFullscreen] = useState(false);
+  const [isExpFullscreen, setIsExpFullscreen] = useState(false);
 
   const fetchData = () => {
     fetch('http://localhost:5000/api/portfolio')
@@ -57,42 +58,38 @@ function About() {
 
   const handleDeleteSkill = (categoryName, skillName = null) => {
     const message = skillName 
-      ? `Voulez-vous supprimer la compétence "${skillName}" ?` 
-      : `Voulez-vous supprimer toute la catégorie "${categoryName}" ?`;
+      ? `Supprimer la compétence "${skillName}" ?` 
+      : `Supprimer la catégorie "${categoryName}" ?`;
 
     if (window.confirm(message)) {
       fetch('http://localhost:5000/api/skills', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category: categoryName, skill: skillName })
-      }).then(res => {
-        if(res.ok) fetchData();
-      });
+      }).then(res => { if(res.ok) fetchData(); });
     }
   };
 
-  const handleAddJourneySubmit = (e) => {
+  const handleAddItemSubmit = (e, section) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/journey', {
+    fetch(`http://localhost:5000/api/${section}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ role: jRole, company: jCompany, description: jDesc, date: jDate, status: jStatus })
+      body: JSON.stringify({ role: itemRole, company: itemCompany, description: itemDesc, date: itemDate, status: itemStatus })
     }).then(res => {
       if(res.ok) {
         setModalType(null);
-        setJRole(''); setJCompany(''); setJDesc(''); setJDate('');
+        setItemRole(''); setItemCompany(''); setItemDesc(''); setItemDate('');
         fetchData();
       }
     });
   };
 
-  const handleDeleteJourney = (index) => {
-    if (window.confirm("Voulez-vous supprimer cette expérience professionnelle ?")) {
-      fetch(`http://localhost:5000/api/journey/${index}`, {
+  const handleDeleteItem = (section, index) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cet élément ?")) {
+      fetch(`http://localhost:5000/api/${section}/${index}`, {
         method: 'DELETE'
-      }).then(res => {
-        if(res.ok) fetchData();
-      });
+      }).then(res => { if(res.ok) fetchData(); });
     }
   };
 
@@ -115,125 +112,30 @@ function About() {
           </div>
         </div>
       </section>
-
+      
       <div className="main-content-grid">
-        
-        {/* COMPÉTENCES AVEC BOUTON PLEIN ÉCRAN */}
-        <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
+        {/* SECTION EXPÉRIENCE PROFESSIONNELLE */}
+        <section className={`journey-section ${isExpFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="experience">
           <div className="section-title-wrapper">
-            <h2>TECHNICAL SKILLS</h2>
+            <h2>PROFESSIONAL EXPERIENCE</h2>
             <div className="section-header-actions">
-              <button 
-                className="fullscreen-toggle-btn"
-                onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}
-                title={isSkillsFullscreen ? "Quitter le plein écran" : "Plein écran"}
-              >
-                {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+              <button className="fullscreen-toggle-btn" onClick={() => setIsExpFullscreen(!isExpFullscreen)}>
+                {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
               </button>
               {isAdmin && (
-                <button 
-                  className="inline-add-btn" 
-                  title="Ajouter une nouvelle catégorie"
-                  onClick={() => { 
-                    setTargetCategory('CUSTOM'); 
-                    setCustomCategoryName(''); 
-                    setNewSkillName(''); 
-                    setModalType('skill'); 
-                  }}
-                >
-                  +
-                </button>
+                <button className="inline-add-btn" onClick={() => setModalType('experience')}>+</button>
               )}
             </div>
           </div>
 
-          <div className={isSkillsFullscreen ? "skills-grid-fullscreen" : "skills-grid"}>
-            {data.skills.map((skillGroup, index) => (
-              <div key={index} className="skill-category zoom-card">
-                <div className="category-header-flex">
-                  <h3>{skillGroup.category}</h3>
-                  <div className="admin-inline-actions">
-                    {isAdmin && (
-                      <>
-                        <button 
-                          className="small-plus-btn"
-                          title={`Ajouter une compétence à ${skillGroup.category}`}
-                          onClick={() => { setTargetCategory(skillGroup.category); setNewSkillName(''); setModalType('skill'); }}
-                        >
-                          +
-                        </button>
-                        <button 
-                          className="small-trash-btn"
-                          title="Supprimer toute la catégorie"
-                          onClick={() => handleDeleteSkill(skillGroup.category)}
-                        >
-                          🗑️
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-                <div className="pills-container">
-                  {skillGroup.items.map((item, i) => (
-                    <span key={i} className="skill-pill-editable zoom-pill">
-                      {item}
-                      {isAdmin && (
-                        <button 
-                          className="pill-delete-btn" 
-                          onClick={() => handleDeleteSkill(skillGroup.category, item)}
-                          title="Supprimer cette compétence"
-                        >
-                          ×
-                        </button>
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* EXPÉRIENCE PRO : FRISE VERTICALE OU HORIZONTALE EN PLEIN ÉCRAN */}
-        <section className={`journey-section ${isJourneyFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="contact">
-          <div className="section-title-wrapper">
-            <h2>PROFESSIONAL JOURNEY</h2>
-            <div className="section-header-actions">
-              <button 
-                className="fullscreen-toggle-btn"
-                onClick={() => setIsJourneyFullscreen(!isJourneyFullscreen)}
-                title={isJourneyFullscreen ? "Quitter le plein écran" : "Plein écran horizontal"}
-              >
-                {isJourneyFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
-              </button>
-              {isAdmin && (
-                <button 
-                  className="inline-add-btn" 
-                  title="Ajouter une expérience"
-                  onClick={() => setModalType('journey')}
-                >
-                  +
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className={isJourneyFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
-            {data.journey.map((item, index) => (
-              <div key={index} className={isJourneyFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
-                <div className={isJourneyFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
-                <div className={isJourneyFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
+          <div className={isExpFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
+            {data.experience?.map((item, index) => (
+              <div key={index} className={isExpFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
+                <div className={isExpFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
+                <div className={isExpFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
                   <div className="journey-header-flex">
                     <span className="status-badge">{item.status}</span>
-                    {isAdmin && (
-                      <button 
-                        className="small-trash-btn" 
-                        onClick={() => handleDeleteJourney(index)}
-                        title="Supprimer cette expérience"
-                      >
-                        🗑️
-                      </button>
-                    )}
+                    {isAdmin && <button className="small-trash-btn" onClick={() => handleDeleteItem('experience', index)}>🗑️</button>}
                   </div>
                   <span className="timeline-date-badge">{item.date}</span>
                   <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
@@ -242,18 +144,87 @@ function About() {
               </div>
             ))}
           </div>
-          
-          {!isJourneyFullscreen && (
+
+          {!isExpFullscreen && !isEduFullscreen && (
             <div className="view-projects-wrapper">
-              <Link to="/projects" className="view-projects-btn">
-                View Projects →
-              </Link>
+              <Link to="/projects" className="view-projects-btn">View Projects →</Link>
             </div>
           )}
         </section>
+
+        {/* SECTION ÉTUDES / FORMATION */}
+        <section className={`journey-section ${isEduFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="education">
+          <div className="section-title-wrapper">
+            <h2>ACADEMIC EDUCATION</h2>
+            <div className="section-header-actions">
+              <button className="fullscreen-toggle-btn" onClick={() => setIsEduFullscreen(!isEduFullscreen)}>
+                {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
+              </button>
+              {isAdmin && (
+                <button className="inline-add-btn" onClick={() => setModalType('education')}>+</button>
+              )}
+            </div>
+          </div>
+
+          <div className={isEduFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
+            {data.education?.map((item, index) => (
+              <div key={index} className={isEduFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
+                <div className={isEduFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
+                <div className={isEduFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
+                  <div className="journey-header-flex">
+                    <span className="status-badge">{item.status}</span>
+                    {isAdmin && <button className="small-trash-btn" onClick={() => handleDeleteItem('education', index)}>🗑️</button>}
+                  </div>
+                  <span className="timeline-date-badge">{item.date}</span>
+                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
+                  <p>{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION COMPÉTENCES */}
+        <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
+          <div className="section-title-wrapper">
+            <h2>TECHNICAL SKILLS</h2>
+            <div className="section-header-actions">
+              <button className="fullscreen-toggle-btn" onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}>
+                {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+              </button>
+              {isAdmin && (
+                <button className="inline-add-btn" onClick={() => { setTargetCategory('CUSTOM'); setModalType('skill'); }}>+</button>
+              )}
+            </div>
+          </div>
+
+          <div className={isSkillsFullscreen ? "skills-grid-fullscreen" : "skills-grid"}>
+            {data.skills?.map((skillGroup, index) => (
+              <div key={index} className="skill-category zoom-card">
+                <div className="category-header-flex">
+                  <h3>{skillGroup.category}</h3>
+                  {isAdmin && (
+                    <div className="admin-inline-actions">
+                      <button className="small-plus-btn" onClick={() => { setTargetCategory(skillGroup.category); setModalType('skill'); }}>+</button>
+                      <button className="small-trash-btn" onClick={() => handleDeleteSkill(skillGroup.category)}>🗑️</button>
+                    </div>
+                  )}
+                </div>
+                <div className="pills-container">
+                  {skillGroup.items.map((item, i) => (
+                    <span key={i} className="skill-pill-editable zoom-pill">
+                      {item}
+                      {isAdmin && <button className="pill-delete-btn" onClick={() => handleDeleteSkill(skillGroup.category, item)}>×</button>}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
 
-      {/* MODALE D'AJOUT */}
+      {/* MODALES D'AJOUT */}
       {modalType && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -261,7 +232,7 @@ function About() {
             
             {modalType === 'skill' && (
               <form onSubmit={handleAddSkillSubmit}>
-                <h3>{targetCategory === 'CUSTOM' ? "Créer une nouvelle catégorie" : `Ajouter à : ${targetCategory}`}</h3>
+                <h3>{targetCategory === 'CUSTOM' ? "Nouvelle catégorie" : `Ajouter à : ${targetCategory}`}</h3>
                 {targetCategory === 'CUSTOM' && (
                   <input type="text" placeholder="Nom de la catégorie" value={customCategoryName} onChange={e => setCustomCategoryName(e.target.value)} required />
                 )}
@@ -270,18 +241,18 @@ function About() {
               </form>
             )}
 
-            {modalType === 'journey' && (
-              <form onSubmit={handleAddJourneySubmit}>
-                <h3>Ajouter une expérience professionnelle</h3>
-                <select value={jStatus} onChange={e => setJStatus(e.target.value)}>
+            {(modalType === 'education' || modalType === 'experience') && (
+              <form onSubmit={(e) => handleAddItemSubmit(e, modalType)}>
+                <h3>{modalType === 'education' ? "Ajouter une formation" : "Ajouter une expérience pro"}</h3>
+                <select value={itemStatus} onChange={e => setItemStatus(e.target.value)}>
                   <option value="Current">Current</option>
                   <option value="Previously">Previously</option>
                   <option value="Graduated">Graduated</option>
                 </select>
-                <input type="text" placeholder="Rôle" value={jRole} onChange={e => setJRole(e.target.value)} required />
-                <input type="text" placeholder="Entreprise" value={jCompany} onChange={e => setJCompany(e.target.value)} required />
-                <textarea placeholder="Description" value={jDesc} onChange={e => setJDesc(e.target.value)} required />
-                <input type="text" placeholder="Période" value={jDate} onChange={e => setJDate(e.target.value)} required />
+                <input type="text" placeholder="Rôle / Diplôme" value={itemRole} onChange={e => setItemsRoleState ? null : setItemRole(e.target.value)} /* Correction simple */ onInput={e => setItemRole(e.target.value)} required />
+                <input type="text" placeholder="École / Entreprise" onInput={e => setItemCompany(e.target.value)} required />
+                <textarea placeholder="Description" onInput={e => setItemDesc(e.target.value)} required />
+                <input type="text" placeholder="Période (ex: 2025 - 2026)" onInput={e => setItemDate(e.target.value)} required />
                 <button type="submit" className="submit-btn">Enregistrer</button>
               </form>
             )}
@@ -292,4 +263,4 @@ function About() {
   );
 }
 
-export default About; // (Note: keep export default About; as it was)
+export default About;

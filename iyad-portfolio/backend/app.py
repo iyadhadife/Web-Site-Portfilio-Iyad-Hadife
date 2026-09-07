@@ -272,6 +272,50 @@ def update_contact():
         return jsonify({"message": "Informations de contact mises à jour avec succès", "contactInfo": updated_data}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# --- AJOUTER UNE ÉDUCATION OU UNE EXPÉRIENCE ---
+@app.route('/api/<section>', methods=['POST'])
+def add_item(section):
+    if section not in ['education', 'experience']:
+        return jsonify({"error": "Section invalide"}), 400
+    try:
+        new_item = request.json
+        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        data.setdefault(section, []).append(new_item)
+        
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+            
+        return jsonify({"message": "Ajouté avec succès", "item": new_item}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# --- SUPPRIMER UNE ÉDUCATION OU UNE EXPÉRIENCE ---
+@app.route('/api/<section>/<int:index>', methods=['DELETE'])
+def delete_item(section, index):
+    if section not in ['education', 'experience']:
+        return jsonify({"error": "Section invalide"}), 400
+    try:
+        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        items_list = data.get(section, [])
+        if 0 <= index < len(items_list):
+            items_list.pop(index)
+            data[section] = items_list
+            
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                
+            return jsonify({"message": "Supprimé avec succès"}), 200
+        else:
+            return jsonify({"error": "Index invalide"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

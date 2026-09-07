@@ -647,3 +647,104 @@
   background: #ff4b4b;
   color: #fff;
 }
+
+/* Disposition globale en deux colonnes */
+.project-detail-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 30px;
+  align-items: start;
+  margin-top: 30px;
+}
+
+/* Sommaire latéral (Sticky Sidebar) */
+.project-toc-sidebar {
+  position: sticky;
+  top: 30px;
+  background-color: #111827;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 20px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.project-toc-sidebar h3 {
+  color: #00d2ff;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #1e3a8a;
+  padding-bottom: 8px;
+}
+
+.toc-empty {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.project-toc-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toc-item button {
+  background: none;
+  border: none;
+  color: #d1d5db;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  width: 100%;
+  transition: 0.2s;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc-item button:hover {
+  background-color: rgba(0, 210, 255, 0.15);
+  color: #00d2ff;
+}
+
+/* Indentation automatique selon le niveau du titre (H1, H2, H3) */
+.toc-item.h2 {
+  padding-left: 12px;
+}
+
+.toc-item.h3 {
+  padding-left: 24px;
+  font-size: 0.85rem;
+}
+
+/* Ajustement du conteneur éditeur dans la grille */
+.project-detail-layout .tiptap-editor-container {
+  margin-top: 0 !important;
+}
+
+/* Responsive pour les écrans étroits */
+@media (max-width: 900px) {
+  .project-detail-layout {
+    grid-template-columns: 1fr;
+  }
+  .project-toc-sidebar {
+    position: relative;
+    top: 0;
+  }
+}
+
+/* Barre d'outils collante (Sticky Toolbar) */
+.sticky-toolbar {
+  position: sticky;
+  top: 20px; /* Reste fixée à 20px du haut de la fenêtre lors du scroll */
+  z-index: 100;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  border-bottom: 2px solid #00d2ff !important;
+}

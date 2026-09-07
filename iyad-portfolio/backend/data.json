@@ -64,7 +64,16 @@
       ]
     }
   ],
-  "journey": [
+  "education": [
+    {
+      "role": "Master 2 Data & AI",
+      "company": "ESILV Paris",
+      "description": "Cursus avancé en intelligence artificielle et science des données.",
+      "date": "2025 - 2026",
+      "status": "Current"
+    }
+  ],
+  "experience": [
     {
       "status": "Current",
       "role": "Stagiaire Ingénieur R&D IA",
@@ -78,13 +87,6 @@
       "company": "SFR / Spacefit.ai",
       "description": "Développement de pipelines de données, création de modèles ML et développement de solutions d'IA.",
       "date": "Expériences précédentes"
-    },
-    {
-      "status": "Graduated",
-      "role": "Master 2 Data & Artificial Intelligence",
-      "company": "ESILV, Paris",
-      "description": "Spécialisation en ingénierie des données, machine learning et IA. Semestre d'échange au Dorset College (Dublin).",
-      "date": "Diplôme attendu en 2026"
     }
   ],
   "projects": [
@@ -92,7 +94,7 @@
       "id": "terra-sphere",
       "title": "Terra Sphere",
       "shortDescription": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous.",
-      "description": "Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.",
+      "description": "<p>Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.</p>",
       "category": "Voice AI & Automation",
       "technologies": [
         "Python",
