@@ -1,0 +1,71 @@
+.admin-container {
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.admin-container h1 {
+  margin-bottom: 30px;
+  color: #00d2ff;
+}
+
+.admin-section {
+  background: #111827;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-btn {
+  background-color: #00d2ff;
+  color: #000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.add-btn:hover {
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+.admin-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-form input, .admin-form textarea, .admin-form select {
+  background: #070b14;
+  border: 1px solid #1e3a8a;
+  padding: 10px;
+  color: #fff;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.submit-btn {
+  background: #1e3a8a;
+  color: #fff;
+  border: 1px solid #00d2ff;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #00d2ff;
+  color: #000;
+}

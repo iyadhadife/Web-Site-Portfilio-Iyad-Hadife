@@ -223,3 +223,163 @@ h2 {
   .main-content-grid { grid-template-columns: 1fr; }
 }
 
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+.section-title-wrapper h2 {
+  margin-bottom: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.inline-add-btn {
+  background: var(--neon-blue);
+  color: #000;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+  transition: transform 0.2s;
+}
+.inline-add-btn:hover {
+  transform: scale(1.1);
+}
+
+.category-header-flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.category-header-flex h3 {
+  margin-bottom: 0 !important;
+}
+.small-plus-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.small-plus-btn:hover {
+  background: var(--neon-blue);
+  color: #000;
+}
+
+/* Modale */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(7, 11, 20, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #111827;
+  border: 1px solid var(--neon-blue);
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(0, 210, 255, 0.2);
+}
+.close-modal {
+  position: absolute;
+  top: 15px; right: 15px;
+  background: none; border: none;
+  color: #fff; font-size: 1.2rem; cursor: pointer;
+}
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+.modal-content input, .modal-content textarea, .modal-content select {
+  background: #070b14;
+  border: 1px solid #1e3a8a;
+  padding: 10px;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.admin-inline-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.small-trash-btn {
+  background: rgba(255, 75, 75, 0.1);
+  color: #ff4b4b;
+  border: 1px solid rgba(255, 75, 75, 0.3);
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+
+.small-trash-btn:hover {
+  background: #ff4b4b;
+  color: #fff;
+}
+
+.journey-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skill-pill-editable {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 58, 138, 0.3);
+  border: 1px solid #1e3a8a;
+  color: #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin: 4px;
+}
+
+.pill-delete-btn {
+  background: none;
+  border: none;
+  color: #ff4b4b;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.pill-delete-btn:hover {
+  color: #ff0000;
+}

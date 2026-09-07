@@ -7,26 +7,61 @@
     "intro": "Je suis un étudiant en Master 2 spécialisé en Data et Intelligence Artificielle à l'ESILV. Mon parcours professionnel est centré sur le développement de solutions d'IA innovantes, allant des réseaux de neurones sur graphes (GNN) à la conception d'architectures multi-agents complexes.",
     "vision": "Ma vision est de construire des ponts entre l'ingénierie des données robuste et les applications d'IA générative pour résoudre des problèmes industriels concrets, notamment dans les environnements 3D et l'automatisation."
   },
+  "contactInfo": {
+    "email": "iyad.hadife@edu.devinci.fr",
+    "phone": "+33 6 10 52 10 62",
+    "address": "Paris, France",
+    "linkedin": "https://linkedin.com/in/iyad-hadifé",
+    "github": "https://github.com/iyadhadife"
+  },
   "skills": [
     {
       "category": "AI & Machine Learning",
-      "items": ["PyTorch", "TensorFlow", "Scikit-Learn", "PyTorch Geometric", "Pandas", "NumPy"]
+      "items": [
+        "PyTorch",
+        "TensorFlow",
+        "Scikit-Learn",
+        "PyTorch Geometric",
+        "Pandas",
+        "NumPy"
+      ]
     },
     {
       "category": "Backend & APIs",
-      "items": ["Python", "Flask", "Node.js", "Express", "FastMCP"]
+      "items": [
+        "Python",
+        "Flask",
+        "Node.js",
+        "Express",
+        "FastMCP"
+      ]
     },
     {
       "category": "Frontend & Web",
-      "items": ["React", "JavaScript", "Vite", "Streamlit"]
+      "items": [
+        "React",
+        "JavaScript",
+        "Vite",
+        "Streamlit"
+      ]
     },
     {
       "category": "Cloud & DevOps",
-      "items": ["Docker", "Kubernetes", "Git", "Podman"]
+      "items": [
+        "Docker",
+        "Kubernetes",
+        "Git",
+        "Podman"
+      ]
     },
     {
       "category": "Architecture & Data",
-      "items": ["RAG", "LangChain", "Agent-to-Agent", "PySpark"]
+      "items": [
+        "RAG",
+        "LangChain",
+        "Agent-to-Agent",
+        "PySpark"
+      ]
     }
   ],
   "journey": [
@@ -59,17 +94,33 @@
       "shortDescription": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous.",
       "description": "Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.",
       "category": "Voice AI & Automation",
-      "technologies": ["Python", "n8n", "ElevenLabs"],
-      "features": ["Gestion d'appels en temps réel", "Intégration d'agenda", "Workflows automatisés"]
+      "technologies": [
+        "Python",
+        "n8n",
+        "ElevenLabs"
+      ],
+      "features": [
+        "Gestion d'appels en temps réel",
+        "Intégration d'agenda",
+        "Workflows automatisés"
+      ]
     },
     {
       "id": "gnn-cad-3d",
       "title": "Détection d'Assemblages 3D via GNN",
       "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
-      "description": "Projet de R&D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des protocoles de communication Agent-to-Agent.",
+      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>a</p></th><th colspan=\"1\" rowspan=\"1\"><p>b</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>c</p></td><td colspan=\"1\" rowspan=\"1\"><p>c</p></td></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>c</p></td><td colspan=\"1\" rowspan=\"1\"><p>c</p></td></tr></tbody></table>",
       "category": "Machine Learning & 3D",
-      "technologies": ["PyTorch Geometric", "3DEXPERIENCE", "Agent-to-Agent"],
-      "features": ["Extraction de graphes 3D", "Analyse topologique", "Systèmes multi-agents"]
+      "technologies": [
+        "PyTorch Geometric",
+        "3DEXPERIENCE",
+        "Agent-to-Agent"
+      ],
+      "features": [
+        "Extraction de graphes 3D",
+        "Analyse topologique",
+        "Systèmes multi-agents"
+      ]
     },
     {
       "id": "tiktok-financial-dca",
@@ -77,8 +128,18 @@
       "shortDescription": "Pipeline automatisé de création de contenu d'animation financière pour les réseaux sociaux.",
       "description": "Développement de scripts automatisés pour générer des animations de performances financières (DCA) destinées à TikTok. Le système combine la récupération de données boursières, la génération de graphiques animés, et un workflow LLM pour le montage vocal.",
       "category": "Generative AI",
-      "technologies": ["Python", "Plotly", "yfinance", "n8n", "LLMs"],
-      "features": ["Génération de graphiques animés", "Synthèse vocale", "Automatisation de publication"]
+      "technologies": [
+        "Python",
+        "Plotly",
+        "yfinance",
+        "n8n",
+        "LLMs"
+      ],
+      "features": [
+        "Génération de graphiques animés",
+        "Synthèse vocale",
+        "Automatisation de publication"
+      ]
     },
     {
       "id": "pygame-rhythm",
@@ -86,8 +147,15 @@
       "shortDescription": "Jeu de rythme développé en Python et synchronisé sur la musique.",
       "description": "Création d'un jeu vidéo de rythme personnalisé où les mécaniques de gameplay sont générées et synchronisées directement à partir de l'analyse des pistes audio.",
       "category": "Game Development",
-      "technologies": ["Python", "Pygame"],
-      "features": ["Analyse audio en temps réel", "Moteur de rendu 2D", "Gameplay synchronisé"]
+      "technologies": [
+        "Python",
+        "Pygame"
+      ],
+      "features": [
+        "Analyse audio en temps réel",
+        "Moteur de rendu 2D",
+        "Gameplay synchronisé"
+      ]
     }
   ]
 }

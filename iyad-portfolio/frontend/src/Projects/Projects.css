@@ -113,3 +113,537 @@
 @media (max-width: 900px) {
   .project-detail-content { grid-template-columns: 1fr; }
 }
+
+.header-title-flex {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.small-edit-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px solid #00d2ff;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.small-edit-btn:hover {
+  background: #00d2ff;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.modal-form input, .modal-form textarea {
+  background: #070b14;
+  border: 1px solid #1e3a8a;
+  padding: 12px;
+  color: #fff;
+  border-radius: 6px;
+  font-family: inherit;
+  width: 100%;
+}
+
+/* Conteneur principal de l'éditeur */
+.editor-wrapper-box {
+  background-color: #111827;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  margin-top: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.editor-wrapper-box.editing-active {
+  border-color: #00d2ff;
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+}
+
+/* Barre d'action supérieure de l'éditeur */
+.editor-top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b1121;
+  padding: 12px 20px;
+  border-bottom: 1px solid #1e3a8a;
+}
+
+.editor-label {
+  color: #00d2ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.save-changes-btn {
+  background-color: #00d2ff;
+  color: #000;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.save-changes-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+}
+
+.edit-mode-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px solid #00d2ff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.edit-mode-btn:hover {
+  background: #00d2ff;
+  color: #000;
+}
+
+.project-detail-content-box {
+  padding: 30px;
+}
+
+/* Surcharges CSS pour adapter Quill (éditeur riche) au thème sombre */
+.dark-quill-editor .ql-toolbar.ql-snow {
+  background-color: #0b1121;
+  border-color: #1e3a8a;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dark-quill-editor .ql-container.ql-snow {
+  background-color: #111827;
+  border-color: #1e3a8a;
+  color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  min-height: 250px;
+}
+
+/* Couleur des icônes de la barre d'outils Quill en mode sombre */
+.dark-quill-editor .ql-stroke {
+  stroke: #9ca3af !important;
+}
+.dark-quill-editor .ql-fill {
+  fill: #9ca3af !important;
+}
+.dark-quill-editor .ql-picker {
+  color: #9ca3af !important;
+}
+.dark-quill-editor .ql-picker-options {
+  background-color: #0b1121 !important;
+  border-color: #1e3a8a !important;
+}
+
+.rendered-html-content {
+  color: #d1d5db;
+  line-height: 1.8;
+}
+
+.rendered-html-content h1, 
+.rendered-html-content h2, 
+.rendered-html-content h3 {
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.rendered-html-content ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.editor-toolbar-custom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0b1121;
+  padding: 10px 20px;
+  border-bottom: 1px solid #1e3a8a;
+}
+
+.toolbar-buttons-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.toolbar-buttons-group button {
+  background: #111827;
+  color: #9ca3af;
+  border: 1px solid #1e3a8a;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.toolbar-buttons-group button:hover {
+  background: #00d2ff;
+  color: #000;
+  border-color: #00d2ff;
+}
+
+.toolbar-separator {
+  color: #1e3a8a;
+  margin: 0 5px;
+}
+
+.custom-editor-textarea {
+  width: 100%;
+  min-height: 350px;
+  background-color: #111827;
+  color: #f3f4f6;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+.structured-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #00d2ff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.form-group input, .form-group textarea {
+  background-color: #070b14;
+  border: 1px solid #1e3a8a;
+  padding: 10px 14px;
+  color: #fff;
+  border-radius: 6px;
+  font-family: inherit;
+}
+
+.dynamic-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dynamic-row input {
+  flex: 1;
+}
+
+.remove-row-btn {
+  background: rgba(255, 75, 75, 0.2);
+  color: #ff4b4b;
+  border: 1px solid #ff4b4b;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.add-row-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px dashed #00d2ff;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 5px;
+  transition: 0.2s;
+}
+
+.add-row-btn:hover {
+  background: rgba(0, 210, 255, 0.2);
+}
+
+/* Styles du rendu final (Tableaux, Listes, Images) */
+.rendered-template h3 {
+  color: #00d2ff;
+  margin-top: 25px;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.rendered-template p {
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.styled-bullet-list {
+  padding-left: 20px;
+  color: #d1d5db;
+  line-height: 1.8;
+}
+
+.styled-data-table {
+  width: 100%;
+  max-width: 400px;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #070b14;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #1e3a8a;
+}
+
+.styled-data-table th, .styled-data-table td {
+  padding: 10px 15px;
+  text-align: left;
+  border-bottom: 1px solid #1e3a8a;
+  color: #f3f4f6;
+}
+
+.styled-data-table th {
+  background-color: #121c33;
+  color: #00d2ff;
+}
+
+.project-image-preview-container {
+  margin-top: 30px;
+}
+
+.figure-caption {
+  font-style: italic;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+.project-diagram-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #1e3a8a;
+}
+
+/* Conteneur global de l'éditeur TipTap */
+.tiptap-editor-container {
+  background-color: #111827;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  margin-top: 30px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.tiptap-editor-container.editing-active {
+  border-color: #00d2ff;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+}
+
+/* Barre d'outils supérieure (similaire au template) */
+.tiptap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  background-color: #0b1121;
+  padding: 12px 20px;
+  border-bottom: 1px solid #1e3a8a;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.tiptap-toolbar button {
+  background: #111827;
+  color: #9ca3af;
+  border: 1px solid #1e3a8a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.tiptap-toolbar button:hover, .tiptap-toolbar button.is-active {
+  background: #00d2ff;
+  color: #000;
+  border-color: #00d2ff;
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 20px;
+  background-color: #1e3a8a;
+  margin: 0 4px;
+}
+
+/* Zone d'écriture (EditorContent) */
+.tiptap-content-wrapper {
+  padding: 35px;
+  min-height: 400px;
+  color: #f3f4f6;
+  font-family: 'Inter', sans-serif;
+  line-height: 1.7;
+}
+
+/* Styles internes générés par TipTap (Titres, Listes, Tableaux) */
+.tiptap-content-wrapper .ProseMirror {
+  outline: none;
+}
+
+.tiptap-content-wrapper h1 {
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #1e3a8a;
+  padding-bottom: 8px;
+}
+
+.tiptap-content-wrapper h2 {
+  font-size: 1.6rem;
+  color: #00d2ff;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.tiptap-content-wrapper h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 8px;
+}
+
+.tiptap-content-wrapper p {
+  margin-bottom: 15px;
+  color: #d1d5db;
+}
+
+.tiptap-content-wrapper ul {
+  padding-left: 25px;
+  margin-bottom: 15px;
+  list-style-type: disc;
+}
+
+.tiptap-content-wrapper ol {
+  padding-left: 25px;
+  margin-bottom: 15px;
+  list-style-type: decimal;
+}
+
+.tiptap-content-wrapper li {
+  margin-bottom: 6px;
+  color: #d1d5db;
+}
+
+/* Style des tableaux TipTap */
+.tiptap-content-wrapper table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 20px 0;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid #1e3a8a;
+}
+
+.tiptap-content-wrapper table td, 
+.tiptap-content-wrapper table th {
+  min-width: 1em;
+  border: 1px solid #1e3a8a;
+  padding: 10px 14px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+  background-color: #070b14;
+  color: #fff;
+}
+
+.tiptap-content-wrapper table th {
+  background-color: #121c33;
+  color: #00d2ff;
+  font-weight: bold;
+}
+
+/* Style des images insérées */
+.tiptap-content-wrapper img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #1e3a8a;
+  margin: 20px 0;
+}
+
+.project-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.project-title-row h1 {
+  margin: 0;
+  border-bottom: none; /* Supprime l'ancienne bordure si présente */
+  padding-bottom: 0;
+}
+
+.admin-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.delete-page-btn {
+  background: rgba(255, 75, 75, 0.1);
+  color: #ff4b4b;
+  border: 1px solid rgba(255, 75, 75, 0.3);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.delete-page-btn:hover {
+  background: #ff4b4b;
+  color: #fff;
+}

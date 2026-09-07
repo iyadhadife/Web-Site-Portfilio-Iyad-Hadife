@@ -4,8 +4,11 @@ services:
   backend:
     build: ./iyad-portfolio/backend
     ports:
-      - "5000:5000" # Ajustez ce port selon la configuration de votre app.py
+      - "5000:5000"
     restart: unless-stopped
+    volumes:
+      # Permet de lier le dossier backend local au conteneur pour synchroniser data.json en direct
+      - ./iyad-portfolio/backend/data.json:/app/data.json
     environment:
       - ENV=production
 

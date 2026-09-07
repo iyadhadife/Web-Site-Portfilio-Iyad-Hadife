@@ -1,54 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 import './About.css';
 
 function About() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { isAdmin } = useAuth();
 
-  useEffect(() => {
+  const [modalType, setModalType] = useState(null);
+  const [targetCategory, setTargetCategory] = useState('');
+  const [newSkillName, setNewSkillName] = useState('');
+  const [customCategoryName, setCustomCategoryName] = useState('');
+  
+  const [jRole, setJRole] = useState('');
+  const [jCompany, setJCompany] = useState('');
+  const [jDesc, setJDesc] = useState('');
+  const [jDate, setJDate] = useState('');
+  const [jStatus, setJStatus] = useState('Current');
+
+  const fetchData = () => {
     fetch('http://localhost:5000/api/portfolio')
-      .then((res) => {
-        if (!res.ok) throw new Error("Erreur de connexion au serveur");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((jsonData) => {
-        if (jsonData.error) throw new Error(jsonData.error);
         setData(jsonData);
         setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
       });
-  }, []);
-  const location = useLocation();
+  };
 
-  // NOUVEAU : Effet pour centrer parfaitement la section
   useEffect(() => {
-    if (location.hash === '#skills') {
-      const element = document.getElementById('skills');
-      if (element) {
-        // L'option block: 'center' est le secret pour centrer verticalement
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100); // Un léger délai pour s'assurer que la page est bien affichée
-      }
-    }
-  }, [location]);
+    fetchData();
+  }, []);
 
-  
-  if (loading) return <div className="state-container"><div className="loader"></div>Chargement des données...</div>;
-  if (error) return <div className="state-container error">Erreur : {error}</div>;
-  if (!data) return <div className="state-container empty">Aucune donnée disponible.</div>;
+  const handleAddSkillSubmit = (e) => {
+    e.preventDefault();
+    const categoryToUse = targetCategory === 'CUSTOM' ? customCategoryName : targetCategory;
+
+    fetch('http://localhost:5000/api/skills', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category: categoryToUse, skill: newSkillName })
+    }).then(res => {
+      if(res.ok) {
+        setModalType(null);
+        setNewSkillName('');
+        setCustomCategoryName('');
+        setTargetCategory('');
+        fetchData();
+      }
+    });
+  };
+
+  // Suppression d'une catégorie entière ou d'une compétence spécifique
+  const handleDeleteSkill = (categoryName, skillName = null) => {
+    const message = skillName 
+      ? `Voulez-vous supprimer la compétence "${skillName}" ?` 
+      : `Voulez-vous supprimer toute la catégorie "${categoryName}" ?`;
+
+    if (window.confirm(message)) {
+      fetch('http://localhost:5000/api/skills', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category: categoryName, skill: skillName })
+      }).then(res => {
+        if(res.ok) fetchData();
+      });
+    }
+  };
+
+  const handleAddJourneySubmit = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:5000/api/journey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role: jRole, company: jCompany, description: jDesc, date: jDate, status: jStatus })
+    }).then(res => {
+      if(res.ok) {
+        setModalType(null);
+        setJRole(''); setJCompany(''); setJDesc(''); setJDate('');
+        fetchData();
+      }
+    });
+  };
+
+  // Suppression d'une expérience professionnelle par son index
+  const handleDeleteJourney = (index) => {
+    if (window.confirm("Voulez-vous supprimer cette expérience professionnelle ?")) {
+      fetch(`http://localhost:5000/api/journey/${index}`, {
+        method: 'DELETE'
+      }).then(res => {
+        if(res.ok) fetchData();
+      });
+    }
+  };
+
+  if (loading) return <div className="state-container">Chargement...</div>;
 
   return (
-    <div className="about-container">
-      {/* SECTION HAUT : PROFIL */}
+    <div className="about-container" id="home">
       <section className="profile-header">
         <div className="profile-image-container">
-          {/* Utilisation de l'image existante dans le projet */}
           <img src={data.profile.avatar} alt="Profile" className="profile-image" />
         </div>
         <div className="profile-info">
@@ -59,24 +110,72 @@ function About() {
           </h1>
           <div className="profile-text">
             <p>{data.profile.intro}</p>
-            <p className="vision-text">{data.profile.vision}</p>
           </div>
         </div>
       </section>
 
-      {/* SECTION BAS : DEUX COLONNES */}
       <div className="main-content-grid">
         
-        {/* COLONNE GAUCHE : COMPÉTENCES */}
-        <section id="skills" className="skills-section">
-          <h2>TECHNICAL SKILLS</h2>
+        {/* COMPÉTENCES */}
+        <section className="skills-section" id="skills">
+          <div className="section-title-wrapper">
+            <h2>TECHNICAL SKILLS</h2>
+            {isAdmin && (
+              <button 
+                className="inline-add-btn" 
+                title="Ajouter une nouvelle catégorie"
+                onClick={() => { 
+                  setTargetCategory('CUSTOM'); 
+                  setCustomCategoryName(''); 
+                  setNewSkillName(''); 
+                  setModalType('skill'); 
+                }}
+              >
+                +
+              </button>
+            )}
+          </div>
+
           <div className="skills-grid">
             {data.skills.map((skillGroup, index) => (
               <div key={index} className="skill-category">
-                <h3>{skillGroup.category}</h3>
+                <div className="category-header-flex">
+                  <h3>{skillGroup.category}</h3>
+                  <div className="admin-inline-actions">
+                    {isAdmin && (
+                      <>
+                        <button 
+                          className="small-plus-btn"
+                          title={`Ajouter une compétence à ${skillGroup.category}`}
+                          onClick={() => { setTargetCategory(skillGroup.category); setNewSkillName(''); setModalType('skill'); }}
+                        >
+                          +
+                        </button>
+                        <button 
+                          className="small-trash-btn"
+                          title="Supprimer toute la catégorie"
+                          onClick={() => handleDeleteSkill(skillGroup.category)}
+                        >
+                          🗑️
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
                 <div className="pills-container">
                   {skillGroup.items.map((item, i) => (
-                    <span key={i} className="skill-pill">{item}</span>
+                    <span key={i} className="skill-pill-editable">
+                      {item}
+                      {isAdmin && (
+                        <button 
+                          className="pill-delete-btn" 
+                          onClick={() => handleDeleteSkill(skillGroup.category, item)}
+                          title="Supprimer cette compétence"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -84,15 +183,38 @@ function About() {
           </div>
         </section>
 
-        {/* COLONNE DROITE : PARCOURS */}
-        <section className="journey-section">
-          <h2>PROFESSIONAL JOURNEY</h2>
+        {/* PARCOURS PROFESSIONNEL */}
+        <section className="journey-section" id="contact">
+          <div className="section-title-wrapper">
+            <h2>PROFESSIONAL JOURNEY</h2>
+            {isAdmin && (
+              <button 
+                className="inline-add-btn" 
+                title="Ajouter une expérience"
+                onClick={() => setModalType('journey')}
+              >
+                +
+              </button>
+            )}
+          </div>
+
           <div className="timeline">
             {data.journey.map((item, index) => (
               <div key={index} className="timeline-item">
                 <div className="timeline-dot" data-status={item.status}></div>
                 <div className="timeline-content">
-                  <span className="status-label">{item.status}:</span>
+                  <div className="journey-header-flex">
+                    <span className="status-label">{item.status}:</span>
+                    {isAdmin && (
+                      <button 
+                        className="small-trash-btn" 
+                        onClick={() => handleDeleteJourney(index)}
+                        title="Supprimer cette expérience"
+                      >
+                        🗑️
+                      </button>
+                    )}
+                  </div>
                   <h4>{item.role} - <span className="company-name">[{item.company}]</span></h4>
                   <p>{item.description}</p>
                   <span className="timeline-date">{item.date}</span>
@@ -106,6 +228,42 @@ function About() {
           </Link>
         </section>
       </div>
+
+      {/* MODALE D'AJOUT */}
+      {modalType && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="close-modal" onClick={() => setModalType(null)}>✕</button>
+            
+            {modalType === 'skill' && (
+              <form onSubmit={handleAddSkillSubmit}>
+                <h3>{targetCategory === 'CUSTOM' ? "Créer une nouvelle catégorie" : `Ajouter à : ${targetCategory}`}</h3>
+                {targetCategory === 'CUSTOM' && (
+                  <input type="text" placeholder="Nom de la catégorie" value={customCategoryName} onChange={e => setCustomCategoryName(e.target.value)} required />
+                )}
+                <input type="text" placeholder="Nom de la compétence" value={newSkillName} onChange={e => setNewSkillName(e.target.value)} required />
+                <button type="submit" className="submit-btn">Ajouter</button>
+              </form>
+            )}
+
+            {modalType === 'journey' && (
+              <form onSubmit={handleAddJourneySubmit}>
+                <h3>Ajouter une expérience professionnelle</h3>
+                <select value={jStatus} onChange={e => setJStatus(e.target.value)}>
+                  <option value="Current">Current</option>
+                  <option value="Previously">Previously</option>
+                  <option value="Graduated">Graduated</option>
+                </select>
+                <input type="text" placeholder="Rôle" value={jRole} onChange={e => setJRole(e.target.value)} required />
+                <input type="text" placeholder="Entreprise" value={jCompany} onChange={e => setJCompany(e.target.value)} required />
+                <textarea placeholder="Description" value={jDesc} onChange={e => setJDesc(e.target.value)} required />
+                <input type="text" placeholder="Période" value={jDate} onChange={e => setJDate(e.target.value)} required />
+                <button type="submit" className="submit-btn">Enregistrer</button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
