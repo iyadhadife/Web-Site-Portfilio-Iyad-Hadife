@@ -316,6 +316,31 @@ def delete_item(section, index):
             return jsonify({"error": "Index invalide"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# --- MODIFIER UNE ÉDUCATION OU UNE EXPÉRIENCE ---
+@app.route('/api/<section>/<int:index>', methods=['PUT'])
+def update_item(section, index):
+    if section not in ['education', 'experience']:
+        return jsonify({"error": "Section invalide"}), 400
+    try:
+        updated_item = request.json
+        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+        with open(file_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            
+        items_list = data.get(section, [])
+        if 0 <= index < len(items_list):
+            items_list[index] = updated_item
+            data[section] = items_list
+            
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+                
+            return jsonify({"message": "Mis à jour avec succès"}), 200
+        else:
+            return jsonify({"error": "Index invalide"}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

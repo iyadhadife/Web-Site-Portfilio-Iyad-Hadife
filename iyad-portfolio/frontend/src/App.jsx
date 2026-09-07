@@ -14,6 +14,19 @@ function Navigation() {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
+    // Si on arrive avec un hash (ex: /#skills ou /#education)
+    if (location.hash) {
+      const elementId = location.hash.replace('#', '');
+      const element = document.getElementById(elementId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }, [location]);
+  
+  useEffect(() => {
     // 1. Si on est sur l'onglet projets
     if (location.pathname.includes('/projects')) {
       setActiveSection('projects');

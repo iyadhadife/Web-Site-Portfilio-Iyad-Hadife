@@ -10,7 +10,7 @@
   "contactInfo": {
     "email": "iyad.hadife@edu.devinci.fr",
     "phone": "+33 6 10 52 10 62",
-    "address": "12 passage voltaire, 92800, Puteaux",
+    "address": "12 passage voltaire, Puteaux, 92800",
     "linkedin": "https://linkedin.com/in/iyad-hadifé",
     "github": "https://github.com/iyadhadife"
   },
@@ -62,6 +62,15 @@
         "Agent-to-Agent",
         "PySpark"
       ]
+    },
+    {
+      "category": "CAO",
+      "items": [
+        "Catia Visual Scripting",
+        "Catia Part Disign",
+        "Solidworks",
+        "Catia Generative Assembly"
+      ]
     }
   ],
   "education": [
@@ -69,17 +78,24 @@
       "role": "Master 2 Data & AI",
       "company": "ESILV Paris",
       "description": "Cursus avancé en intelligence artificielle et science des données.",
-      "date": "2025 - 2026",
+      "date": "2023 - 2026",
+      "status": "Graduated"
+    },
+    {
+      "role": "Prépa Intégrée",
+      "company": "ESILV",
+      "description": "Scientifque License preparation for engineering school",
+      "date": "2021 - 2023",
       "status": "Current"
     }
   ],
   "experience": [
     {
-      "status": "Current",
       "role": "Stagiaire Ingénieur R&D IA",
       "company": "Dassault Systèmes",
       "description": "Customer Strategic Partnership Innovation Lab. Détection d'assemblages 3D via Graph Neural Networks et architectures Agent-to-Agent.",
-      "date": "Jan 2026 - Août 2026"
+      "date": "Jan 2026 - Août 2026",
+      "status": "Previously"
     },
     {
       "status": "Previously",
@@ -94,7 +110,7 @@
       "id": "terra-sphere",
       "title": "Terra Sphere",
       "shortDescription": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous.",
-      "description": "<p>Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.</p>",
+      "description": "<p>Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.<code><br></code></p><p><br></p>",
       "category": "Voice AI & Automation",
       "technologies": [
         "Python",
@@ -111,7 +127,7 @@
       "id": "gnn-cad-3d",
       "title": "Détection d'Assemblages 3D via GNN",
       "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
-      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>a</p></th><th colspan=\"1\" rowspan=\"1\"><p>b</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>c</p></td><td colspan=\"1\" rowspan=\"1\"><p>c</p></td></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>c</p></td><td colspan=\"1\" rowspan=\"1\"><p>c</p></td></tr></tbody></table>",
+      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><p></p>",
       "category": "Machine Learning & 3D",
       "technologies": [
         "PyTorch Geometric",

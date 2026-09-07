@@ -44,7 +44,18 @@ const MenuBar = ({ editor }) => {
       <div className="toolbar-separator" />
       <div className="toolbar-group">
         <button onClick={addImage} title="Insérer une image">🖼️ Image</button>
-        <button onClick={addTable} title="Insérer un tableau">📊 Tableau</button>
+        <button onClick={addTable} title="Insérer un tableau">📊 Tab</button>
+        
+        {/* Contrôles de tableau dynamiques */}
+        {editor.isActive('table') && (
+          <>
+            <button onClick={() => editor.chain().focus().addRowAfter().run()} title="Ajouter une ligne en dessous">➕ Ligne</button>
+            <button onClick={() => editor.chain().focus().addColumnAfter().run()} title="Ajouter une colonne à droite">➕ Col</button>
+            <button onClick={() => editor.chain().focus().deleteRow().run()} title="Supprimer la ligne">❌ Ligne</button>
+            <button onClick={() => editor.chain().focus().deleteColumn().run()} title="Supprimer la colonne active">❌ Col</button>
+            <button onClick={() => editor.chain().focus().deleteTable().run()} title="Supprimer le tableau">🗑️ Tab</button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -93,6 +104,16 @@ function ProjectDetail() {
     ],
     content: project?.description || '',
     editable: isEditing,
+    // Gestion du saut de ligne avec Ctrl + Enter dans les cellules ou blocs
+    editorProps: {
+      handleKeyDown: (view, event) => {
+        if (event.key === 'Enter' && event.ctrlKey) {
+          view.dispatch(view.state.tr.insertText('\n'));
+          return true;
+        }
+        return false;
+      }
+    }
   });
 
   useEffect(() => {
@@ -167,7 +188,6 @@ function ProjectDetail() {
       <div className="project-detail-header">
         <span className="project-category">{project.category}</span>
         
-        {/* Titre et bouton d'édition alignés parfaitement sur la même ligne */}
         <div className="project-title-row">
           <h1>{project.title}</h1>
           {isAdmin && (
@@ -201,7 +221,6 @@ function ProjectDetail() {
         </aside>
 
         <div className={`tiptap-editor-container ${isEditing ? 'editing-active' : ''}`} ref={contentRef}>
-          {/* La barre d'outils s'accrochera automatiquement en haut lors du scroll */}
           {isEditing && <MenuBar editor={editor} />}
           
           <div className="tiptap-content-wrapper">
@@ -214,4 +233,4 @@ function ProjectDetail() {
   );
 }
 
-export default ProjectDetail;
+export default ProjectDetail; // (Note: keep export default ProjectDetail;)

@@ -740,11 +740,32 @@
   }
 }
 
-/* Barre d'outils collante (Sticky Toolbar) */
+/* 1. S'assurer qu'aucun conteneur parent ne bloque le sticky / fixed */
+.project-detail-page,
+.project-detail-layout,
+.tiptap-editor-container {
+  overflow: visible !important;
+}
+
+/* 2. Barre d'outils ultra-stable en haut de l'écran */
 .sticky-toolbar {
-  position: sticky;
-  top: 20px; /* Reste fixée à 20px du haut de la fenêtre lors du scroll */
-  z-index: 100;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  position: sticky !important;
+  top: 20px !important; /* Distance par rapport au haut de l'écran */
+  z-index: 99999 !important;
+  background-color: #111827 !important;
+  border: 1px solid #1e3a8a !important;
   border-bottom: 2px solid #00d2ff !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Support des retours à la ligne et sélection claire dans les tableaux TipTap */
+.tiptap-content-wrapper table td, 
+.tiptap-content-wrapper table th {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Boutons spécifiques de gestion de tableau dans la barre d'outils */
+.tiptap-toolbar button {
+  white-space: nowrap;
 }
