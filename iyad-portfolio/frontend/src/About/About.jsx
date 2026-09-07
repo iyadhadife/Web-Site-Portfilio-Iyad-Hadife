@@ -19,6 +19,10 @@ function About() {
   const [jDate, setJDate] = useState('');
   const [jStatus, setJStatus] = useState('Current');
 
+  // États pour le plein écran
+  const [isSkillsFullscreen, setIsSkillsFullscreen] = useState(false);
+  const [isJourneyFullscreen, setIsJourneyFullscreen] = useState(false);
+
   const fetchData = () => {
     fetch('http://localhost:5000/api/portfolio')
       .then((res) => res.json())
@@ -51,7 +55,6 @@ function About() {
     });
   };
 
-  // Suppression d'une catégorie entière ou d'une compétence spécifique
   const handleDeleteSkill = (categoryName, skillName = null) => {
     const message = skillName 
       ? `Voulez-vous supprimer la compétence "${skillName}" ?` 
@@ -83,7 +86,6 @@ function About() {
     });
   };
 
-  // Suppression d'une expérience professionnelle par son index
   const handleDeleteJourney = (index) => {
     if (window.confirm("Voulez-vous supprimer cette expérience professionnelle ?")) {
       fetch(`http://localhost:5000/api/journey/${index}`, {
@@ -116,29 +118,38 @@ function About() {
 
       <div className="main-content-grid">
         
-        {/* COMPÉTENCES */}
-        <section className="skills-section" id="skills">
+        {/* COMPÉTENCES AVEC BOUTON PLEIN ÉCRAN */}
+        <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
           <div className="section-title-wrapper">
             <h2>TECHNICAL SKILLS</h2>
-            {isAdmin && (
+            <div className="section-header-actions">
               <button 
-                className="inline-add-btn" 
-                title="Ajouter une nouvelle catégorie"
-                onClick={() => { 
-                  setTargetCategory('CUSTOM'); 
-                  setCustomCategoryName(''); 
-                  setNewSkillName(''); 
-                  setModalType('skill'); 
-                }}
+                className="fullscreen-toggle-btn"
+                onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}
+                title={isSkillsFullscreen ? "Quitter le plein écran" : "Plein écran"}
               >
-                +
+                {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
               </button>
-            )}
+              {isAdmin && (
+                <button 
+                  className="inline-add-btn" 
+                  title="Ajouter une nouvelle catégorie"
+                  onClick={() => { 
+                    setTargetCategory('CUSTOM'); 
+                    setCustomCategoryName(''); 
+                    setNewSkillName(''); 
+                    setModalType('skill'); 
+                  }}
+                >
+                  +
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="skills-grid">
+          <div className={isSkillsFullscreen ? "skills-grid-fullscreen" : "skills-grid"}>
             {data.skills.map((skillGroup, index) => (
-              <div key={index} className="skill-category">
+              <div key={index} className="skill-category zoom-card">
                 <div className="category-header-flex">
                   <h3>{skillGroup.category}</h3>
                   <div className="admin-inline-actions">
@@ -164,7 +175,7 @@ function About() {
                 </div>
                 <div className="pills-container">
                   {skillGroup.items.map((item, i) => (
-                    <span key={i} className="skill-pill-editable">
+                    <span key={i} className="skill-pill-editable zoom-pill">
                       {item}
                       {isAdmin && (
                         <button 
@@ -183,28 +194,37 @@ function About() {
           </div>
         </section>
 
-        {/* PARCOURS PROFESSIONNEL */}
-        <section className="journey-section" id="contact">
+        {/* EXPÉRIENCE PRO : FRISE VERTICALE OU HORIZONTALE EN PLEIN ÉCRAN */}
+        <section className={`journey-section ${isJourneyFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="contact">
           <div className="section-title-wrapper">
             <h2>PROFESSIONAL JOURNEY</h2>
-            {isAdmin && (
+            <div className="section-header-actions">
               <button 
-                className="inline-add-btn" 
-                title="Ajouter une expérience"
-                onClick={() => setModalType('journey')}
+                className="fullscreen-toggle-btn"
+                onClick={() => setIsJourneyFullscreen(!isJourneyFullscreen)}
+                title={isJourneyFullscreen ? "Quitter le plein écran" : "Plein écran horizontal"}
               >
-                +
+                {isJourneyFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
               </button>
-            )}
+              {isAdmin && (
+                <button 
+                  className="inline-add-btn" 
+                  title="Ajouter une expérience"
+                  onClick={() => setModalType('journey')}
+                >
+                  +
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="timeline">
+          <div className={isJourneyFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
             {data.journey.map((item, index) => (
-              <div key={index} className="timeline-item">
-                <div className="timeline-dot" data-status={item.status}></div>
-                <div className="timeline-content">
+              <div key={index} className={isJourneyFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
+                <div className={isJourneyFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
+                <div className={isJourneyFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
                   <div className="journey-header-flex">
-                    <span className="status-label">{item.status}:</span>
+                    <span className="status-badge">{item.status}</span>
                     {isAdmin && (
                       <button 
                         className="small-trash-btn" 
@@ -215,17 +235,21 @@ function About() {
                       </button>
                     )}
                   </div>
-                  <h4>{item.role} - <span className="company-name">[{item.company}]</span></h4>
+                  <span className="timeline-date-badge">{item.date}</span>
+                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
                   <p>{item.description}</p>
-                  <span className="timeline-date">{item.date}</span>
                 </div>
               </div>
             ))}
           </div>
           
-          <Link to="/projects" className="view-projects-btn">
-            View Projects
-          </Link>
+          {!isJourneyFullscreen && (
+            <div className="view-projects-wrapper">
+              <Link to="/projects" className="view-projects-btn">
+                View Projects →
+              </Link>
+            </div>
+          )}
         </section>
       </div>
 
@@ -268,4 +292,4 @@ function About() {
   );
 }
 
-export default About;
+export default About; // (Note: keep export default About; as it was)

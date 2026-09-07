@@ -383,3 +383,206 @@ h2 {
 .pill-delete-btn:hover {
   color: #ff0000;
 }
+/* --- EFFETS DE ZOOM FLUIDES --- */
+.zoom-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.zoom-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: #00d2ff;
+  box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);
+}
+
+.zoom-pill {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.zoom-pill:hover {
+  transform: scale(1.08);
+  background-color: rgba(0, 210, 255, 0.2);
+  border-color: #00d2ff;
+}
+
+.zoom-timeline-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.zoom-timeline-card:hover {
+  transform: translateX(8px) scale(1.01);
+  border-color: #00d2ff;
+  box-shadow: 0 8px 25px rgba(0, 210, 255, 0.25);
+}
+
+/* --- FRISE CHRONOLOGIQUE (TIMELINE) MODERNE --- */
+.timeline-frise {
+  position: relative;
+  padding-left: 35px;
+  margin: 30px 0;
+  border-left: 2px solid #1e3a8a;
+}
+
+.timeline-frise-item {
+  position: relative;
+  margin-bottom: 35px;
+  background-color: #0b1121;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.timeline-frise-dot {
+  position: absolute;
+  left: -43px;
+  top: 25px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #00d2ff;
+  border: 3px solid #070b14;
+  box-shadow: 0 0 10px #00d2ff;
+}
+
+.timeline-frise-dot[data-status="Current"] {
+  background-color: #10b981;
+  box-shadow: 0 0 12px #10b981;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+}
+
+.timeline-date-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin: 8px 0 12px 0;
+  font-weight: 500;
+}
+
+.timeline-frise-content h4 {
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.company-name {
+  color: #00d2ff;
+  font-weight: 600;
+}
+
+.timeline-frise-content p {
+  color: #d1d5db;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.view-projects-wrapper {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* Bouton d'action plein écran */
+.section-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.fullscreen-toggle-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: #00d2ff;
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.fullscreen-toggle-btn:hover {
+  background: rgba(0, 210, 255, 0.25);
+  border-color: #00d2ff;
+}
+
+/* Mode Plein Écran Overlay */
+.fullscreen-overlay-mode {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  background-color: #070b14;
+  padding: 40px 60px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Grille skills en plein écran */
+.skills-grid-fullscreen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* --- FRISE CHRONOLOGIQUE HORIZONTALE (PLEIN ÉCRAN) --- */
+.timeline-frise-horizontal {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  padding: 40px 20px;
+  margin-top: 40px;
+  position: relative;
+  white-space: nowrap;
+  border-top: 2px solid #1e3a8a;
+}
+
+.timeline-h-item {
+  min-width: 340px;
+  max-width: 400px;
+  background-color: #0b1121;
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 25px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  white-space: normal; /* Permet au texte de se replier à la ligne */
+}
+
+.timeline-h-dot {
+  position: absolute;
+  top: -49px;
+  left: 30px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #00d2ff;
+  border: 3px solid #070b14;
+  box-shadow: 0 0 10px #00d2ff;
+}
+
+.timeline-h-dot[data-status="Current"] {
+  background-color: #10b981;
+  box-shadow: 0 0 12px #10b981;
+}
+
+.timeline-h-content p {
+  color: #d1d5db;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-top: 10px;
+}
