@@ -8,15 +8,13 @@
   --border-light: rgba(0, 210, 255, 0.2);
 }
 
-.skills-section {
+.skills-section, .journey-section {
   scroll-margin-top: 80px; /* Décale l'arrêt 80 pixels en dessous du haut de l'écran */
 }
 
 .about-container {
   padding: 40px;
-  /* Ajoutez cette ligne pour donner de la marge de manœuvre au scroll : */
   padding-bottom: 200px; 
-  
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', sans-serif;
@@ -82,16 +80,10 @@
   max-width: 800px;
 }
 
-.vision-text {
-  font-style: italic;
-  border-left: 3px solid var(--neon-blue);
-  padding-left: 15px;
-}
-
 /* GRILLE PRINCIPALE (COMPÉTENCES & PARCOURS) */
 .main-content-grid {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
+  display: flex;
+  flex-direction: column;
   gap: 60px;
 }
 
@@ -108,13 +100,21 @@ h2 {
 /* COMPÉTENCES */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 30px;
+}
+
+.skill-category {
+  background-color: var(--card-bg);
+  border: 1px solid #1e3a8a;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .skill-category h3 {
   color: var(--text-main);
-  font-size: 1rem;
+  font-size: 1.1rem;
   margin-bottom: 15px;
 }
 
@@ -122,77 +122,6 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.skill-pill {
-  background: linear-gradient(145deg, #162238, #111827);
-  border: 1px solid #1e3a8a;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--text-main);
-  transition: all 0.3s ease;
-}
-
-.skill-pill:hover {
-  border-color: var(--neon-blue);
-  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* PARCOURS PROFESSIONNEL (TIMELINE) */
-.timeline {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  position: relative;
-  border-left: 2px solid #1e3a8a;
-  padding-left: 25px;
-  margin-bottom: 40px;
-}
-
-.timeline-item { position: relative; }
-
-.timeline-dot {
-  position: absolute;
-  left: -32px;
-  top: 5px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #1e3a8a;
-}
-
-.timeline-dot[data-status="Current"] {
-  background-color: var(--neon-blue);
-  box-shadow: 0 0 10px var(--neon-blue);
-}
-
-.status-label {
-  color: var(--neon-blue);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.timeline-content h4 {
-  margin: 5px 0;
-  font-size: 1rem;
-  color: #fff;
-}
-
-.company-name { font-weight: normal; color: var(--text-muted); }
-
-.timeline-content p {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin: 5px 0;
-  line-height: 1.4;
-}
-
-.timeline-date {
-  font-size: 0.8rem;
-  color: #6b7280;
 }
 
 /* BOUTON PROJETS */
@@ -214,15 +143,7 @@ h2 {
   transform: scale(1.02);
 }
 
-/* RESPONSIVE DESIGN */
-@media (max-width: 900px) {
-  .profile-header {
-    flex-direction: column;
-    text-align: center;
-  }
-  .main-content-grid { grid-template-columns: 1fr; }
-}
-
+/* TITRES ET ACTIONS SECTION */
 .section-title-wrapper {
   display: flex;
   align-items: center;
@@ -292,7 +213,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 .modal-content {
   background: #111827;
@@ -330,7 +251,7 @@ h2 {
   align-items: center;
 }
 
-.small-trash-btn {
+.small-trash-btn, .small-edit-btn {
   background: rgba(255, 75, 75, 0.1);
   color: #ff4b4b;
   border: 1px solid rgba(255, 75, 75, 0.3);
@@ -344,10 +265,18 @@ h2 {
   font-size: 0.8rem;
   transition: 0.2s;
 }
-
+.small-edit-btn {
+  background: rgba(0, 210, 255, 0.1);
+  color: var(--neon-blue);
+  border-color: rgba(0, 210, 255, 0.3);
+}
 .small-trash-btn:hover {
   background: #ff4b4b;
   color: #fff;
+}
+.small-edit-btn:hover {
+  background: var(--neon-blue);
+  color: #000;
 }
 
 .journey-header-flex {
@@ -363,7 +292,7 @@ h2 {
   background: rgba(30, 58, 138, 0.3);
   border: 1px solid #1e3a8a;
   color: #e5e7eb;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.85rem;
   margin: 4px;
@@ -383,6 +312,7 @@ h2 {
 .pill-delete-btn:hover {
   color: #ff0000;
 }
+
 /* --- EFFETS DE ZOOM FLUIDES --- */
 .zoom-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
@@ -414,7 +344,7 @@ h2 {
   box-shadow: 0 8px 25px rgba(0, 210, 255, 0.25);
 }
 
-/* --- FRISE CHRONOLOGIQUE (TIMELINE) MODERNE --- */
+/* --- FRISE CHRONOLOGIQUE (TIMELINE) VERTICALE --- */
 .timeline-frise {
   position: relative;
   padding-left: 35px;
@@ -469,7 +399,7 @@ h2 {
   font-weight: 500;
 }
 
-.timeline-frise-content h4 {
+.timeline-frise-item h4, .timeline-h-item h4 {
   font-size: 1.25rem;
   color: #fff;
   margin-bottom: 10px;
@@ -480,15 +410,11 @@ h2 {
   font-weight: 600;
 }
 
-.timeline-frise-content p {
+.timeline-frise-item p, .timeline-h-item p {
   color: #d1d5db;
   line-height: 1.6;
   font-size: 0.95rem;
-}
-
-.view-projects-wrapper {
-  margin-top: 40px;
-  text-align: center;
+  margin-top: 10px;
 }
 
 /* Bouton d'action plein écran */
@@ -515,7 +441,7 @@ h2 {
   border-color: #00d2ff;
 }
 
-/* Mode Plein Écran Overlay */
+/* Mode Plein Écran Overlay sur PC (garde les espacements) */
 .fullscreen-overlay-mode {
   position: fixed !important;
   top: 0;
@@ -527,31 +453,34 @@ h2 {
   padding: 40px 60px;
   overflow-y: auto;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 /* Grille skills en plein écran */
 .skills-grid-fullscreen {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 25px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
-/* --- FRISE CHRONOLOGIQUE HORIZONTALE (PLEIN ÉCRAN) --- */
+/* --- FRISE CHRONOLOGIQUE HORIZONTALE (PLEIN ÉCRAN PC) --- */
 .timeline-frise-horizontal {
   display: flex;
   gap: 30px;
   overflow-x: auto;
-  padding: 40px 20px;
-  margin-top: 40px;
+  padding: 30px 10px;
+  margin-top: 20px;
   position: relative;
   white-space: nowrap;
   border-top: 2px solid #1e3a8a;
 }
 
 .timeline-h-item {
-  min-width: 340px;
-  max-width: 400px;
+  min-width: 360px;
+  max-width: 420px;
   background-color: #0b1121;
   border: 1px solid #1e3a8a;
   border-radius: 12px;
@@ -560,12 +489,12 @@ h2 {
   display: flex;
   flex-direction: column;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  white-space: normal; /* Permet au texte de se replier à la ligne */
+  white-space: normal;
 }
 
 .timeline-h-dot {
   position: absolute;
-  top: -49px;
+  top: -42px;
   left: 30px;
   width: 16px;
   height: 16px;
@@ -580,9 +509,36 @@ h2 {
   box-shadow: 0 0 12px #10b981;
 }
 
-.timeline-h-content p {
-  color: #d1d5db;
-  line-height: 1.6;
-  font-size: 0.95rem;
-  margin-top: 10px;
+/* RESPONSIVE MOBILE : Bascule automatique de la frise horizontale en vertical */
+@media (max-width: 768px) {
+  .about-container {
+    padding: 20px 15px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .timeline-frise-horizontal {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-x: visible !important;
+    white-space: normal !important;
+    padding: 10px 0 !important;
+  }
+
+  .timeline-h-item {
+    min-width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 20px;
+  }
+
+  .timeline-h-dot {
+    display: none;
+  }
+
+  .fullscreen-overlay-mode {
+    padding: 20px 15px !important;
+  }
 }

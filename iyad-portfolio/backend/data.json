@@ -32,7 +32,6 @@
         "Python",
         "Flask",
         "Node.js",
-        "Express",
         "FastMCP"
       ]
     },
@@ -127,7 +126,7 @@
       "id": "gnn-cad-3d",
       "title": "Détection d'Assemblages 3D via GNN",
       "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
-      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><p></p>",
+      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
       "category": "Machine Learning & 3D",
       "technologies": [
         "PyTorch Geometric",

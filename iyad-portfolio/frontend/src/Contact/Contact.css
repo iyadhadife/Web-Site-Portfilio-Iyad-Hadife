@@ -3,6 +3,7 @@
   margin: 40px auto;
   padding: 0 20px;
   color: #fff;
+  box-sizing: border-box;
 }
 
 .contact-header {
@@ -30,6 +31,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Grille d'information : 2 colonnes sur PC, 1 colonne sur mobile */
 .contact-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -44,10 +46,12 @@
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #1e3a8a;
+  overflow: hidden; /* Empêche les éléments de dépasser */
 }
 
 .contact-icon {
   font-size: 1.8rem;
+  flex-shrink: 0;
 }
 
 .contact-item h4 {
@@ -56,11 +60,13 @@
   font-size: 1rem;
 }
 
-.contact-item a, .contact-item p {
+.contact-item a, 
+.contact-item p {
   color: #d1d5db;
   text-decoration: none;
-  font-size: 0.95ln;
-  word-break: break-all;
+  font-size: 0.95rem; /* Correction de la coquille '0.95ln' */
+  word-break: break-word; /* Évite les dépassements de texte sur petits écrans */
+  overflow-wrap: break-word;
 }
 
 .contact-item a:hover {
@@ -70,6 +76,7 @@
 
 .social-links {
   display: flex;
+  flex-wrap: wrap; /* Permet aux icônes de passer à la ligne si l'écran est très étroit */
   gap: 15px;
   margin-top: 5px;
 }
@@ -104,6 +111,7 @@
   color: #fff;
   border-radius: 6px;
   font-family: inherit;
+  width: 100%; /* S'adapte à la largeur du conteneur */
 }
 
 .form-actions {
@@ -125,4 +133,47 @@
 .cancel-btn:hover {
   color: #fff;
   border-color: #fff;
+}
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 768px) {
+  .contact-page {
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+
+  .contact-card-container {
+    padding: 20px; /* Réduit le padding interne pour gagner de l'place sur mobile */
+  }
+
+  .contact-info-grid {
+    grid-template-columns: 1fr; /* Passage forcé sur une seule colonne */
+    gap: 20px;
+  }
+
+  .contact-header h2 {
+    font-size: 2rem;
+  }
+
+  .form-actions {
+    flex-direction: column; /* Boutons empilés verticalement sur mobile pour plus de confort */
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+/* Soulignement élégant pour les liens de contact (LinkedIn, GitHub, etc.) */
+.contact-item a {
+  position: relative;
+  text-decoration: none; /* Supprime le soulignement par défaut */
+  border-bottom: 1px dashed rgba(0, 210, 255, 0.4); /* Petit soulignement discret permanent */
+  transition: all 0.3s ease;
+}
+
+.contact-item a:hover {
+  color: #00d2ff;
+  border-bottom: 1px solid #00d2ff; /* Soulignement plein et lumineux au survol */
+  text-decoration: none;
 }
