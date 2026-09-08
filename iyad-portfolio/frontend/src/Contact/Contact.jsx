@@ -15,7 +15,7 @@ function Contact() {
   const [github, setGithub] = useState('');
 
   const fetchContact = () => {
-    fetch('http://localhost:5000/api/portfolio')
+    fetch('/api/portfolio')
       .then((res) => res.json())
       .then((data) => {
         const info = data.contactInfo || {};
@@ -37,7 +37,7 @@ function Contact() {
     e.preventDefault();
     const updatedInfo = { email, phone, address, linkedin, github };
 
-    fetch('http://localhost:5000/api/contact', {
+    fetch('/api/contact', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedInfo)

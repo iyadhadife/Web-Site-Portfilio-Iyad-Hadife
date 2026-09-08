@@ -26,7 +26,7 @@ function About() {
   const [isExpFullscreen, setIsExpFullscreen] = useState(false);
 
   const fetchData = () => {
-    fetch('http://localhost:5000/api/portfolio')
+    fetch('/api/portfolio')
       .then((res) => res.json())
       .then((jsonData) => {
         setData(jsonData);
@@ -43,7 +43,7 @@ function About() {
     e.preventDefault();
     const categoryToUse = targetCategory === 'CUSTOM' ? customCategoryName : targetCategory;
 
-    fetch('http://localhost:5000/api/skills', {
+    fetch('/api/skills', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ category: categoryToUse, skill: newSkillName })
@@ -61,7 +61,7 @@ function About() {
   const handleDeleteSkill = (categoryName, skillName = null) => {
     const message = skillName ? `Supprimer la compétence "${skillName}" ?` : `Supprimer la catégorie "${categoryName}" ?`;
     if (window.confirm(message)) {
-      fetch('http://localhost:5000/api/skills', {
+      fetch('/api/skills', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category: categoryName, skill: skillName })
@@ -96,8 +96,8 @@ function About() {
     const payload = { role: itemRole, company: itemCompany, description: itemDesc, date: itemDate, status: itemStatus };
 
     const url = editingIndex !== null 
-      ? `http://localhost:5000/api/${section}/${editingIndex}` 
-      : `http://localhost:5000/api/${section}`;
+      ? `/api/${section}/${editingIndex}` 
+      : `/api/${section}`;
     
     const method = editingIndex !== null ? 'PUT' : 'POST';
 
@@ -119,7 +119,7 @@ function About() {
   // --- SUPPRESSION ÉDUCATION / EXPÉRIENCE ---
   const handleDeleteItem = (section, index) => {
     if (window.confirm("Voulez-vous vraiment supprimer cet élément ?")) {
-      fetch(`http://localhost:5000/api/${section}/${index}`, {
+      fetch(`/api/${section}/${index}`, {
         method: 'DELETE'
       }).then(res => { if(res.ok) fetchData(); });
     }

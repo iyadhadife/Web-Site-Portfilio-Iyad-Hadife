@@ -20,7 +20,7 @@ function Admin() {
 
   // Charger les données existantes
   useEffect(() => {
-    fetch('http://localhost:5000/api/portfolio')
+    fetch('/api/portfolio')
       .then(res => res.json())
       .then(data => {
         setProjects(data.projects || []);
@@ -40,7 +40,7 @@ function Admin() {
       technologies: projectTechs.split(',').map(t => t.trim())
     };
 
-    fetch('http://localhost:5000/api/projects', {
+    fetch('/api/projects', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newProj)
@@ -58,7 +58,7 @@ function Admin() {
   // Soumission d'une nouvelle compétence
   const handleAddSkill = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/skills', {
+    fetch('/api/skills', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ category: skillCategory, skill: skillName })

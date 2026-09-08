@@ -2,3 +2,31 @@
 
 docker-compose down
 docker-compose up --build -d
+Server name : portfolio-iyad-hadife-ovh
+
+version: '3.8'
+
+services:
+  backend:
+    build: ./iyad-portfolio/backend
+    container_name: portfolio_backend
+    restart: always
+    expose:
+      - "5000"
+
+  frontend:
+    build: ./iyad-portfolio/frontend
+    container_name: portfolio_frontend
+    restart: always
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d

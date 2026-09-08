@@ -21,7 +21,7 @@ function Projects() {
   const [technologies, setTechnologies] = useState('');
 
   const fetchProjects = () => {
-    fetch('http://localhost:5000/api/projects')
+    fetch('/api/projects')
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.projects || []);
@@ -64,7 +64,7 @@ function Projects() {
   const handleDeleteProject = (e, projectId, projectTitle) => {
     e.preventDefault(); // Empêche d'ouvrir la page de détail en cliquant sur la poubelle
     if (window.confirm(`Voulez-vous vraiment supprimer le projet "${projectTitle}" ?`)) {
-      fetch(`http://localhost:5000/api/projects/${projectId}`, {
+      fetch(`/api/projects/${projectId}`, {
         method: 'DELETE',
       })
         .then((res) => {
@@ -89,8 +89,8 @@ function Projects() {
     };
 
     const url = editingProject 
-      ? `http://localhost:5000/api/projects/${editingProject.id}`
-      : 'http://localhost:5000/api/projects';
+      ? `/api/projects/${editingProject.id}`
+      : '/api/projects';
     
     const method = editingProject ? 'PUT' : 'POST';
 

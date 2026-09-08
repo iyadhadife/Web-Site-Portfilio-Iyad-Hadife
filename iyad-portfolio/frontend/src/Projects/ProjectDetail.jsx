@@ -73,7 +73,7 @@ function ProjectDetail() {
   const contentRef = useRef(null);
 
   const fetchProject = () => {
-    fetch(`http://localhost:5000/api/projects/${id}`)
+    fetch(`/api/projects/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Projet introuvable.");
         return res.json();
@@ -161,7 +161,7 @@ function ProjectDetail() {
     const htmlContent = editor.getHTML();
     const updatedProject = { ...project, description: htmlContent };
 
-    fetch(`http://localhost:5000/api/projects/${id}`, {
+    fetch(`/api/projects/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedProject)

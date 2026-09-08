@@ -1,19 +1,15 @@
-# Étape de build avec Node.js (idéal pour React/Vite)
-FROM node:22-alpine AS build
+# --- ÉTAPE 1 : Build de l'application React ---
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Installation des dépendances
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
-
-# Copie du code source et build (génère le dossier dist)
+RUN npm install
 COPY . .
 RUN npm run build
 
-# Étape de production avec Nginx
+# --- ÉTAPE 2 : Serveur Nginx ---
 FROM nginx:alpine
-# Copie des fichiers générés par Vite dans Nginx
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
