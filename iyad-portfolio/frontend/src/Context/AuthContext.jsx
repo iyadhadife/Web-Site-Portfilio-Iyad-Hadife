@@ -1,31 +1,50 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-export function AuthProvider({ children }) {
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
+export const AuthProvider = ({ children }) => {
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const login = (password) => {
-    // Mot de passe simple pour l'exemple (à sécuriser selon vos préférences)
-    if (password === 'admin123') {
+  useEffect(() => {
+    // Vérifie si la session est active au chargement
+    fetch('/api/check-auth', { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsAdmin(data.isAdmin);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const login = async (password) => {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+      credentials: 'include',
+    });
+    const data = await response.json();
+    if (data.success) {
       setIsAdmin(true);
-      localStorage.setItem('isAdmin', 'true');
       return true;
     }
-    alert('Mot de passe incorrect');
     return false;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await fetch('/api/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
     setIsAdmin(false);
-    localStorage.removeItem('isAdmin');
   };
 
   return (
-    <AuthContext.Provider value={{ isAdmin, login, logout }}>
+    <AuthContext.Provider value={{ isAdmin, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export const useAuth = () => useContext(AuthContext);

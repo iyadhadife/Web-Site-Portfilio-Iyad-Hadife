@@ -2,9 +2,19 @@ import json
 from flask import Flask, jsonify
 from flask_cors import CORS
 import os
+import hashlib
+from flask import Flask, jsonify, request, session
+from flask_cors import CORS
+from dotenv import load_dotenv
+
+# Charge les variables d'environnement depuis le fichier .env s'il existe
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app) 
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "une_cle_secrete_par_defaut")  # Remplace par une clé robuste
+CORS(app, supports_credentials=True)
+
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 @app.route('/api/portfolio', methods=['GET'])
 def get_portfolio_data():
@@ -17,8 +27,6 @@ def get_portfolio_data():
         return jsonify({"error": "Data file not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-# ... (imports existants)
 
 @app.route('/api/projects', methods=['GET'])
 def get_projects():
@@ -341,6 +349,30 @@ def update_item(section, index):
             return jsonify({"error": "Index invalide"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json() or {}
+    password = data.get('password', '')
     
+    # Hachage du mot de passe fourni pour le comparer au hash fixe
+    hashed_input = hashlib.sha256(password.encode()).hexdigest()
+    
+    if hashed_input == ADMIN_PASSWORD:
+        session['admin'] = True
+        return jsonify({"success": True, "message": "Connexion réussie"})
+    
+    return jsonify({"success": False, "message": "Mot de passe incorrect"}), 401
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    session.pop('admin', None)
+    return jsonify({"success": True, "message": "Déconnexion réussie"})
+
+@app.route('/api/check-auth', methods=['GET'])
+def check_auth():
+    is_admin = session.get('admin', False)
+    return jsonify({"isAdmin": is_admin})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

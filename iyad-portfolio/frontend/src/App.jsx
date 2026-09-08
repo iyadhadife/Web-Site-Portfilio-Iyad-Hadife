@@ -97,10 +97,8 @@ function Navigation() {
         <Link to="/projects" className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}>Projects</Link>
         <Link to="/contact" className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}>Contact</Link>
         
-        {isAdmin ? (
+        {isAdmin && (
           <button onClick={logout} className="nav-link admin-logout-btn" style={{background:'none', border:'none', cursor:'pointer'}}>Déconnexion</button>
-        ) : (
-          <Link to="/admin" className={`nav-link admin-link ${location.pathname.includes('/admin') ? 'active' : ''}`}>Admin</Link>
         )}
       </div>
     </nav>
