@@ -3,19 +3,28 @@ version: '3.8'
 services:
   backend:
     build: ./iyad-portfolio/backend
-    ports:
-      - "5000:5000"
-    restart: unless-stopped
-    volumes:
-      # Permet de lier le dossier backend local au conteneur pour synchroniser data.json en direct
-      - ./iyad-portfolio/backend/data.json:/app/data.json
-    environment:
-      - ENV=production
+    container_name: portfolio_backend
+    restart: always
+    expose:
+      - "5000"
 
   frontend:
     build: ./iyad-portfolio/frontend
+    container_name: portfolio_frontend
+    restart: always
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio_nginx
+    restart: always
     ports:
       - "80:80"
-    restart: unless-stopped
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
+      - frontend
       - backend
