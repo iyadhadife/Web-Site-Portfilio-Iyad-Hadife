@@ -76,45 +76,61 @@
     {
       "role": "Master 2 Data & AI",
       "company": "ESILV Paris",
-      "description": "Cursus avancé en intelligence artificielle et science des données.",
+      "description": "Spécialisation Deep Learning, NLP, Big Data, MLOps.",
       "date": "2023 - 2026",
       "status": "Graduated"
     },
     {
       "role": "Prépa Intégrée",
       "company": "ESILV",
-      "description": "Scientifque License preparation for engineering school",
+      "description": "Préparation aux mathématiques, la physique-chimie et l'informatique pour l'école d'ingénieur",
       "date": "2021 - 2023",
-      "status": "Current"
+      "status": "Graduated"
     }
   ],
   "experience": [
     {
       "role": "Stagiaire Ingénieur R&D IA",
       "company": "Dassault Systèmes",
-      "description": "Customer Strategic Partnership Innovation Lab. Détection d'assemblages 3D via Graph Neural Networks et architectures Agent-to-Agent.",
-      "date": "Jan 2026 - Août 2026",
+      "description": "Graph Neural Networks (GNN) : Conception et entraînement from scratch de modèles GNN appliqués à la classification de données 3D complexes issues de CATIA.\n\nData Engineering & Préprocessing : Extraction, nettoyage et structuration de données industrielles complexes et hétérogènes.\n\nGestion de Projet & Relation Client : Interface avec les clients du secteur Transportation & Mobility pour recueillir les besoins, cadrer et piloter les projets stratégiques.\n\nÉvaluation de Modèles Agentiques : Test de scénarios d’usage sur des agents IA et structuration des retours techniques pour guider les équipes de développement en charge de ceux-ci.",
+      "date": "Fév 2026 - Août 2026",
       "status": "Previously"
     },
     {
-      "status": "Previously",
       "role": "Data Scientist & Data Engineer",
-      "company": "SFR / Spacefit.ai",
-      "description": "Développement de pipelines de données, création de modèles ML et développement de solutions d'IA.",
-      "date": "Expériences précédentes"
+      "company": "SFR",
+      "description": "• Détection d’Anomalies (ML) : Conception d’un pipeline d’analyse de fichiers\nPCAP. Entraînement de modèles ML pour la détection proactive d’incidents réseau.\n\n• Chatbot NLP et Automatisation : Développement d’un assistant virtuel interne\n(NLP) pour interroger la documentation technique, optimisant l’accès à l’information.",
+      "date": "Avril 2025 - Août 2025",
+      "status": "Previously"
+    },
+    {
+      "role": "IA et Testeur",
+      "company": "Spacefit.ai ",
+      "description": "• IA et Développement : Optimisation de l’algorithme d’IA central. Tests unitaires\net fonctionnels pour garantir la robustesse de l’application.\n\n• Stratégie : Participation au brainstorming UX et architecture.",
+      "date": "Dec 2023 - Fev 2024",
+      "status": "Previously"
+    },
+    {
+      "role": "Professeur de Mathématiques ",
+      "company": "Complétude",
+      "description": "Accompagnement pédagogique (Collège/Lycée).",
+      "date": "Juin 2024 - Juin 2025",
+      "status": "Previously"
     }
   ],
   "projects": [
     {
       "id": "terra-sphere",
-      "title": "Terra Sphere",
-      "shortDescription": "Assistant vocal IA conçu pour gérer les appels clients et automatiser la prise de rendez-vous.",
-      "description": "<p>Terra Sphere est un assistant vocal IA développé pour gérer de bout en bout les interactions téléphoniques des clients et automatiser la prise de rendez-vous pour des paysagistes parisiens. Le pipeline intègre des workflows complexes et de la génération vocale de pointe.<code><br></code></p><p><br></p>",
-      "category": "Voice AI & Automation",
+      "title": "Tumor Detection ",
+      "shortDescription": "Classification (CNN) and localization (YOLO/PyTorch).",
+      "description": "Classification (CNN) and localization (YOLO/PyTorch).",
+      "category": "Machine Learning",
       "technologies": [
-        "Python",
-        "n8n",
-        "ElevenLabs"
+        "Sicit Learn",
+        "PyTorch",
+        "CNN",
+        "YoLo",
+        "Random Forest"
       ],
       "features": [
         "Gestion d'appels en temps réel",
@@ -144,7 +160,7 @@
       "title": "Générateur de Vidéos Financières",
       "shortDescription": "Pipeline automatisé de création de contenu d'animation financière pour les réseaux sociaux.",
       "description": "Développement de scripts automatisés pour générer des animations de performances financières (DCA) destinées à TikTok. Le système combine la récupération de données boursières, la génération de graphiques animés, et un workflow LLM pour le montage vocal.",
-      "category": "Generative AI",
+      "category": "IA Generative",
       "technologies": [
         "Python",
         "Plotly",
@@ -163,7 +179,7 @@
       "title": "Jeu Vidéo de Rythme",
       "shortDescription": "Jeu de rythme développé en Python et synchronisé sur la musique.",
       "description": "Création d'un jeu vidéo de rythme personnalisé où les mécaniques de gameplay sont générées et synchronisées directement à partir de l'analyse des pistes audio.",
-      "category": "Game Development",
+      "category": "Développement de jeu & Machine Learning",
       "technologies": [
         "Python",
         "Pygame"
@@ -173,6 +189,68 @@
         "Moteur de rendu 2D",
         "Gameplay synchronisé"
       ]
+    },
+    {
+      "title": "Automatisation TikTok (Finance)",
+      "shortDescription": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
+      "description": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
+      "category": "Automatisation & IA Générative",
+      "technologies": [
+        "n8n"
+      ],
+      "id": "automatisation-tiktok-(finance)"
+    },
+    {
+      "title": "Dashboard Aéronautique (React) et Chatbot SQL",
+      "shortDescription": "PIs de production. Chatbot Text-to-SQL pour requêtes automatiques.",
+      "description": "PIs de production.\nChatbot Text-to-SQL pour requêtes automatiques.",
+      "category": "IA & Machine Learning ",
+      "technologies": [
+        "React",
+        "Flask",
+        "API",
+        "SQL",
+        "LLM",
+        "Json",
+        "csv"
+      ],
+      "id": "dashboard-aéronautique-(react)-et-chatbot-sql"
+    },
+    {
+      "title": "Detection du langage des signes",
+      "shortDescription": "Real-time translation (RNN + OpenCV)",
+      "description": "Real-time translation (RNN + OpenCV).",
+      "category": "IA & Machine learning",
+      "technologies": [
+        "RNN",
+        "OpenCV",
+        "Flask",
+        "HTML"
+      ],
+      "id": "detection-du-langage-des-signes"
+    },
+    {
+      "title": "Prédiction de résultat sportifs",
+      "shortDescription": "ML Model (Scikit-Learn).",
+      "description": "ML Model (Scikit-Learn).",
+      "category": "Machine Learning",
+      "technologies": [
+        "XGBoost",
+        "Random Forest",
+        "Scikit-Learn"
+      ],
+      "id": "prédiction-de-résultat-sportifs"
+    },
+    {
+      "title": "Analyse Big Data ",
+      "shortDescription": "Conception d’un pipeline ETL (PySpark) pour le traitement Batch et Streaming de logs de transactions massives. Modélisation pour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur les ruptures de stock.",
+      "description": "Conception d’un pipeline ETL (PySpark)\npour le traitement Batch et Streaming de logs de transactions massives. Modélisation\npour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur\nles ruptures de stock.",
+      "category": "Big Data",
+      "technologies": [
+        "Apache Spark",
+        "PySpark"
+      ],
+      "id": "analyse-big-data-"
     }
   ]
 }
