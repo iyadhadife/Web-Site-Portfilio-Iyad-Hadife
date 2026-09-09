@@ -150,7 +150,7 @@ function About() {
         {/* 1. EXPÉRIENCE PROFESSIONNELLE */}
         <section className={`journey-section ${isExpFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="experience">
           <div className="section-title-wrapper">
-            <h2>PROFESSIONAL EXPERIENCE</h2>
+            <h2>EXPÉRIENCE PROFESSIONNELLE</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsExpFullscreen(!isExpFullscreen)}>
                 {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
@@ -187,7 +187,7 @@ function About() {
         {/* 2. ACADEMIC EDUCATION */}
         <section className={`journey-section ${isEduFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="education">
           <div className="section-title-wrapper">
-            <h2>ACADEMIC EDUCATION</h2>
+            <h2>Formation Académique</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsEduFullscreen(!isEduFullscreen)}>
                 {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
@@ -224,7 +224,7 @@ function About() {
         {/* 3. TECHNICAL SKILLS */}
         <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
           <div className="section-title-wrapper">
-            <h2>TECHNICAL SKILLS</h2>
+            <h2>Compétences Techniques</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}>
                 {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}

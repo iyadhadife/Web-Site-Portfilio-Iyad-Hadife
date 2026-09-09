@@ -11,6 +11,8 @@ services:
   backend:
     build: ./iyad-portfolio/backend
     container_name: portfolio_backend
+    volumes:
+      - ./iyad-portfolio/backend:/app
     restart: always
     expose:
       - "5000"
