@@ -374,5 +374,50 @@ def check_auth():
     is_admin = session.get('admin', False)
     return jsonify({"isAdmin": is_admin})
 
+def load_portfolio_data():
+    """Charge les données depuis le fichier JSON"""
+    file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+    if os.path.exists(file_path):
+        with open(file_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+def save_portfolio_data(data):
+    """Sauvegarde les données dans le fichier JSON"""
+    file_path = os.path.join(os.path.dirname(__file__), 'data.json')
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+@app.route('/api/reorder', methods=['POST'])
+def reorder_items():
+    try:
+        data = load_portfolio_data() # Utilise la fonction correcte ici
+        req = request.get_json()
+        
+        category = req.get('category') # ex: 'experience' ou 'education'
+        index = req.get('index')       # Position actuelle
+        direction = req.get('direction') # 'up' ou 'down'
+        
+        if category not in data:
+            return jsonify({"success": False, "message": "Catégorie invalide"}), 400
+            
+        items = data[category]
+        
+        if direction == 'up' and index > 0:
+            # Permutation vers le haut
+            items[index], items[index - 1] = items[index - 1], items[index]
+        elif direction == 'down' and index < len(items) - 1:
+            # Permutation vers le bas
+            items[index], items[index + 1] = items[index + 1], items[index]
+        else:
+            return jsonify({"success": False, "message": "Déplacement impossible"}), 400
+            
+        data[category] = items
+        save_portfolio_data(data) # Sauvegarde dans le JSON et synchronise Docker
+        
+        return jsonify({"success": True, "data": data}), 200
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

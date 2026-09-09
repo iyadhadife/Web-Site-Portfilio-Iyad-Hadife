@@ -14,7 +14,7 @@ function About() {
   const [customCategoryName, setCustomCategoryName] = useState('');
   
   // États pour le formulaire d'Éducation / Expérience (Création & Édition)
-  const [editingIndex, setEditingIndex] = useState(null); // null = ajout, nombre = index en cours d'édition
+  const [editingIndex, setEditingIndex] = useState(null);
   const [itemRole, setItemRole] = useState('');
   const [itemCompany, setItemCompany] = useState('');
   const [itemDesc, setItemDesc] = useState('');
@@ -37,6 +37,22 @@ function About() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleMove = async (category, index, direction) => {
+    try {
+      const response = await fetch('/api/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ category, index, direction })
+      });
+      const result = await response.json();
+      if (result.success) {
+        setData(result.data);
+      }
+    } catch (error) {
+      console.error("Erreur lors du déplacement :", error);
+    }
+  };
 
   // --- GESTION COMPÉTENCES ---
   const handleAddSkillSubmit = (e) => {
@@ -90,7 +106,7 @@ function About() {
     setModalType(sectionType);
   };
 
-  // --- SOUMISSION FORMULAIRE ÉDUCATION / EXPÉRIENCE (POST ou PUT) ---
+  // --- SOUMISSION FORMULAIRE ÉDUCATION / EXPÉRIENCE ---
   const handleSaveItemSubmit = (e, section) => {
     e.preventDefault();
     const payload = { role: itemRole, company: itemCompany, description: itemDesc, date: itemDate, status: itemStatus };
@@ -153,7 +169,7 @@ function About() {
             <h2>EXPÉRIENCE PROFESSIONNELLE</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsExpFullscreen(!isExpFullscreen)}>
-                {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
+                {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('experience')} title="Ajouter une expérience">+</button>
@@ -161,15 +177,21 @@ function About() {
             </div>
           </div>
 
-          <div className={isExpFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
+          <div className="timeline-frise">
             {data.experience?.map((item, index) => (
-              <div key={index} className={isExpFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
-                <div className={isExpFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
-                <div className={isExpFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
+              <div key={index} className="timeline-frise-item zoom-timeline-card">
+                <div className="timeline-frise-dot" data-status={item.status}></div>
+                <div className="timeline-frise-content">
                   <div className="journey-header-flex">
                     <span className="status-badge">{item.status}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
+                        {index > 0 && (
+                          <button className="small-move-btn" onClick={() => handleMove('experience', index, 'up')} title="Monter">▲</button>
+                        )}
+                        {index < data.experience.length - 1 && (
+                          <button className="small-move-btn" onClick={() => handleMove('experience', index, 'down')} title="Descendre">▼</button>
+                        )}
                         <button className="small-edit-btn" onClick={() => handleOpenEdit('experience', item, index)} title="Modifier">✎</button>
                         <button className="small-trash-btn" onClick={() => handleDeleteItem('experience', index)} title="Supprimer">🗑️</button>
                       </div>
@@ -184,13 +206,13 @@ function About() {
           </div>
         </section>
 
-        {/* 2. ACADEMIC EDUCATION */}
+        {/* 2. FORMATION ACADÉMIQUE */}
         <section className={`journey-section ${isEduFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="education">
           <div className="section-title-wrapper">
             <h2>Formation Académique</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsEduFullscreen(!isEduFullscreen)}>
-                {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran horizontal"}
+                {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('education')} title="Ajouter une formation">+</button>
@@ -198,15 +220,21 @@ function About() {
             </div>
           </div>
 
-          <div className={isEduFullscreen ? "timeline-frise-horizontal" : "timeline-frise"}>
+          <div className="timeline-frise">
             {data.education?.map((item, index) => (
-              <div key={index} className={isEduFullscreen ? "timeline-h-item zoom-timeline-card" : "timeline-frise-item zoom-timeline-card"}>
-                <div className={isEduFullscreen ? "timeline-h-dot" : "timeline-frise-dot"} data-status={item.status}></div>
-                <div className={isEduFullscreen ? "timeline-h-content" : "timeline-frise-content"}>
+              <div key={index} className="timeline-frise-item zoom-timeline-card">
+                <div className="timeline-frise-dot" data-status={item.status}></div>
+                <div className="timeline-frise-content">
                   <div className="journey-header-flex">
                     <span className="status-badge">{item.status}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
+                        {index > 0 && (
+                          <button className="small-move-btn" onClick={() => handleMove('education', index, 'up')} title="Monter">▲</button>
+                        )}
+                        {index < data.education.length - 1 && (
+                          <button className="small-move-btn" onClick={() => handleMove('education', index, 'down')} title="Descendre">▼</button>
+                        )}
                         <button className="small-edit-btn" onClick={() => handleOpenEdit('education', item, index)} title="Modifier">✎</button>
                         <button className="small-trash-btn" onClick={() => handleDeleteItem('education', index)} title="Supprimer">🗑️</button>
                       </div>
@@ -230,7 +258,7 @@ function About() {
                 {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
               </button>
               {isAdmin && (
-                <button className="inline-add-btn" onClick={() => { setTargetCategory('CUSTOM'); setModalType('skill'); }}>+</button>
+                <button className="inline-add-btn" onClick={() => { setTargetCategory('CUSTOM'); setModalType('skill'); }} title="Ajouter une catégorie">+</button>
               )}
             </div>
           </div>
@@ -242,8 +270,8 @@ function About() {
                   <h3>{skillGroup.category}</h3>
                   {isAdmin && (
                     <div className="admin-inline-actions">
-                      <button className="small-plus-btn" onClick={() => { setTargetCategory(skillGroup.category); setModalType('skill'); }}>+</button>
-                      <button className="small-trash-btn" onClick={() => handleDeleteSkill(skillGroup.category)}>🗑️</button>
+                      <button className="small-plus-btn" onClick={() => { setTargetCategory(skillGroup.category); setModalType('skill'); }} title="Ajouter une compétence">+</button>
+                      <button className="small-trash-btn" onClick={() => handleDeleteSkill(skillGroup.category)} title="Supprimer la catégorie">🗑️</button>
                     </div>
                   )}
                 </div>
@@ -260,8 +288,8 @@ function About() {
           </div>
 
           {!isExpFullscreen && !isEduFullscreen && !isSkillsFullscreen && (
-            <div className="view-projects-wrapper">
-              <Link to="/projects" className="view-projects-btn">View Projects →</Link>
+            <div className="view-projects-wrapper" style={{ marginTop: '40px' }}>
+              <Link to="/projects" className="view-projects-btn">Voir les projets →</Link>
             </div>
           )}
         </section>
@@ -280,7 +308,7 @@ function About() {
                   <input type="text" placeholder="Nom de la catégorie" value={customCategoryName} onChange={e => setCustomCategoryName(e.target.value)} required />
                 )}
                 <input type="text" placeholder="Nom de la compétence" value={newSkillName} onChange={e => setNewSkillName(e.target.value)} required />
-                <button type="submit" className="submit-btn">Ajouter</button>
+                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: '#000', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Ajouter</button>
               </form>
             )}
 
@@ -292,15 +320,15 @@ function About() {
                     : (modalType === 'education' ? "Ajouter une formation" : "Ajouter une expérience pro")}
                 </h3>
                 <select value={itemStatus} onChange={e => setItemStatus(e.target.value)}>
-                  <option value="Current">Current</option>
-                  <option value="Previously">Previously</option>
-                  <option value="Graduated">Graduated</option>
+                  <option value="Current">En cours</option>
+                  <option value="Previously">Précédent</option>
+                  <option value="Graduated">Diplômé</option>
                 </select>
                 <input type="text" placeholder="Rôle / Diplôme" value={itemRole} onChange={e => setItemRole(e.target.value)} required />
                 <input type="text" placeholder="École / Entreprise" value={itemCompany} onChange={e => setItemCompany(e.target.value)} required />
                 <textarea placeholder="Description" value={itemDesc} onChange={e => setItemDesc(e.target.value)} rows="4" required />
                 <input type="text" placeholder="Période (ex: 2025 - 2026)" value={itemDate} onChange={e => setItemDate(e.target.value)} required />
-                <button type="submit" className="submit-btn">
+                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: '#000', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
                   {editingIndex !== null ? "Mettre à jour" : "Enregistrer"}
                 </button>
               </form>

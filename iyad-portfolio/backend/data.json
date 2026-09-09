@@ -1,256 +1,256 @@
 {
-  "profile": {
-    "firstName": "IYAD",
-    "lastName": "HADIFÉ",
-    "title": "AI & Data Engineer",
-    "avatar": "/profile_picture.jpg",
-    "intro": "Je suis un étudiant en Master 2 spécialisé en Data et Intelligence Artificielle à l'ESILV. Mon parcours professionnel est centré sur le développement de solutions d'IA innovantes, allant des réseaux de neurones sur graphes (GNN) à la conception d'architectures multi-agents complexes.",
-    "vision": "Ma vision est de construire des ponts entre l'ingénierie des données robuste et les applications d'IA générative pour résoudre des problèmes industriels concrets, notamment dans les environnements 3D et l'automatisation."
-  },
-  "contactInfo": {
-    "email": "iyad.hadife@edu.devinci.fr",
-    "phone": "+33 6 10 52 10 62",
-    "address": "12 passage voltaire, Puteaux, 92800",
-    "linkedin": "https://linkedin.com/in/iyad-hadifé",
-    "github": "https://github.com/iyadhadife"
-  },
-  "skills": [
-    {
-      "category": "AI & Machine Learning",
-      "items": [
-        "PyTorch",
-        "TensorFlow",
-        "Scikit-Learn",
-        "PyTorch Geometric",
-        "Pandas",
-        "NumPy"
-      ]
+    "profile": {
+        "firstName": "IYAD",
+        "lastName": "HADIFÉ",
+        "title": "AI & Data Engineer",
+        "avatar": "/profile_picture.jpg",
+        "intro": "Je suis un étudiant en Master 2 spécialisé en Data et Intelligence Artificielle à l'ESILV. Mon parcours professionnel est centré sur le développement de solutions d'IA innovantes, allant des réseaux de neurones sur graphes (GNN) à la conception d'architectures multi-agents complexes.",
+        "vision": "Ma vision est de construire des ponts entre l'ingénierie des données robuste et les applications d'IA générative pour résoudre des problèmes industriels concrets, notamment dans les environnements 3D et l'automatisation."
     },
-    {
-      "category": "Backend & APIs",
-      "items": [
-        "Python",
-        "Flask",
-        "Node.js",
-        "FastMCP"
-      ]
+    "contactInfo": {
+        "email": "iyad.hadife@edu.devinci.fr",
+        "phone": "+33 6 10 52 10 62",
+        "address": "12 passage voltaire, Puteaux, 92800",
+        "linkedin": "https://linkedin.com/in/iyad-hadifé",
+        "github": "https://github.com/iyadhadife"
     },
-    {
-      "category": "Frontend & Web",
-      "items": [
-        "React",
-        "JavaScript",
-        "Vite",
-        "Streamlit"
-      ]
-    },
-    {
-      "category": "Cloud & DevOps",
-      "items": [
-        "Docker",
-        "Kubernetes",
-        "Git",
-        "Podman"
-      ]
-    },
-    {
-      "category": "Architecture & Data",
-      "items": [
-        "RAG",
-        "LangChain",
-        "Agent-to-Agent",
-        "PySpark"
-      ]
-    },
-    {
-      "category": "CAO",
-      "items": [
-        "Catia Visual Scripting",
-        "Catia Part Disign",
-        "Solidworks",
-        "Catia Generative Assembly"
-      ]
-    }
-  ],
-  "education": [
-    {
-      "role": "Master 2 Data & AI",
-      "company": "ESILV Paris",
-      "description": "Spécialisation Deep Learning, NLP, Big Data, MLOps.",
-      "date": "2023 - 2026",
-      "status": "Graduated"
-    },
-    {
-      "role": "Prépa Intégrée",
-      "company": "ESILV",
-      "description": "Préparation aux mathématiques, la physique-chimie et l'informatique pour l'école d'ingénieur",
-      "date": "2021 - 2023",
-      "status": "Graduated"
-    }
-  ],
-  "experience": [
-    {
-      "role": "Stagiaire Ingénieur R&D IA",
-      "company": "Dassault Systèmes",
-      "description": "• Graph Neural Networks (GNN) : Conception et entraînement from scratch\nde modèles GNN appliqués à la classification de données 3D complexes issues de\nCATIA.\n\n• Data Engineering & Préprocessing : Extraction, nettoyage et structuration de\ndonnées industrielles complexes et hétérogènes.\n\n• Gestion de Projet & Relation Client : Interface avec les clients du secteur\nTransportation & Mobility pour recueillir les besoins, cadrer et piloter les projets\nstratégiques.\n\n• Évaluation de Modèles Agentiques : Test de scénarios d’usage sur des agents\nIA et structuration des retours techniques pour guider les équipes de développement\nen charge de ceux-ci.",
-      "date": "Fév 2026 - Août 2026",
-      "status": "Previously"
-    },
-    {
-      "role": "Data Scientist & Data Engineer",
-      "company": "SFR",
-      "description": "• Détection d’Anomalies (ML) : Conception d’un pipeline d’analyse de fichiers\nPCAP. Entraînement de modèles ML pour la détection proactive d’incidents réseau.\n\n• Chatbot NLP et Automatisation : Développement d’un assistant virtuel interne\n(NLP) pour interroger la documentation technique, optimisant l’accès à l’information.",
-      "date": "Avril 2025 - Août 2025",
-      "status": "Previously"
-    },
-    {
-      "role": "IA et Testeur",
-      "company": "Spacefit.ai ",
-      "description": "• IA et Développement : Optimisation de l’algorithme d’IA central. Tests unitaires\net fonctionnels pour garantir la robustesse de l’application.\n\n• Stratégie : Participation au brainstorming UX et architecture.",
-      "date": "Dec 2023 - Fev 2024",
-      "status": "Previously"
-    },
-    {
-      "role": "Professeur de Mathématiques ",
-      "company": "Complétude",
-      "description": "Accompagnement pédagogique (Collège/Lycée).",
-      "date": "Juin 2024 - Juin 2025",
-      "status": "Previously"
-    }
-  ],
-  "projects": [
-    {
-      "id": "terra-sphere",
-      "title": "Tumor Detection ",
-      "shortDescription": "Classification (CNN) and localization (YOLO/PyTorch).",
-      "description": "Classification (CNN) and localization (YOLO/PyTorch).",
-      "category": "Machine Learning",
-      "technologies": [
-        "Sicit Learn",
-        "PyTorch",
-        "CNN",
-        "YoLo",
-        "Random Forest"
-      ],
-      "features": [
-        "Gestion d'appels en temps réel",
-        "Intégration d'agenda",
-        "Workflows automatisés"
-      ]
-    },
-    {
-      "id": "gnn-cad-3d",
-      "title": "Détection d'Assemblages 3D via GNN",
-      "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
-      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
-      "category": "Machine Learning & 3D",
-      "technologies": [
-        "PyTorch Geometric",
-        "3DEXPERIENCE",
-        "Agent-to-Agent"
-      ],
-      "features": [
-        "Extraction de graphes 3D",
-        "Analyse topologique",
-        "Systèmes multi-agents"
-      ]
-    },
-    {
-      "id": "tiktok-financial-dca",
-      "title": "Générateur de Vidéos Financières",
-      "shortDescription": "Pipeline automatisé de création de contenu d'animation financière pour les réseaux sociaux.",
-      "description": "Développement de scripts automatisés pour générer des animations de performances financières (DCA) destinées à TikTok. Le système combine la récupération de données boursières, la génération de graphiques animés, et un workflow LLM pour le montage vocal.",
-      "category": "IA Generative",
-      "technologies": [
-        "Python",
-        "Plotly",
-        "yfinance",
-        "n8n",
-        "LLMs"
-      ],
-      "features": [
-        "Génération de graphiques animés",
-        "Synthèse vocale",
-        "Automatisation de publication"
-      ]
-    },
-    {
-      "id": "pygame-rhythm",
-      "title": "Jeu Vidéo de Rythme",
-      "shortDescription": "Jeu de rythme développé en Python et synchronisé sur la musique.",
-      "description": "Création d'un jeu vidéo de rythme personnalisé où les mécaniques de gameplay sont générées et synchronisées directement à partir de l'analyse des pistes audio.",
-      "category": "Développement de jeu & Machine Learning",
-      "technologies": [
-        "Python",
-        "Pygame"
-      ],
-      "features": [
-        "Analyse audio en temps réel",
-        "Moteur de rendu 2D",
-        "Gameplay synchronisé"
-      ]
-    },
-    {
-      "title": "Automatisation TikTok (Finance)",
-      "shortDescription": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
-      "description": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
-      "category": "Automatisation & IA Générative",
-      "technologies": [
-        "n8n"
-      ],
-      "id": "automatisation-tiktok-(finance)"
-    },
-    {
-      "title": "Dashboard Aéronautique (React) et Chatbot SQL",
-      "shortDescription": "PIs de production. Chatbot Text-to-SQL pour requêtes automatiques.",
-      "description": "PIs de production.\nChatbot Text-to-SQL pour requêtes automatiques.",
-      "category": "IA & Machine Learning ",
-      "technologies": [
-        "React",
-        "Flask",
-        "API",
-        "SQL",
-        "LLM",
-        "Json",
-        "csv"
-      ],
-      "id": "dashboard-aéronautique-(react)-et-chatbot-sql"
-    },
-    {
-      "title": "Detection du langage des signes",
-      "shortDescription": "Real-time translation (RNN + OpenCV)",
-      "description": "Real-time translation (RNN + OpenCV).",
-      "category": "IA & Machine learning",
-      "technologies": [
-        "RNN",
-        "OpenCV",
-        "Flask",
-        "HTML"
-      ],
-      "id": "detection-du-langage-des-signes"
-    },
-    {
-      "title": "Prédiction de résultat sportifs",
-      "shortDescription": "ML Model (Scikit-Learn).",
-      "description": "ML Model (Scikit-Learn).",
-      "category": "Machine Learning",
-      "technologies": [
-        "XGBoost",
-        "Random Forest",
-        "Scikit-Learn"
-      ],
-      "id": "prédiction-de-résultat-sportifs"
-    },
-    {
-      "title": "Analyse Big Data ",
-      "shortDescription": "Conception d’un pipeline ETL (PySpark) pour le traitement Batch et Streaming de logs de transactions massives. Modélisation pour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur les ruptures de stock.",
-      "description": "Conception d’un pipeline ETL (PySpark)\npour le traitement Batch et Streaming de logs de transactions massives. Modélisation\npour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur\nles ruptures de stock.",
-      "category": "Big Data",
-      "technologies": [
-        "Apache Spark",
-        "PySpark"
-      ],
-      "id": "analyse-big-data-"
-    }
-  ]
+    "skills": [
+        {
+            "category": "AI & Machine Learning",
+            "items": [
+                "PyTorch",
+                "TensorFlow",
+                "Scikit-Learn",
+                "PyTorch Geometric",
+                "Pandas",
+                "NumPy"
+            ]
+        },
+        {
+            "category": "Backend & APIs",
+            "items": [
+                "Python",
+                "Flask",
+                "Node.js",
+                "FastMCP"
+            ]
+        },
+        {
+            "category": "Frontend & Web",
+            "items": [
+                "React",
+                "JavaScript",
+                "Vite",
+                "Streamlit"
+            ]
+        },
+        {
+            "category": "Cloud & DevOps",
+            "items": [
+                "Docker",
+                "Kubernetes",
+                "Git",
+                "Podman"
+            ]
+        },
+        {
+            "category": "Architecture & Data",
+            "items": [
+                "RAG",
+                "LangChain",
+                "Agent-to-Agent",
+                "PySpark"
+            ]
+        },
+        {
+            "category": "CAO",
+            "items": [
+                "Catia Visual Scripting",
+                "Catia Part Disign",
+                "Solidworks",
+                "Catia Generative Assembly"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "role": "Master 2 Data & AI",
+            "company": "ESILV Paris",
+            "description": "Spécialisation Deep Learning, NLP, Big Data, MLOps.",
+            "date": "2023 - 2026",
+            "status": "Graduated"
+        },
+        {
+            "role": "Prépa Intégrée",
+            "company": "ESILV",
+            "description": "Préparation aux mathématiques, la physique-chimie et l'informatique pour l'école d'ingénieur",
+            "date": "2021 - 2023",
+            "status": "Graduated"
+        }
+    ],
+    "experience": [
+        {
+            "role": "Stagiaire Ingénieur R&D IA",
+            "company": "Dassault Systèmes",
+            "description": "• Graph Neural Networks (GNN) : Conception et entraînement from scratch\nde modèles GNN appliqués à la classification de données 3D complexes issues de\nCATIA.\n\n• Data Engineering & Préprocessing : Extraction, nettoyage et structuration de\ndonnées industrielles complexes et hétérogènes.\n\n• Gestion de Projet & Relation Client : Interface avec les clients du secteur\nTransportation & Mobility pour recueillir les besoins, cadrer et piloter les projets\nstratégiques.\n\n• Évaluation de Modèles Agentiques : Test de scénarios d’usage sur des agents\nIA et structuration des retours techniques pour guider les équipes de développement\nen charge de ceux-ci.",
+            "date": "Fév 2026 - Août 2026",
+            "status": "Previously"
+        },
+        {
+            "role": "Data Scientist & Data Engineer",
+            "company": "SFR",
+            "description": "• Détection d’Anomalies (ML) : Conception d’un pipeline d’analyse de fichiers\nPCAP. Entraînement de modèles ML pour la détection proactive d’incidents réseau.\n\n• Chatbot NLP et Automatisation : Développement d’un assistant virtuel interne\n(NLP) pour interroger la documentation technique, optimisant l’accès à l’information.",
+            "date": "Avril 2025 - Août 2025",
+            "status": "Previously"
+        },
+        {
+            "role": "IA et Testeur",
+            "company": "Spacefit.ai ",
+            "description": "• IA et Développement : Optimisation de l’algorithme d’IA central. Tests unitaires\net fonctionnels pour garantir la robustesse de l’application.\n\n• Stratégie : Participation au brainstorming UX et architecture.",
+            "date": "Dec 2023 - Fev 2024",
+            "status": "Previously"
+        },
+        {
+            "role": "Professeur de Mathématiques ",
+            "company": "Complétude",
+            "description": "Accompagnement pédagogique (Collège/Lycée).",
+            "date": "Juin 2024 - Juin 2025",
+            "status": "Previously"
+        }
+    ],
+    "projects": [
+        {
+            "id": "terra-sphere",
+            "title": "Tumor Detection ",
+            "shortDescription": "Classification (CNN) and localization (YOLO/PyTorch).",
+            "description": "Classification (CNN) and localization (YOLO/PyTorch).",
+            "category": "Machine Learning",
+            "technologies": [
+                "Sicit Learn",
+                "PyTorch",
+                "CNN",
+                "YoLo",
+                "Random Forest"
+            ],
+            "features": [
+                "Gestion d'appels en temps réel",
+                "Intégration d'agenda",
+                "Workflows automatisés"
+            ]
+        },
+        {
+            "id": "gnn-cad-3d",
+            "title": "Détection d'Assemblages 3D via GNN",
+            "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
+            "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
+            "category": "Machine Learning & 3D",
+            "technologies": [
+                "PyTorch Geometric",
+                "3DEXPERIENCE",
+                "Agent-to-Agent"
+            ],
+            "features": [
+                "Extraction de graphes 3D",
+                "Analyse topologique",
+                "Systèmes multi-agents"
+            ]
+        },
+        {
+            "id": "tiktok-financial-dca",
+            "title": "Générateur de Vidéos Financières",
+            "shortDescription": "Pipeline automatisé de création de contenu d'animation financière pour les réseaux sociaux.",
+            "description": "Développement de scripts automatisés pour générer des animations de performances financières (DCA) destinées à TikTok. Le système combine la récupération de données boursières, la génération de graphiques animés, et un workflow LLM pour le montage vocal.",
+            "category": "IA Generative",
+            "technologies": [
+                "Python",
+                "Plotly",
+                "yfinance",
+                "n8n",
+                "LLMs"
+            ],
+            "features": [
+                "Génération de graphiques animés",
+                "Synthèse vocale",
+                "Automatisation de publication"
+            ]
+        },
+        {
+            "id": "pygame-rhythm",
+            "title": "Jeu Vidéo de Rythme",
+            "shortDescription": "Jeu de rythme développé en Python et synchronisé sur la musique.",
+            "description": "Création d'un jeu vidéo de rythme personnalisé où les mécaniques de gameplay sont générées et synchronisées directement à partir de l'analyse des pistes audio.",
+            "category": "Développement de jeu & Machine Learning",
+            "technologies": [
+                "Python",
+                "Pygame"
+            ],
+            "features": [
+                "Analyse audio en temps réel",
+                "Moteur de rendu 2D",
+                "Gameplay synchronisé"
+            ]
+        },
+        {
+            "title": "Automatisation TikTok (Finance)",
+            "shortDescription": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
+            "description": "Pipeline n8n autonome créant des vidéos virales sur la finance via APIs (Script LLM + Voix IA + Montage)",
+            "category": "Automatisation & IA Générative",
+            "technologies": [
+                "n8n"
+            ],
+            "id": "automatisation-tiktok-(finance)"
+        },
+        {
+            "title": "Dashboard Aéronautique (React) et Chatbot SQL",
+            "shortDescription": "PIs de production. Chatbot Text-to-SQL pour requêtes automatiques.",
+            "description": "PIs de production.\nChatbot Text-to-SQL pour requêtes automatiques.",
+            "category": "IA & Machine Learning ",
+            "technologies": [
+                "React",
+                "Flask",
+                "API",
+                "SQL",
+                "LLM",
+                "Json",
+                "csv"
+            ],
+            "id": "dashboard-aéronautique-(react)-et-chatbot-sql"
+        },
+        {
+            "title": "Detection du langage des signes",
+            "shortDescription": "Real-time translation (RNN + OpenCV)",
+            "description": "Real-time translation (RNN + OpenCV).",
+            "category": "IA & Machine learning",
+            "technologies": [
+                "RNN",
+                "OpenCV",
+                "Flask",
+                "HTML"
+            ],
+            "id": "detection-du-langage-des-signes"
+        },
+        {
+            "title": "Prédiction de résultat sportifs",
+            "shortDescription": "ML Model (Scikit-Learn).",
+            "description": "ML Model (Scikit-Learn).",
+            "category": "Machine Learning",
+            "technologies": [
+                "XGBoost",
+                "Random Forest",
+                "Scikit-Learn"
+            ],
+            "id": "prédiction-de-résultat-sportifs"
+        },
+        {
+            "title": "Analyse Big Data ",
+            "shortDescription": "Conception d’un pipeline ETL (PySpark) pour le traitement Batch et Streaming de logs de transactions massives. Modélisation pour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur les ruptures de stock.",
+            "description": "Conception d’un pipeline ETL (PySpark)\npour le traitement Batch et Streaming de logs de transactions massives. Modélisation\npour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur\nles ruptures de stock.",
+            "category": "Big Data",
+            "technologies": [
+                "Apache Spark",
+                "PySpark"
+            ],
+            "id": "analyse-big-data-"
+        }
+    ]
 }
