@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
-import { useLang, localizedKey } from '../i18n/LanguageContext';
+import { useLang } from '../i18n/LanguageContext';
 import PinnedRepos from '../GitHub/PinnedRepos';
 import './Projects.css';
 
@@ -9,8 +9,10 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isAdmin } = useAuth();
-  const { lang, t, localize } = useLang();
+  const { isAdmin: isLoggedIn } = useAuth();
+  const { lang, t } = useLang();
+  // L'édition se fait en français : la version anglaise est traduite automatiquement
+  const isAdmin = isLoggedIn && lang === 'fr';
 
   // Gestion de la modale (Création ou Édition)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +26,7 @@ function Projects() {
   const [technologies, setTechnologies] = useState('');
 
   const fetchProjects = () => {
-    fetch('/api/projects')
+    fetch(`/api/projects?lang=${lang}`)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.projects || []);
@@ -38,7 +40,7 @@ function Projects() {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [lang]);
 
   // Ouvrir la modale pour l'ajout
   const handleOpenAdd = () => {
@@ -55,10 +57,10 @@ function Projects() {
   const handleOpenEdit = (e, proj) => {
     e.preventDefault(); // Empêche de déclencher le lien de la carte
     setEditingProject(proj);
-    setTitle(localize(proj, 'title') || '');
-    setShortDescription(localize(proj, 'shortDescription') || '');
-    setDescription(localize(proj, 'description') || '');
-    setCategory(localize(proj, 'category') || '');
+    setTitle(proj.title || '');
+    setShortDescription(proj.shortDescription || '');
+    setDescription(proj.description || '');
+    setCategory(proj.category || '');
     setTechnologies(proj.technologies ? proj.technologies.join(', ') : '');
     setIsModalOpen(true);
   };
@@ -83,17 +85,13 @@ function Projects() {
   // Soumission du formulaire (Ajout ou Modification)
   const handleSubmit = (e) => {
     e.preventDefault();
-    const projectData = { technologies: technologies.split(',').map((tech) => tech.trim()) };
-    const texts = { title, shortDescription, description, category };
-    Object.entries(texts).forEach(([field, value]) => {
-      if (editingProject) {
-        // En anglais, on modifie les champs "_en" (la version française reste intacte)
-        projectData[localizedKey(field, lang)] = value;
-      } else {
-        projectData[field] = value;
-        if (lang === 'en') projectData[`${field}_en`] = value;
-      }
-    });
+    const projectData = {
+      title,
+      shortDescription,
+      description,
+      category,
+      technologies: technologies.split(',').map((tech) => tech.trim())
+    };
 
     const url = editingProject 
       ? `/api/projects/${editingProject.id}`
@@ -140,7 +138,7 @@ function Projects() {
           <Link to={`/projects/${project.id}`} key={project.id} className="project-card">
             <div className="card-content">
               <div className="card-top-row">
-                <span className="project-category">{localize(project, 'category')}</span>
+                <span className="project-category">{project.category}</span>
                 {isAdmin && (
                   <div className="admin-card-actions">
                     <button 
@@ -160,8 +158,8 @@ function Projects() {
                   </div>
                 )}
               </div>
-              <h3>{localize(project, 'title')}</h3>
-              <p>{localize(project, 'shortDescription')}</p>
+              <h3>{project.title}</h3>
+              <p>{project.shortDescription}</p>
               
               <div className="tech-stack">
                 {project.technologies?.slice(0, 3).map((tech, i) => (

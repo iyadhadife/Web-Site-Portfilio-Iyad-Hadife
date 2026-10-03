@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
-import { useLang, localizedKey } from '../i18n/LanguageContext';
+import { useLang } from '../i18n/LanguageContext';
 import './About.css';
 
 function About() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { isAdmin } = useAuth();
-  const { lang, t, localize } = useLang();
+  const { isAdmin: isLoggedIn } = useAuth();
+  const { lang, t } = useLang();
+  // L'édition se fait en français : la version anglaise est traduite automatiquement
+  const isAdmin = isLoggedIn && lang === 'fr';
   const statusLabel = (status) => (['Current', 'Previously', 'Graduated'].includes(status) ? t(`status.${status}`) : status);
 
   const [modalType, setModalType] = useState(null); // 'skill', 'education', 'experience'
@@ -29,7 +31,7 @@ function About() {
   const [isExpFullscreen, setIsExpFullscreen] = useState(false);
 
   const fetchData = () => {
-    fetch('/api/portfolio')
+    fetch(`/api/portfolio?lang=${lang}`)
       .then((res) => res.json())
       .then((jsonData) => {
         setData(jsonData);
@@ -39,7 +41,7 @@ function About() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lang]);
 
   const handleMove = async (category, index, direction) => {
     try {
@@ -101,11 +103,10 @@ function About() {
 
   const handleOpenEdit = (sectionType, item, index) => {
     setEditingIndex(index);
-    // En anglais, on modifie les champs "_en" (la version française reste intacte)
-    setItemRole(localize(item, 'role') || '');
+    setItemRole(item.role || '');
     setItemCompany(item.company || '');
-    setItemDesc(localize(item, 'description') || '');
-    setItemDate(localize(item, 'date') || '');
+    setItemDesc(item.description || '');
+    setItemDate(item.date || '');
     setItemStatus(item.status || 'Current');
     setModalType(sectionType);
   };
@@ -113,17 +114,7 @@ function About() {
   // --- SOUMISSION FORMULAIRE ÉDUCATION / EXPÉRIENCE ---
   const handleSaveItemSubmit = (e, section) => {
     e.preventDefault();
-    const payload = { company: itemCompany, status: itemStatus };
-    const texts = { role: itemRole, description: itemDesc, date: itemDate };
-    Object.entries(texts).forEach(([field, value]) => {
-      if (editingIndex !== null) {
-        payload[localizedKey(field, lang)] = value;
-      } else {
-        // Nouvel élément : le texte saisi sert pour les deux langues en attendant une traduction
-        payload[field] = value;
-        if (lang === 'en') payload[`${field}_en`] = value;
-      }
-    });
+    const payload = { role: itemRole, company: itemCompany, description: itemDesc, date: itemDate, status: itemStatus };
 
     const url = editingIndex !== null 
       ? `/api/${section}/${editingIndex}` 
@@ -170,7 +161,7 @@ function About() {
             <span className="last-name">{data.profile.lastName}</span>
           </h1>
           <div className="profile-text">
-            <p>{localize(data.profile, 'intro')}</p>
+            <p>{data.profile.intro}</p>
           </div>
         </div>
       </section>
@@ -211,9 +202,9 @@ function About() {
                       </div>
                     )}
                   </div>
-                  <span className="timeline-date-badge">{localize(item, 'date')}</span>
-                  <h4>{localize(item, 'role')} <span className="company-name">@ {item.company}</span></h4>
-                  <p>{localize(item, 'description')}</p>
+                  <span className="timeline-date-badge">{item.date}</span>
+                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
+                  <p>{item.description}</p>
                 </div>
               </div>
             ))}
@@ -254,9 +245,9 @@ function About() {
                       </div>
                     )}
                   </div>
-                  <span className="timeline-date-badge">{localize(item, 'date')}</span>
-                  <h4>{localize(item, 'role')} <span className="company-name">@ {item.company}</span></h4>
-                  <p>{localize(item, 'description')}</p>
+                  <span className="timeline-date-badge">{item.date}</span>
+                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
+                  <p>{item.description}</p>
                 </div>
               </div>
             ))}
@@ -281,7 +272,7 @@ function About() {
             {data.skills?.map((skillGroup, index) => (
               <div key={index} className="skill-category zoom-card">
                 <div className="category-header-flex">
-                  <h3>{localize(skillGroup, 'category')}</h3>
+                  <h3>{skillGroup.category}</h3>
                   {isAdmin && (
                     <div className="admin-inline-actions">
                       <button className="small-plus-btn" onClick={() => { setTargetCategory(skillGroup.category); setModalType('skill'); }} title="Ajouter une compétence">+</button>

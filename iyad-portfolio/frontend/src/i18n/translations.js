@@ -1,5 +1,5 @@
 // Textes de l'interface en français et en anglais.
-// Le contenu (expériences, projets...) vient de data.json : voir localize() dans LanguageContext.
+// Le contenu (expériences, projets...) vient de data.json (FR) ou data_en.json (EN, traduit automatiquement).
 
 const translations = {
   fr: {
@@ -37,7 +37,7 @@ const translations = {
     'projects.toc': 'Sommaire',
     'projects.tocEmpty': 'Aucun titre dans la page',
     'projects.edit': '✎ Modifier la page',
-    'projects.editingLang': 'Vous modifiez la version {lang}',
+    'admin.editInFrench': 'Les modifications se font en français : la version anglaise est traduite automatiquement.',
 
     'docs.title': 'Description (.md)',
     'docs.upload': '⬆ Importer un .md ({lang})',
@@ -121,7 +121,7 @@ const translations = {
     'projects.toc': 'Contents',
     'projects.tocEmpty': 'No headings on this page',
     'projects.edit': '✎ Edit page',
-    'projects.editingLang': 'You are editing the {lang} version',
+    'admin.editInFrench': 'Edit the site in French: the English version is translated automatically.',
 
     'docs.title': 'Description (.md)',
     'docs.upload': '⬆ Upload a .md ({lang})',

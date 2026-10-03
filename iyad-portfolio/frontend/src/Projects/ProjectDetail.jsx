@@ -11,7 +11,7 @@ import Image from '@tiptap/extension-image';
 import LinkExtension from '@tiptap/extension-link';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import { useLang, localizedKey } from '../i18n/LanguageContext';
+import { useLang } from '../i18n/LanguageContext';
 import './Projects.css';
 
 const MenuBar = ({ editor }) => {
@@ -70,7 +70,9 @@ function ProjectDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { isAdmin } = useAuth();
-  const { lang, t, localize } = useLang();
+  const { lang, t } = useLang();
+  // La page s'édite en français ; les .md, eux, s'importent dans chaque langue
+  const canEditPage = isAdmin && lang === 'fr';
   const [isEditing, setIsEditing] = useState(false);
   const [doc, setDoc] = useState(null); // description Markdown importée (.md)
   const fileInputRef = useRef(null);
@@ -79,7 +81,7 @@ function ProjectDetail() {
   const contentRef = useRef(null);
 
   const fetchProject = () => {
-    fetch(`/api/projects/${id}`)
+    fetch(`/api/projects/${id}?lang=${lang}`)
       .then((res) => {
         if (!res.ok) throw new Error(t('projects.notFound'));
         return res.json();
@@ -96,7 +98,8 @@ function ProjectDetail() {
 
   useEffect(() => {
     fetchProject();
-  }, [id]);
+    setIsEditing(false);
+  }, [id, lang]);
 
   const fetchDoc = () => {
     fetch(`/api/projects/${encodeURIComponent(id)}/docs?lang=${lang}`)
@@ -167,12 +170,11 @@ function ProjectDetail() {
     }
   });
 
-  // En anglais, l'éditeur affiche et modifie "description_en"
   useEffect(() => {
     if (editor && project) {
-      editor.commands.setContent(localize(project, 'description') || '');
+      editor.commands.setContent(project.description || '');
     }
-  }, [project, editor, localize]);
+  }, [project, editor]);
 
   useEffect(() => {
     if (editor) {
@@ -212,7 +214,7 @@ function ProjectDetail() {
   const handleSave = () => {
     if (!editor) return;
     const htmlContent = editor.getHTML();
-    const updatedProject = { ...project, [localizedKey('description', lang)]: htmlContent };
+    const updatedProject = { ...project, description: htmlContent };
 
     fetch(`/api/projects/${id}`, {
       method: 'PUT',
@@ -241,11 +243,11 @@ function ProjectDetail() {
       </div>
 
       <div className="project-detail-header">
-        <span className="project-category">{localize(project, 'category')}</span>
+        <span className="project-category">{project.category}</span>
         
         <div className="project-title-row">
-          <h1>{localize(project, 'title')}</h1>
-          {isAdmin && (
+          <h1>{project.title}</h1>
+          {canEditPage && (
             <div className="admin-actions-flex">
               {!isEditing ? (
                 <button className="edit-mode-btn" onClick={() => setIsEditing(true)}>{t('projects.edit')}</button>
@@ -266,7 +268,6 @@ function ProjectDetail() {
               <button type="button" className="doc-delete-btn" onClick={handleDocDelete}>{t('docs.delete', { lang: lang.toUpperCase() })}</button>
             )}
             <input ref={fileInputRef} type="file" accept=".md,.markdown,text/markdown" hidden onChange={handleDocUpload} />
-            {isEditing && <span className="doc-admin-label">{t('projects.editingLang', { lang: t(`lang.${lang}`) })}</span>}
           </div>
         )}
       </div>

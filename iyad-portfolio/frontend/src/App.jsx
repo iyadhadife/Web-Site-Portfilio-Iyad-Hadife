@@ -171,6 +171,14 @@ function AnimatedRoutes({ children }) {
   );
 }
 
+// En anglais, l'admin voit pourquoi les boutons d'édition ont disparu
+function AdminLanguageNote() {
+  const { isAdmin } = useAuth();
+  const { lang, t } = useLang();
+  if (!isAdmin || lang !== 'en') return null;
+  return <div className="admin-lang-note">{t('admin.editInFrench')}</div>;
+}
+
 function App() {
   return (
     <LanguageProvider>
@@ -188,6 +196,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
               </AnimatedRoutes>
             </main>
+            <AdminLanguageNote />
             <ScrollToTopButton /> 
           </div>
         </Router>

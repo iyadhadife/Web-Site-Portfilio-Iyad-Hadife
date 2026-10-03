@@ -34,20 +34,10 @@ export function LanguageProvider({ children }) {
     return text.replace(/\{(\w+)\}/g, (_, name) => (vars[name] ?? `{${name}}`));
   }, [lang]);
 
-  // Contenu de data.json : en anglais, on lit le champ "<champ>_en" s'il est rempli
-  const localize = useCallback((item, field) => {
-    if (!item) return '';
-    if (lang === 'en' && item[`${field}_en`]) return item[`${field}_en`];
-    return item[field];
-  }, [lang]);
-
   const toggle = useCallback(() => setLang((l) => (l === 'fr' ? 'en' : 'fr')), []);
 
-  const value = useMemo(() => ({ lang, setLang, toggle, t, localize }), [lang, toggle, t, localize]);
+  const value = useMemo(() => ({ lang, setLang, toggle, t }), [lang, toggle, t]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export const useLang = () => useContext(LanguageContext);
-
-// Champ à écrire quand l'admin modifie un texte traduisible dans la langue affichée
-export const localizedKey = (field, lang) => (lang === 'en' ? `${field}_en` : field);

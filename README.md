@@ -52,7 +52,16 @@ The English descriptions shown on the cards and repository pages come from `iyad
 
 ## French / English
 
-The FR / EN switch in the navigation bar changes the language of the whole site and is remembered in the browser (first visit: the browser language). Interface texts live in `iyad-portfolio/frontend/src/i18n/translations.js`. Content from `data.json` uses an optional `<field>_en` next to each French field (for example `intro` / `intro_en`); when it is missing, the French text is shown. When logged in as admin, edits made while the site is in English update the `_en` fields and leave the French text untouched.
+The FR / EN switch in the navigation bar changes the language of the whole site and is remembered in the browser (first visit: the browser language). Interface texts live in `iyad-portfolio/frontend/src/i18n/translations.js`.
+
+The content has two files in `iyad-portfolio/backend/`:
+
+- `data.json`: the French content, the only one to edit (admin edits on the site always go there, so editing is only shown in French).
+- `data_en.json`: the English content, **generated automatically**. After every change to `data.json` (from the site, or by hand on the server), the changed texts are machine-translated and `data_en.json` is rewritten.
+
+Translations are kept in `translation_cache.json` (French text → English text), so only new or modified texts are translated. To fix a translation by hand, edit its value there; it is kept as long as the French text does not change.
+
+Translation engine: DeepL when `DEEPL_API_KEY` is set in `iyad-portfolio/backend/.env` (better quality, free up to 500,000 characters per month), otherwise Google Translate through `deep-translator` (no key). If translation fails, the French text is shown until the next change.
 
 ## Markdown project descriptions
 

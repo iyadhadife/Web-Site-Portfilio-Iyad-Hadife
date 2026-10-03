@@ -193,3 +193,19 @@ html, body {
   color: #070b14;
 }
 .lang-switch:hover span:not(.active) { color: #fff; }
+
+.admin-lang-note {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  z-index: 1000;
+  max-width: calc(100% - 32px);
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(17, 24, 39, 0.95);
+  border: 1px solid #00d2ff;
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  text-align: center;
+}
