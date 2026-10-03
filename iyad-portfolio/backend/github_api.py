@@ -1,0 +1,288 @@
+"""
+Proxy GitHub pour le portfolio : projets épinglés, README et navigation dans les fichiers.
+
+Le navigateur n'appelle jamais GitHub directement : le token (optionnel) reste côté serveur
+et les réponses sont mises en cache pour rester sous les limites de l'API.
+
+Variables d'environnement (fichier .env) :
+- GITHUB_USER   : compte dont on affiche les projets épinglés (défaut : iyadhadife)
+- GITHUB_TOKEN  : token en lecture seule (recommandé, passe la limite de 60 à 5000 requêtes/h)
+- PINNED_REPOS  : liste manuelle "owner/repo,owner/repo" qui remplace la détection automatique
+"""
+import os
+import re
+import time
+import threading
+
+import requests
+from flask import Blueprint, jsonify, request
+
+github_bp = Blueprint('github', __name__)
+
+GITHUB_USER = os.getenv("GITHUB_USER", "iyadhadife")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "").strip()
+PINNED_REPOS = os.getenv("PINNED_REPOS", "").strip()
+
+API = "https://api.github.com"
+RAW = "https://raw.githubusercontent.com"
+CACHE_TTL = 600  # 10 minutes
+MAX_FILE_SIZE = 5_000_000  # au-delà, on propose seulement le téléchargement (les notebooks avec images sont lourds)
+
+_cache = {}
+_cache_lock = threading.Lock()
+
+
+class GitHubError(Exception):
+    def __init__(self, message, status=502):
+        super().__init__(message)
+        self.status = status
+
+
+def _cached(key, loader, ttl=CACHE_TTL):
+    now = time.time()
+    with _cache_lock:
+        hit = _cache.get(key)
+        if hit and now - hit[0] < ttl:
+            return hit[1]
+    value = loader()
+    with _cache_lock:
+        _cache[key] = (now, value)
+    return value
+
+
+def _headers(accept="application/vnd.github+json"):
+    headers = {"Accept": accept, "User-Agent": "iyad-portfolio", "X-GitHub-Api-Version": "2022-11-28"}
+    if GITHUB_TOKEN:
+        headers["Authorization"] = f"Bearer {GITHUB_TOKEN}"
+    return headers
+
+
+def _get(url, accept="application/vnd.github+json", params=None):
+    res = requests.get(url, headers=_headers(accept), params=params, timeout=15)
+    if res.status_code == 404:
+        raise GitHubError("Introuvable sur GitHub", 404)
+    if res.status_code in (403, 429) and res.headers.get("X-RateLimit-Remaining") == "0":
+        raise GitHubError("Limite de l'API GitHub atteinte, réessayez plus tard", 503)
+    if not res.ok:
+        raise GitHubError(f"Erreur GitHub ({res.status_code})")
+    return res
+
+
+# --- PROJETS ÉPINGLÉS ---
+
+PINNED_QUERY = """
+query($login: String!) {
+  user(login: $login) {
+    pinnedItems(first: 6, types: REPOSITORY) {
+      nodes {
+        ... on Repository {
+          name
+          owner { login }
+          description
+          url
+          homepageUrl
+          stargazerCount
+          forkCount
+          defaultBranchRef { name }
+          primaryLanguage { name color }
+          repositoryTopics(first: 8) { nodes { topic { name } } }
+        }
+      }
+    }
+  }
+}
+"""
+
+
+def _pinned_from_graphql():
+    res = requests.post(
+        f"{API}/graphql",
+        json={"query": PINNED_QUERY, "variables": {"login": GITHUB_USER}},
+        headers=_headers(),
+        timeout=15,
+    )
+    res.raise_for_status()
+    nodes = res.json()["data"]["user"]["pinnedItems"]["nodes"]
+    return [{
+        "owner": n["owner"]["login"],
+        "name": n["name"],
+        "description": n.get("description") or "",
+        "url": n["url"],
+        "homepage": n.get("homepageUrl") or "",
+        "stars": n.get("stargazerCount", 0),
+        "forks": n.get("forkCount", 0),
+        "defaultBranch": (n.get("defaultBranchRef") or {}).get("name", "main"),
+        "language": (n.get("primaryLanguage") or {}).get("name"),
+        "languageColor": (n.get("primaryLanguage") or {}).get("color"),
+        "topics": [t["topic"]["name"] for t in n["repositoryTopics"]["nodes"]],
+    } for n in nodes]
+
+
+def _pinned_names_from_profile():
+    """Sans token, la GraphQL n'est pas accessible : on lit la page publique du profil."""
+    res = requests.get(f"https://github.com/{GITHUB_USER}", headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+    res.raise_for_status()
+    names = []
+    for chunk in res.text.split("pinned-item-list-item-content")[1:]:
+        match = re.search(r'href="/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)"', chunk)
+        if match and match.groups() not in names:
+            names.append(match.groups())
+    return names
+
+
+def _repo_summary(owner, name):
+    data = _repo_meta(owner, name)
+    return {
+        "owner": data["owner"]["login"],
+        "name": data["name"],
+        "description": data.get("description") or "",
+        "url": data["html_url"],
+        "homepage": data.get("homepage") or "",
+        "stars": data.get("stargazers_count", 0),
+        "forks": data.get("forks_count", 0),
+        "defaultBranch": data.get("default_branch", "main"),
+        "language": data.get("language"),
+        "languageColor": None,
+        "topics": data.get("topics", []),
+    }
+
+
+def _load_pinned():
+    if PINNED_REPOS:
+        names = [tuple(r.strip().split("/", 1)) for r in PINNED_REPOS.split(",") if "/" in r]
+        return [_repo_summary(o, n) for o, n in names], "config"
+    if GITHUB_TOKEN:
+        try:
+            return _pinned_from_graphql(), "graphql"
+        except Exception as e:
+            print("GraphQL pinned items indisponible :", e)
+    try:
+        names = _pinned_names_from_profile()
+        if names:
+            return [_repo_summary(o, n) for o, n in names], "profile"
+    except Exception as e:
+        print("Lecture du profil GitHub impossible :", e)
+    # Dernier recours : les dépôts publics les plus récemment mis à jour
+    repos = _get(f"{API}/users/{GITHUB_USER}/repos", params={"sort": "pushed", "per_page": 6}).json()
+    return [_repo_summary(r["owner"]["login"], r["name"]) for r in repos if not r.get("fork")], "recent"
+
+
+def get_pinned():
+    return _cached("pinned", _load_pinned)
+
+
+def _repo_meta(owner, repo):
+    return _cached(f"meta:{owner}/{repo}", lambda: _get(f"{API}/repos/{owner}/{repo}").json())
+
+
+def _check_allowed(owner, repo):
+    """On ne sert que les dépôts du propriétaire du portfolio ou ceux qu'il a épinglés."""
+    if owner.lower() == GITHUB_USER.lower():
+        return
+    pinned, _ = get_pinned()
+    if any(p["owner"].lower() == owner.lower() and p["name"].lower() == repo.lower() for p in pinned):
+        return
+    raise GitHubError("Dépôt non autorisé", 403)
+
+
+def _clean_path(path):
+    path = (path or "").strip("/")
+    if any(part in ("..", ".") for part in path.split("/")):
+        raise GitHubError("Chemin invalide", 400)
+    return path
+
+
+@github_bp.errorhandler(GitHubError)
+def _handle_github_error(e):
+    return jsonify({"error": str(e)}), e.status
+
+
+@github_bp.errorhandler(requests.RequestException)
+def _handle_network_error(e):
+    return jsonify({"error": "GitHub est injoignable pour le moment"}), 502
+
+
+# --- ROUTES ---
+
+@github_bp.route('/api/github/pinned', methods=['GET'])
+def pinned_repos():
+    repos, source = get_pinned()
+    return jsonify({"user": GITHUB_USER, "repos": repos, "source": source})
+
+
+@github_bp.route('/api/github/repos/<owner>/<repo>', methods=['GET'])
+def repo_info(owner, repo):
+    _check_allowed(owner, repo)
+    return jsonify(_repo_summary(owner, repo))
+
+
+@github_bp.route('/api/github/repos/<owner>/<repo>/readme', methods=['GET'])
+def repo_readme(owner, repo):
+    _check_allowed(owner, repo)
+    branch = _repo_meta(owner, repo).get("default_branch", "main")
+
+    def load():
+        meta = _get(f"{API}/repos/{owner}/{repo}/readme", params={"ref": branch}).json()
+        html = _get(f"{API}/repos/{owner}/{repo}/readme", accept="application/vnd.github.html",
+                    params={"ref": branch}).text
+        return {"path": meta["path"], "branch": branch, "html": html}
+
+    try:
+        return jsonify(_cached(f"readme:{owner}/{repo}", load))
+    except GitHubError as e:
+        if e.status == 404:
+            return jsonify({"path": None, "branch": branch, "html": ""})
+        raise
+
+
+@github_bp.route('/api/github/repos/<owner>/<repo>/tree', methods=['GET'])
+def repo_tree(owner, repo):
+    _check_allowed(owner, repo)
+    branch = _repo_meta(owner, repo).get("default_branch", "main")
+
+    def load():
+        data = _get(f"{API}/repos/{owner}/{repo}/git/trees/{branch}", params={"recursive": "1"}).json()
+        entries = [{
+            "path": item["path"],
+            "type": "dir" if item["type"] == "tree" else "file",
+            "size": item.get("size"),
+        } for item in data.get("tree", []) if item["type"] in ("tree", "blob")]
+        return {"branch": branch, "truncated": data.get("truncated", False), "entries": entries}
+
+    return jsonify(_cached(f"tree:{owner}/{repo}", load))
+
+
+@github_bp.route('/api/github/repos/<owner>/<repo>/file', methods=['GET'])
+def repo_file(owner, repo):
+    """Contenu d'un fichier. Les .md sont rendus en HTML par GitHub, le reste est renvoyé en texte."""
+    _check_allowed(owner, repo)
+    path = _clean_path(request.args.get("path"))
+    if not path:
+        raise GitHubError("Chemin manquant", 400)
+    branch = _repo_meta(owner, repo).get("default_branch", "main")
+    raw_url = f"{RAW}/{owner}/{repo}/{branch}/{path}"
+
+    def load():
+        if path.lower().endswith((".md", ".markdown")):
+            html = _get(f"{API}/repos/{owner}/{repo}/contents/{path}", accept="application/vnd.github.html",
+                        params={"ref": branch}).text
+            return {"kind": "markdown", "html": html}
+
+        res = requests.get(raw_url, headers={"User-Agent": "iyad-portfolio"}, timeout=15, stream=True)
+        if res.status_code == 404:
+            raise GitHubError("Fichier introuvable", 404)
+        res.raise_for_status()
+        content = res.raw.read(MAX_FILE_SIZE + 1, decode_content=True)
+        res.close()
+        if len(content) > MAX_FILE_SIZE:
+            return {"kind": "too-large"}
+        if b"\x00" in content[:8000]:
+            return {"kind": "binary"}
+        try:
+            return {"kind": "text", "content": content.decode("utf-8")}
+        except UnicodeDecodeError:
+            return {"kind": "binary"}
+
+    result = dict(_cached(f"file:{owner}/{repo}:{path}", load))
+    result.update({"path": path, "branch": branch, "rawUrl": raw_url})
+    return jsonify(result)

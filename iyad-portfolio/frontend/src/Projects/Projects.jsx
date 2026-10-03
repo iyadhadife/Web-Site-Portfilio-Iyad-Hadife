@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import PinnedRepos from '../GitHub/PinnedRepos';
 import './Projects.css';
 
 function Projects() {
@@ -114,6 +115,8 @@ function Projects() {
 
   return (
     <div className="projects-page">
+      <PinnedRepos />
+
       <div className="projects-header">
         <div className="header-title-flex">
           <h2>Mes Projets</h2>
