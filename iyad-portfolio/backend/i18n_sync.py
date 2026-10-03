@@ -18,6 +18,8 @@ import threading
 from html.parser import HTMLParser
 from html import escape
 
+from data_store import DataFileError, read_json
+
 BASE_DIR = os.path.dirname(__file__)
 FR_FILE = os.path.join(BASE_DIR, 'data.json')
 EN_FILE = os.path.join(BASE_DIR, 'data_en.json')
@@ -155,7 +157,12 @@ def _write_json(path, data, indent):
 def sync_english(translate=_translate_batch):
     """Régénère data_en.json à partir de data.json. Renvoie le nombre de textes nouvellement traduits."""
     with _lock:
-        fr_data = _load_json(FR_FILE, {})
+        try:
+            fr_data = read_json(FR_FILE)
+        except DataFileError as e:
+            # Surtout ne rien écraser : data_en.json et le cache restent tels quels
+            print('Traduction annulée :', e)
+            return 0
         cache = _load_json(CACHE_FILE, {})
 
         segments = list(dict.fromkeys(_collect(fr_data)))
@@ -194,5 +201,8 @@ def load_data(lang):
     if lang == 'en':
         if english_is_stale():
             sync_english()
-        return _load_json(EN_FILE, {})
-    return _load_json(FR_FILE, {})
+        try:
+            return read_json(EN_FILE)
+        except DataFileError as e:
+            print('Version anglaise indisponible, affichage en français :', e)
+    return read_json(FR_FILE)
