@@ -73,3 +73,22 @@ Translation engine: DeepL when `DEEPL_API_KEY` is set in `iyad-portfolio/backend
 ## Markdown project descriptions
 
 On a project page, the admin can upload a `.md` file per language (buttons under the title). It is stored in `iyad-portfolio/backend/project_docs/<project id>/<fr|en>.md` and replaces the page description when present. If only one language exists, it is shown in both with a short note. Upload and delete require the admin session (`/admin` login); reading is public.
+
+## HTTPS (SSL certificate)
+
+The site gets a free Let's Encrypt certificate that renews itself.
+
+1. Make sure `iyad-hadife.com` and `www.iyad-hadife.com` have a DNS **A record** pointing to the VPS IP,
+   and that ports 80 and 443 are open.
+2. On the VPS, run once from the repository root:
+
+   ```bash
+   sudo ./init-ssl.sh your@email.com
+   ```
+
+   The script keeps only the domains that point to the server, starts nginx in HTTP mode,
+   requests the certificate and switches the site to HTTPS (HTTP then redirects to HTTPS).
+3. Renewal is automatic: the `certbot` service checks every 12 hours and nginx reloads the
+   certificate on its own. Certificates live in `certbot/` (ignored by git).
+
+Without a certificate, nginx simply serves the site over HTTP, so `docker compose up` keeps working.
