@@ -9,6 +9,7 @@ Variables d'environnement (fichier .env) :
 - GITHUB_TOKEN  : token en lecture seule (recommandé, passe la limite de 60 à 5000 requêtes/h)
 - PINNED_REPOS  : liste manuelle "owner/repo,owner/repo" qui remplace la détection automatique
 """
+import json
 import os
 import re
 import time
@@ -27,6 +28,9 @@ API = "https://api.github.com"
 RAW = "https://raw.githubusercontent.com"
 CACHE_TTL = 600  # 10 minutes
 MAX_FILE_SIZE = 5_000_000  # au-delà, on propose seulement le téléchargement (les notebooks avec images sont lourds)
+
+# Descriptions en anglais affichées sur le portfolio, prioritaires sur celles de GitHub
+DESCRIPTIONS_FILE = os.path.join(os.path.dirname(__file__), "project_descriptions.json")
 
 _cache = {}
 _cache_lock = threading.Lock()
@@ -66,6 +70,16 @@ def _get(url, accept="application/vnd.github+json", params=None):
     if not res.ok:
         raise GitHubError(f"Erreur GitHub ({res.status_code})")
     return res
+
+
+def _with_description(repo):
+    try:
+        with open(DESCRIPTIONS_FILE, 'r', encoding='utf-8') as f:
+            descriptions = {k.lower(): v for k, v in json.load(f).items()}
+    except (OSError, ValueError):
+        descriptions = {}
+    custom = descriptions.get(f"{repo['owner']}/{repo['name']}".lower())
+    return {**repo, "description": custom} if custom else repo
 
 
 # --- PROJETS ÉPINGLÉS ---
@@ -207,13 +221,13 @@ def _handle_network_error(e):
 @github_bp.route('/api/github/pinned', methods=['GET'])
 def pinned_repos():
     repos, source = get_pinned()
-    return jsonify({"user": GITHUB_USER, "repos": repos, "source": source})
+    return jsonify({"user": GITHUB_USER, "repos": [_with_description(r) for r in repos], "source": source})
 
 
 @github_bp.route('/api/github/repos/<owner>/<repo>', methods=['GET'])
 def repo_info(owner, repo):
     _check_allowed(owner, repo)
-    return jsonify(_repo_summary(owner, repo))
+    return jsonify(_with_description(_repo_summary(owner, repo)))
 
 
 @github_bp.route('/api/github/repos/<owner>/<repo>/readme', methods=['GET'])

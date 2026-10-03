@@ -47,3 +47,5 @@ GITHUB_TOKEN=github_pat_xxx
 ```
 
 Without a token, the pinned repositories are read from the public profile page.
+
+The English descriptions shown on the cards and repository pages come from `iyad-portfolio/backend/project_descriptions.json` (key `owner/repo`). They take priority over the GitHub description; repositories missing from the file fall back to GitHub's.

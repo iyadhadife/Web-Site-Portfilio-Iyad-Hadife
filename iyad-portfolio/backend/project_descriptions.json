@@ -1,0 +1,8 @@
+{
+  "iyadhadife/tumor_detection": "Deep learning pipeline that classifies brain MRI scans as healthy or tumor. It benchmarks classical ML, custom CNNs with CBAM attention, transfer learning (DenseNet-121, ResNet-50) and a Vision Transformer, and explains predictions with Grad-CAM.",
+  "iyadhadife/Sign-Language-Detection": "SignIA translates sign language from a webcam into text in real time. MediaPipe Holistic tracks the body, face and hands, and a lightweight LSTM classifies the gestures on CPU, with a web app to record, train and test new signs.",
+  "iyadhadife/plm-production-analytics": "Analytics dashboard for an aircraft assembly line that joins MES, PLM and ERP data. It shows station and step reports, cross analyses and a Gemini chatbot that answers questions about the files. Built with Flask, pandas, Plotly and React.",
+  "iyadhadife/Image_Extaction_Workflow": "Intelligent document processing app that extracts structured JSON from ID cards and invoices. It combines vision LLMs (Groq) with EasyOCR, validates the output against JSON schemas and offers a React interface for batch uploads and review.",
+  "iyadhadife/chatbot_with_rag_mcp_template": "Local Linux administration assistant built on RAG and the Model Context Protocol. A FastMCP server exposes a search tool over a knowledge base of Linux commands to a local Ollama model, with answers streamed in the terminal.",
+  "iyadhadife/Web-Site-Portfilio-Iyad-Hadife": "My personal portfolio website, built with React and Flask. It presents my experience, skills and projects, and lets visitors read the README and browse the code of my GitHub projects directly on the site."
+}
