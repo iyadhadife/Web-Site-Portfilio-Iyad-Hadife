@@ -22,8 +22,8 @@
 }
 
 @keyframes avatarGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.35), 0 0 25px rgba(0, 210, 255, 0.15); }
-  50% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0), 0 0 40px rgba(0, 210, 255, 0.3); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.175), 0 0 25px rgba(var(--accent-rgb), 0.075); }
+  50% { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0), 0 0 40px rgba(var(--accent-rgb), 0.15); }
 }
 
 @keyframes navDrop {
@@ -67,7 +67,7 @@
   right: 0;
   bottom: -2px;
   height: 2px;
-  background: #00d2ff;
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s ease;
@@ -79,7 +79,7 @@
   animation: popIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards, avatarGlow 4s ease-in-out 1s infinite;
 }
 .profile-info .last-name {
-  background: linear-gradient(90deg, #00d2ff 0%, #ffffff 25%, #00d2ff 50%, #ffffff 75%, #00d2ff 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-soft-1) 25%, var(--accent) 50%, var(--accent-hover) 75%, var(--accent) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -99,7 +99,7 @@
   left: -75%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(0, 210, 255, 0.12), transparent);
+  background: linear-gradient(120deg, transparent, rgba(var(--accent-rgb), 0.12), transparent);
   transform: skewX(-20deg);
   pointer-events: none;
   transition: left 0.7s ease;
@@ -109,7 +109,7 @@
 .project-card:hover .view-details-text { transform: translateX(6px); }
 
 .tech-pill { transition: border-color 0.3s ease, background 0.3s ease; }
-.project-card:hover .tech-pill { border-color: rgba(0, 210, 255, 0.5); }
+.project-card:hover .tech-pill { border-color: rgba(var(--accent-rgb), 0.5); }
 
 /* Bouton retour en haut */
 .scroll-to-top-btn { animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -127,7 +127,7 @@
   right: 0;
   bottom: -1px;
   height: 2px;
-  background: #00d2ff;
+  background: var(--accent);
   transform: scaleX(0);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -136,16 +136,179 @@
 .gh-panel, .gh-main > *, .gh-sidebar { animation: fadeIn 0.4s ease backwards; }
 .gh-tree-item { animation: slideInLeft 0.25s ease backwards; transition: background 0.2s, color 0.2s; }
 .gh-tree-toggle { transition: transform 0.2s ease, color 0.2s; }
-.gh-tree-toggle:hover { color: #00d2ff; transform: scale(1.2); }
+.gh-tree-toggle:hover { color: var(--accent); transform: scale(1.2); }
 .gh-dir-row { transition: background 0.2s ease, padding-left 0.2s ease; }
 .gh-dir-row:hover { padding-left: 22px; }
 .gh-external-btn { transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
-.gh-external-btn:hover { box-shadow: 0 0 18px rgba(0, 210, 255, 0.35); transform: translateY(-2px); }
+.gh-external-btn:hover { box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.175); transform: translateY(-2px); }
 .gh-markdown img { transition: transform 0.3s ease; }
 
 /* Modales */
 .modal-overlay { animation: fadeIn 0.25s ease; }
 .modal-content { animation: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* --- ANIMATIONS SUPPLÉMENTAIRES (thème orange) --- */
+
+@keyframes floatBlob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.08); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+
+@keyframes stripeSlide {
+  to { background-position: 200% 100%; }
+}
+
+@keyframes drawLine {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes pulseRing {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
+  100% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+}
+
+@keyframes pillPop {
+  from { opacity: 0; transform: translateY(8px) scale(0.85); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes shine {
+  from { left: -60%; }
+  to { left: 130%; }
+}
+
+/* Halo orange qui flotte derrière le profil */
+.profile-header { position: relative; isolation: isolate; }
+.profile-header::before,
+.profile-header::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  opacity: 0.25;
+}
+.profile-header::before {
+  width: 280px;
+  height: 280px;
+  top: -60px;
+  left: -60px;
+  background: radial-gradient(circle, var(--accent-soft-1), transparent 70%);
+  animation: floatBlob 14s ease-in-out infinite;
+}
+.profile-header::after {
+  width: 220px;
+  height: 220px;
+  bottom: -40px;
+  right: 10%;
+  background: radial-gradient(circle, var(--accent-soft-2), transparent 70%);
+  animation: floatBlob 18s ease-in-out -6s infinite reverse;
+}
+:root[data-theme="dark"] .profile-header::before,
+:root[data-theme="dark"] .profile-header::after { opacity: 0.12; }
+
+/* Bande dégradée façon Mistral sous le profil */
+.about-container > .profile-header {
+  border-bottom-color: transparent;
+  background-image: var(--accent-gradient);
+  background-size: 200% 3px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  animation: stripeSlide 8s linear infinite;
+}
+
+/* Titres de section : trait orange qui se dessine à l'apparition */
+.section-title-wrapper,
+.projects-header { position: relative; }
+.section-title-wrapper::after,
+.projects-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 90px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.section-title-wrapper.reveal-in::after,
+.projects-header.reveal-in::after,
+.section-title-wrapper:not(.reveal)::after,
+.projects-header:not(.reveal)::after {
+  animation: drawLine 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+/* Compétences : les étiquettes apparaissent une à une */
+.skill-category.reveal-in .zoom-pill { animation: pillPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+.skill-category.reveal-in .zoom-pill:nth-child(2) { animation-delay: 0.05s; }
+.skill-category.reveal-in .zoom-pill:nth-child(3) { animation-delay: 0.1s; }
+.skill-category.reveal-in .zoom-pill:nth-child(4) { animation-delay: 0.15s; }
+.skill-category.reveal-in .zoom-pill:nth-child(5) { animation-delay: 0.2s; }
+.skill-category.reveal-in .zoom-pill:nth-child(6) { animation-delay: 0.25s; }
+.skill-category.reveal-in .zoom-pill:nth-child(7) { animation-delay: 0.3s; }
+.skill-category.reveal-in .zoom-pill:nth-child(8) { animation-delay: 0.35s; }
+.skill-category.reveal-in .zoom-pill:nth-child(n+9) { animation-delay: 0.4s; }
+
+/* Parcours : le point du poste actuel pulse */
+.timeline-frise-dot[data-status="Current"],
+.timeline-h-dot[data-status="Current"] { animation: pulseRing 1.8s ease-out infinite; }
+
+/* Cartes : bordure dégradée qui apparaît en haut et légère élévation */
+.project-card::after,
+.skill-category::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-gradient);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.skill-category { position: relative; overflow: hidden; }
+.project-card:hover::after,
+.skill-category:hover::after { transform: scaleX(1); }
+.project-card:hover { box-shadow: 0 14px 34px rgba(var(--accent-rgb), 0.08); }
+
+/* Boutons orange : reflet qui passe au survol */
+.view-projects-btn,
+.submit-btn,
+.scroll-to-top-btn { position: relative; overflow: hidden; }
+.view-projects-btn::after,
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+.view-projects-btn:hover::after,
+.submit-btn:hover::after { animation: shine 0.7s ease; }
+.view-projects-btn:hover { box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.175); transform: translateY(-2px); }
+
+/* Contact : icônes qui sautillent au survol */
+.contact-item { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+.contact-item:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(var(--accent-rgb), 0.07); }
+
+/* Sur les écrans tactiles, pas d'effets de survol qui restent « collés » après un tap */
+@media (hover: none) {
+  .project-card:hover,
+  .contact-item:hover,
+  .view-projects-btn:hover { transform: none; }
+  .project-card:hover::before { left: -75%; }
+}
 
 /* Accessibilité : pas d'animation pour ceux qui l'ont désactivée dans leur système */
 @media (prefers-reduced-motion: reduce) {
@@ -156,4 +319,6 @@
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .section-title-wrapper::after, .projects-header::after { transform: scaleX(1); }
+  .profile-header::before, .profile-header::after { animation: none; }
 }

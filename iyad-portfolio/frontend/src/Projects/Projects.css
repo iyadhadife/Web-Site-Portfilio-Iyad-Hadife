@@ -3,7 +3,7 @@
   padding: 40px;
   max-width: 1400px;
   margin: 0 auto;
-  color: var(--text-main, #f3f4f6);
+  color: var(--text-main, var(--text));
 }
 
 .projects-header {
@@ -11,18 +11,20 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
-  border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
   padding-bottom: 20px;
 }
 
-.projects-header h2 { margin: 0; color: #fff; }
+.projects-header { gap: 16px; }
+.projects-header h2 { margin: 0; color: var(--heading); border-bottom: none; padding-bottom: 0; }
 .project-count {
-  color: #00d2ff;
-  background: rgba(0, 210, 255, 0.1);
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.1);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Grille des cartes */
@@ -33,8 +35,8 @@
 }
 
 .project-card {
-  background-color: #111827;
-  border: 1px solid #1e3a8a;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 25px;
   text-decoration: none;
@@ -46,13 +48,13 @@
 }
 
 .project-card:hover {
-  border-color: #00d2ff;
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.075);
   transform: translateY(-5px);
 }
 
 .project-category {
-  color: #00d2ff;
+  color: var(--accent);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -60,8 +62,8 @@
   display: block;
 }
 
-.project-card h3 { color: #fff; margin-bottom: 15px; font-size: 1.3rem; }
-.project-card p { color: #9ca3af; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+.project-card h3 { color: var(--heading); margin-bottom: 15px; font-size: 1.3rem; }
+.project-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
 
 /* Technologies */
 .tech-stack {
@@ -72,29 +74,29 @@
 }
 
 .tech-pill {
-  background: rgba(30, 58, 138, 0.3);
-  border: 1px solid #1e3a8a;
-  color: #e5e7eb;
+  background: rgba(var(--border-rgb), 0.3);
+  border: 1px solid var(--border);
+  color: var(--text);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.75rem;
 }
 
-.card-footer { border-top: 1px solid #1e3a8a; padding-top: 15px; margin-top: auto; }
-.view-details-text { color: #00d2ff; font-size: 0.9rem; font-weight: bold; opacity: 0.8; transition: 0.3s; }
+.card-footer { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
+.view-details-text { color: var(--accent); font-size: 0.9rem; font-weight: bold; opacity: 0.8; transition: 0.3s; }
 .project-card:hover .view-details-text { opacity: 1; letter-spacing: 0.5px; }
 
 /* --- VUE DÉTAILLÉE --- */
 .back-button {
   display: inline-block;
-  color: #9ca3af;
+  color: var(--text-muted);
   text-decoration: none;
   margin-bottom: 30px;
   transition: color 0.3s;
 }
-.back-button:hover { color: #00d2ff; }
+.back-button:hover { color: var(--accent); }
 
-.project-detail-header h1 { font-size: 2.5rem; margin-top: 10px; color: #fff; }
+.project-detail-header h1 { font-size: 2.5rem; margin-top: 10px; color: var(--heading); }
 
 .project-detail-content {
   display: grid;
@@ -103,15 +105,19 @@
   margin-top: 40px;
 }
 
-.main-description h3, .tech-sidebar h3 { color: #00d2ff; border-bottom: 1px solid #1e3a8a; padding-bottom: 10px; margin-bottom: 20px; }
-.main-description p { line-height: 1.7; color: #d1d5db; }
-.main-description ul { color: #d1d5db; padding-left: 20px; line-height: 1.7; }
+.main-description h3, .tech-sidebar h3 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
+.main-description p { line-height: 1.7; color: var(--text); }
+.main-description ul { color: var(--text); padding-left: 20px; line-height: 1.7; }
 .main-description li { margin-bottom: 10px; }
 
 .tech-stack-detail { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
 
 @media (max-width: 900px) {
   .project-detail-content { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .projects-page, .project-detail-page { padding: 24px 16px; }
 }
 
 .header-title-flex {
@@ -127,9 +133,9 @@
 }
 
 .small-edit-btn {
-  background: rgba(0, 210, 255, 0.1);
-  color: #00d2ff;
-  border: 1px solid #00d2ff;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent);
   width: 26px;
   height: 26px;
   border-radius: 6px;
@@ -142,8 +148,8 @@
 }
 
 .small-edit-btn:hover {
-  background: #00d2ff;
-  color: #000;
+  background: var(--accent);
+  color: var(--on-accent);
   transform: scale(1.05);
 }
 
@@ -155,10 +161,10 @@
 }
 
 .modal-form input, .modal-form textarea {
-  background: #070b14;
-  border: 1px solid #1e3a8a;
+  background: var(--bg);
+  border: 1px solid var(--border);
   padding: 12px;
-  color: #fff;
+  color: var(--heading);
   border-radius: 6px;
   font-family: inherit;
   width: 100%;
@@ -166,18 +172,18 @@
 
 /* Conteneur principal de l'éditeur */
 .editor-wrapper-box {
-  background-color: #111827;
-  border: 1px solid #1e3a8a;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   margin-top: 30px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px var(--shadow);
   transition: all 0.3s ease;
 }
 
 .editor-wrapper-box.editing-active {
-  border-color: #00d2ff;
-  box-shadow: 0 0 15px rgba(0, 210, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
 }
 
 /* Barre d'action supérieure de l'éditeur */
@@ -185,13 +191,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0b1121;
+  background-color: var(--surface-2);
   padding: 12px 20px;
-  border-bottom: 1px solid #1e3a8a;
+  border-bottom: 1px solid var(--border);
 }
 
 .editor-label {
-  color: #00d2ff;
+  color: var(--accent);
   font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -199,8 +205,8 @@
 }
 
 .save-changes-btn {
-  background-color: #00d2ff;
-  color: #000;
+  background-color: var(--accent);
+  color: var(--on-accent);
   border: none;
   padding: 6px 16px;
   border-radius: 6px;
@@ -211,13 +217,13 @@
 
 .save-changes-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.25);
 }
 
 .edit-mode-btn {
-  background: rgba(0, 210, 255, 0.1);
-  color: #00d2ff;
-  border: 1px solid #00d2ff;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: 1px solid var(--accent);
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
@@ -226,8 +232,8 @@
 }
 
 .edit-mode-btn:hover {
-  background: #00d2ff;
-  color: #000;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .project-detail-content-box {
@@ -236,16 +242,16 @@
 
 /* Surcharges CSS pour adapter Quill (éditeur riche) au thème sombre */
 .dark-quill-editor .ql-toolbar.ql-snow {
-  background-color: #0b1121;
-  border-color: #1e3a8a;
+  background-color: var(--surface-2);
+  border-color: var(--border);
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
 .dark-quill-editor .ql-container.ql-snow {
-  background-color: #111827;
-  border-color: #1e3a8a;
-  color: #f3f4f6;
+  background-color: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
   border-bottom-left-radius: 8px;
@@ -255,28 +261,28 @@
 
 /* Couleur des icônes de la barre d'outils Quill en mode sombre */
 .dark-quill-editor .ql-stroke {
-  stroke: #9ca3af !important;
+  stroke: var(--text-muted) !important;
 }
 .dark-quill-editor .ql-fill {
-  fill: #9ca3af !important;
+  fill: var(--text-muted) !important;
 }
 .dark-quill-editor .ql-picker {
-  color: #9ca3af !important;
+  color: var(--text-muted) !important;
 }
 .dark-quill-editor .ql-picker-options {
-  background-color: #0b1121 !important;
-  border-color: #1e3a8a !important;
+  background-color: var(--surface-2) !important;
+  border-color: var(--border) !important;
 }
 
 .rendered-html-content {
-  color: #d1d5db;
+  color: var(--text);
   line-height: 1.8;
 }
 
 .rendered-html-content h1, 
 .rendered-html-content h2, 
 .rendered-html-content h3 {
-  color: #fff;
+  color: var(--heading);
   margin-top: 20px;
   margin-bottom: 10px;
 }
@@ -290,9 +296,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0b1121;
+  background-color: var(--surface-2);
   padding: 10px 20px;
-  border-bottom: 1px solid #1e3a8a;
+  border-bottom: 1px solid var(--border);
 }
 
 .toolbar-buttons-group {
@@ -302,9 +308,9 @@
 }
 
 .toolbar-buttons-group button {
-  background: #111827;
-  color: #9ca3af;
-  border: 1px solid #1e3a8a;
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
@@ -313,21 +319,21 @@
 }
 
 .toolbar-buttons-group button:hover {
-  background: #00d2ff;
-  color: #000;
-  border-color: #00d2ff;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
 }
 
 .toolbar-separator {
-  color: #1e3a8a;
+  color: var(--border);
   margin: 0 5px;
 }
 
 .custom-editor-textarea {
   width: 100%;
   min-height: 350px;
-  background-color: #111827;
-  color: #f3f4f6;
+  background-color: var(--surface);
+  color: var(--text);
   border: none;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
@@ -348,16 +354,16 @@
 }
 
 .form-group label {
-  color: #00d2ff;
+  color: var(--accent);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .form-group input, .form-group textarea {
-  background-color: #070b14;
-  border: 1px solid #1e3a8a;
+  background-color: var(--bg);
+  border: 1px solid var(--border);
   padding: 10px 14px;
-  color: #fff;
+  color: var(--heading);
   border-radius: 6px;
   font-family: inherit;
 }
@@ -385,9 +391,9 @@
 }
 
 .add-row-btn {
-  background: rgba(0, 210, 255, 0.1);
-  color: #00d2ff;
-  border: 1px dashed #00d2ff;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent);
+  border: 1px dashed var(--accent);
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
@@ -397,25 +403,25 @@
 }
 
 .add-row-btn:hover {
-  background: rgba(0, 210, 255, 0.2);
+  background: rgba(var(--accent-rgb), 0.2);
 }
 
 /* Styles du rendu final (Tableaux, Listes, Images) */
 .rendered-template h3 {
-  color: #00d2ff;
+  color: var(--accent);
   margin-top: 25px;
   margin-bottom: 12px;
   font-size: 1.2rem;
 }
 
 .rendered-template p {
-  color: #d1d5db;
+  color: var(--text);
   line-height: 1.6;
 }
 
 .styled-bullet-list {
   padding-left: 20px;
-  color: #d1d5db;
+  color: var(--text);
   line-height: 1.8;
 }
 
@@ -424,22 +430,22 @@
   max-width: 400px;
   border-collapse: collapse;
   margin-top: 10px;
-  background-color: #070b14;
+  background-color: var(--bg);
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
 }
 
 .styled-data-table th, .styled-data-table td {
   padding: 10px 15px;
   text-align: left;
-  border-bottom: 1px solid #1e3a8a;
-  color: #f3f4f6;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
 }
 
 .styled-data-table th {
-  background-color: #121c33;
-  color: #00d2ff;
+  background-color: var(--surface-2);
+  color: var(--accent);
 }
 
 .project-image-preview-container {
@@ -448,7 +454,7 @@
 
 .figure-caption {
   font-style: italic;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin-bottom: 10px;
 }
 
@@ -456,23 +462,23 @@
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
 }
 
 /* Conteneur global de l'éditeur TipTap */
 .tiptap-editor-container {
-  background-color: #111827;
-  border: 1px solid #1e3a8a;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   margin-top: 30px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 20px var(--shadow);
   transition: all 0.3s ease;
 }
 
 .tiptap-editor-container.editing-active {
-  border-color: #00d2ff;
-  box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.125);
 }
 
 /* Barre d'outils supérieure (similaire au template) */
@@ -481,9 +487,9 @@
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  background-color: #0b1121;
+  background-color: var(--surface-2);
   padding: 12px 20px;
-  border-bottom: 1px solid #1e3a8a;
+  border-bottom: 1px solid var(--border);
 }
 
 .toolbar-group {
@@ -493,9 +499,9 @@
 }
 
 .tiptap-toolbar button {
-  background: #111827;
-  color: #9ca3af;
-  border: 1px solid #1e3a8a;
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
   padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -505,15 +511,15 @@
 }
 
 .tiptap-toolbar button:hover, .tiptap-toolbar button.is-active {
-  background: #00d2ff;
-  color: #000;
-  border-color: #00d2ff;
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
 }
 
 .toolbar-separator {
   width: 1px;
   height: 20px;
-  background-color: #1e3a8a;
+  background-color: var(--border);
   margin: 0 4px;
 }
 
@@ -521,7 +527,7 @@
 .tiptap-content-wrapper {
   padding: 35px;
   min-height: 400px;
-  color: #f3f4f6;
+  color: var(--text);
   font-family: 'Inter', sans-serif;
   line-height: 1.7;
 }
@@ -533,29 +539,29 @@
 
 .tiptap-content-wrapper h1 {
   font-size: 2.2rem;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 15px;
-  border-bottom: 1px solid #1e3a8a;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
 }
 
 .tiptap-content-wrapper h2 {
   font-size: 1.6rem;
-  color: #00d2ff;
+  color: var(--accent);
   margin-top: 25px;
   margin-bottom: 10px;
 }
 
 .tiptap-content-wrapper h3 {
   font-size: 1.3rem;
-  color: #fff;
+  color: var(--heading);
   margin-top: 20px;
   margin-bottom: 8px;
 }
 
 .tiptap-content-wrapper p {
   margin-bottom: 15px;
-  color: #d1d5db;
+  color: var(--text);
 }
 
 .tiptap-content-wrapper ul {
@@ -572,7 +578,7 @@
 
 .tiptap-content-wrapper li {
   margin-bottom: 6px;
-  color: #d1d5db;
+  color: var(--text);
 }
 
 /* Style des tableaux TipTap */
@@ -583,24 +589,24 @@
   margin: 20px 0;
   overflow: hidden;
   border-radius: 6px;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
 }
 
 .tiptap-content-wrapper table td, 
 .tiptap-content-wrapper table th {
   min-width: 1em;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
   padding: 10px 14px;
   vertical-align: top;
   box-sizing: border-box;
   position: relative;
-  background-color: #070b14;
-  color: #fff;
+  background-color: var(--bg);
+  color: var(--heading);
 }
 
 .tiptap-content-wrapper table th {
-  background-color: #121c33;
-  color: #00d2ff;
+  background-color: var(--surface-2);
+  color: var(--accent);
   font-weight: bold;
 }
 
@@ -609,7 +615,7 @@
   max-width: 100%;
   height: auto;
   border-radius: 8px;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
   margin: 20px 0;
 }
 
@@ -661,25 +667,25 @@
 .project-toc-sidebar {
   position: sticky;
   top: 30px;
-  background-color: #111827;
-  border: 1px solid #1e3a8a;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   max-height: calc(100vh - 100px);
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
 .project-toc-sidebar h3 {
-  color: #00d2ff;
+  color: var(--accent);
   font-size: 1.1rem;
   margin-bottom: 15px;
-  border-bottom: 1px solid #1e3a8a;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
 }
 
 .toc-empty {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 0.9rem;
   font-style: italic;
 }
@@ -696,7 +702,7 @@
 .toc-item button {
   background: none;
   border: none;
-  color: #d1d5db;
+  color: var(--text);
   text-align: left;
   cursor: pointer;
   font-size: 0.9rem;
@@ -710,8 +716,8 @@
 }
 
 .toc-item button:hover {
-  background-color: rgba(0, 210, 255, 0.15);
-  color: #00d2ff;
+  background-color: rgba(var(--accent-rgb), 0.15);
+  color: var(--accent);
 }
 
 /* Indentation automatique selon le niveau du titre (H1, H2, H3) */
@@ -752,10 +758,10 @@
   position: sticky !important;
   top: 20px !important; /* Distance par rapport au haut de l'écran */
   z-index: 99999 !important;
-  background-color: #111827 !important;
-  border: 1px solid #1e3a8a !important;
-  border-bottom: 2px solid #00d2ff !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  background-color: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-bottom: 2px solid var(--accent) !important;
+  box-shadow: 0 10px 30px var(--shadow-strong) !important;
 }
 
 /* Support des retours à la ligne et sélection claire dans les tableaux TipTap */
@@ -777,7 +783,7 @@
   gap: 10px;
   margin-top: 15px;
 }
-.doc-admin-label { color: #9ca3af; font-size: 0.85rem; }
+.doc-admin-label { color: var(--text-muted); font-size: 0.85rem; }
 .doc-delete-btn {
   background: rgba(239, 68, 68, 0.1);
   color: #f87171;
@@ -790,10 +796,10 @@
 }
 .doc-delete-btn:hover { background: rgba(239, 68, 68, 0.2); }
 .doc-fallback-note {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-style: italic;
   font-size: 0.9rem;
-  border-left: 3px solid #00d2ff;
+  border-left: 3px solid var(--accent);
   padding-left: 10px;
   margin: 0 0 20px;
 }

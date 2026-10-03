@@ -1,3 +1,72 @@
+/* --- THÈMES : clair (blanc + orange) et sombre (noir + orange) ---
+   Le thème est posé sur <html data-theme="..."> par le script de index.html puis par ThemeContext. */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+  /* Orange inspiré de Mistral AI, adouci pour ne pas fatiguer les yeux */
+  --accent: #D9581F;
+  --accent-hover: #BF4A16;
+  --accent-rgb: 217, 88, 31;
+  --on-accent: #ffffff;
+  --accent-gradient: linear-gradient(90deg, #E8B04A, #E3913F, #DD7232, #D9581F, #C04A1E);
+  --accent-soft-1: #E3913F;
+  --accent-soft-2: #E8B04A;
+  --glow: 0.6;
+
+  --bg: #ffffff;
+  --bg-soft: #fff7f2;
+  --surface: #ffffff;
+  --surface-2: #fff4ed;
+  --border: #f0ddd2;
+  --border-rgb: 240, 221, 210;
+  --heading: #111111;
+  --text: #1f1f1f;
+  --text-muted: #5f6368;
+  --text-faint: #8a8f98;
+  --nav-bg: rgba(255, 255, 255, 0.86);
+  --shadow: rgba(17, 17, 17, 0.08);
+  --shadow-strong: rgba(17, 17, 17, 0.18);
+  --code-bg: #0d1117;
+  --code-border: #1f2937;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  /* Plus sombre et moins saturé sur fond noir */
+  --accent: #CC6A3D;
+  --accent-hover: #DB7E53;
+  --accent-rgb: 204, 106, 61;
+  --on-accent: #ffffff;
+  --accent-gradient: linear-gradient(90deg, #C9A050, #C98848, #CC6A3D, #B8573A, #9E4A35);
+  --accent-soft-1: #C98848;
+  --accent-soft-2: #C9A050;
+  --glow: 0.35;
+  --bg: #0a0a0a;
+  --bg-soft: #111111;
+  --surface: #141414;
+  --surface-2: #1c1c1c;
+  --border: #2a2a2a;
+  --border-rgb: 42, 42, 42;
+  --heading: #ffffff;
+  --text: #ededed;
+  --text-muted: #a3a3a3;
+  --text-faint: #6b6b6b;
+  --nav-bg: rgba(10, 10, 10, 0.86);
+  --shadow: rgba(0, 0, 0, 0.45);
+  --shadow-strong: rgba(0, 0, 0, 0.8);
+  --code-bg: #0d0d0d;
+  --code-border: #2a2a2a;
+}
+
+/* Anciens noms de variables encore utilisés dans le code */
+:root {
+  --bg-dark: var(--bg);
+  --card-bg: var(--surface);
+  --neon-blue: var(--accent);
+  --text-main: var(--text);
+  --border-light: rgba(var(--accent-rgb), 0.2);
+}
+
 /* Réinitialisation totale de la page */
 html, body, #root {
   scroll-behavior: smooth; /* Ajoute l'effet de glissement fluide */
@@ -5,7 +74,7 @@ html, body, #root {
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  background-color: #070b14;
+  background-color: var(--bg);
 }
 
 /* Écraser les paramètres par défaut de Vite sur la balise root */
@@ -17,4 +86,14 @@ html, body, #root {
 
 * {
   box-sizing: border-box;
+}
+
+::selection { background: rgba(var(--accent-rgb), 0.25); }
+
+/* Changement de thème en douceur (uniquement pendant la bascule, voir ThemeContext) */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, fill 0.4s ease !important;
 }

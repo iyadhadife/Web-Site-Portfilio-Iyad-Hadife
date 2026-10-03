@@ -84,6 +84,8 @@ const translations = {
     'contact.networks': 'Réseaux & profils',
 
     'scrollTop': 'Remonter en haut',
+    'theme.toLight': 'Passer en mode clair',
+    'theme.toDark': 'Passer en mode sombre',
     'lang.fr': 'français',
     'lang.en': 'anglais',
   },
@@ -169,6 +171,8 @@ const translations = {
     'contact.networks': 'Networks & profiles',
 
     'scrollTop': 'Back to top',
+    'theme.toLight': 'Switch to light mode',
+    'theme.toDark': 'Switch to dark mode',
     'lang.fr': 'French',
     'lang.en': 'English',
   },

@@ -2,7 +2,7 @@
   max-width: 800px;
   margin: 40px auto;
   padding: 0 20px;
-  color: #fff;
+  color: var(--heading);
   box-sizing: border-box;
 }
 
@@ -13,22 +13,22 @@
 
 .contact-header h2 {
   font-size: 2.5rem;
-  color: #00d2ff;
+  color: var(--accent);
   margin-bottom: 10px;
 }
 
 .contact-header p {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 1.1rem;
   margin-bottom: 20px;
 }
 
 .contact-card-container {
-  background-color: #111827;
-  border: 1px solid #1e3a8a;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px var(--shadow);
 }
 
 /* Grille d'information : 2 colonnes sur PC, 1 colonne sur mobile */
@@ -42,10 +42,10 @@
   display: flex;
   align-items: flex-start;
   gap: 15px;
-  background-color: #0b1121;
+  background-color: var(--surface-2);
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid #1e3a8a;
+  border: 1px solid var(--border);
   overflow: hidden; /* Empêche les éléments de dépasser */
 }
 
@@ -55,14 +55,14 @@
 }
 
 .contact-item h4 {
-  color: #00d2ff;
+  color: var(--accent);
   margin-bottom: 5px;
   font-size: 1rem;
 }
 
 .contact-item a, 
 .contact-item p {
-  color: #d1d5db;
+  color: var(--text);
   text-decoration: none;
   font-size: 0.95rem; /* Correction de la coquille '0.95ln' */
   word-break: break-word; /* Évite les dépassements de texte sur petits écrans */
@@ -70,7 +70,7 @@
 }
 
 .contact-item a:hover {
-  color: #00d2ff;
+  color: var(--accent);
   text-decoration: underline;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .contact-edit-form h3 {
-  color: #00d2ff;
+  color: var(--accent);
   margin-bottom: 10px;
 }
 
@@ -100,15 +100,15 @@
 }
 
 .contact-edit-form label {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-weight: 500;
 }
 
 .contact-edit-form input {
-  background: #070b14;
-  border: 1px solid #1e3a8a;
+  background: var(--bg);
+  border: 1px solid var(--border);
   padding: 12px;
-  color: #fff;
+  color: var(--heading);
   border-radius: 6px;
   font-family: inherit;
   width: 100%; /* S'adapte à la largeur du conteneur */
@@ -122,8 +122,8 @@
 
 .cancel-btn {
   background: transparent;
-  color: #9ca3af;
-  border: 1px solid #4b5563;
+  color: var(--text-muted);
+  border: 1px solid var(--text-faint);
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -131,8 +131,8 @@
 }
 
 .cancel-btn:hover {
-  color: #fff;
-  border-color: #fff;
+  color: var(--heading);
+  border-color: var(--heading);
 }
 
 /* --- RESPONSIVE MOBILE --- */
@@ -168,12 +168,12 @@
 .contact-item a {
   position: relative;
   text-decoration: none; /* Supprime le soulignement par défaut */
-  border-bottom: 1px dashed rgba(0, 210, 255, 0.4); /* Petit soulignement discret permanent */
+  border-bottom: 1px dashed rgba(var(--accent-rgb), 0.4); /* Petit soulignement discret permanent */
   transition: all 0.3s ease;
 }
 
 .contact-item a:hover {
-  color: #00d2ff;
-  border-bottom: 1px solid #00d2ff; /* Soulignement plein et lumineux au survol */
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent); /* Soulignement plein et lumineux au survol */
   text-decoration: none;
 }

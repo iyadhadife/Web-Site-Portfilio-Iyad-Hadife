@@ -39,7 +39,7 @@ function PinnedRepos() {
               <div className="card-content">
                 <div className="card-top-row">
                   <span className="project-category">
-                    {r.language && <span className="gh-lang-dot" style={{ background: r.languageColor || '#00d2ff' }} />}
+                    {r.language && <span className="gh-lang-dot" style={{ background: r.languageColor || 'var(--accent)' }} />}
                     {r.language || 'GitHub'}
                   </span>
                   <span className="gh-pinned-stats">★ {r.stars}</span>

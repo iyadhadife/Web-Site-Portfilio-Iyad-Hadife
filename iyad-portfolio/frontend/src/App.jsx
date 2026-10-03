@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './Context/AuthContext';
 import About from './About/About';
@@ -10,6 +10,8 @@ import AdminLogin from './Admin/AdminLogin';
 const RepoPage = lazy(() => import('./GitHub/RepoPage'));
 import useScrollReveal from './Animations/useScrollReveal';
 import { LanguageProvider, useLang } from './i18n/LanguageContext';
+import { ThemeProvider } from './Theme/ThemeContext';
+import ThemeToggle from './Theme/ThemeToggle';
 import './App.css';
 import './Animations/animations.css';
 
@@ -84,15 +86,6 @@ function Navigation() {
   return (
     <nav className="top-navbar">
       <div className="nav-brand-mobile">Portfolio</div>
-      
-      {/* Bouton Hamburger pour mobile */}
-      <button 
-        className="hamburger-btn" 
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        title="Menu"
-      >
-        {isMobileMenuOpen ? '✕' : '☰'}
-      </button>
 
       {/* Conteneur des liens (Volet sur mobile) */}
       <div className={`nav-links-container ${isMobileMenuOpen ? 'open' : ''}`}>
@@ -107,13 +100,57 @@ function Navigation() {
           <button onClick={logout} className="nav-link admin-logout-btn" style={{background:'none', border:'none', cursor:'pointer'}}>{t('nav.logout')}</button>
         )}
 
+      </div>
+
+      {/* Langue et thème : toujours visibles, aussi sur mobile */}
+      <div className="nav-actions">
         <button type="button" className="lang-switch" onClick={toggle} title={t('nav.language')} aria-label={t('nav.language')}>
           <span className={lang === 'fr' ? 'active' : ''}>FR</span>
           <span className={lang === 'en' ? 'active' : ''}>EN</span>
         </button>
+        <ThemeToggle />
+
+        {/* Bouton Hamburger pour mobile */}
+        <button
+          className={`hamburger-btn ${isMobileMenuOpen ? 'open' : ''}`}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          title="Menu"
+          aria-label="Menu"
+          aria-expanded={isMobileMenuOpen}
+        >
+          <span /><span /><span />
+        </button>
       </div>
+
+      <ScrollProgress />
     </nav>
   );
+}
+
+// Barre orange sous la navigation qui suit la progression du défilement
+function ScrollProgress() {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      if (barRef.current) barRef.current.style.transform = `scaleX(${progress})`;
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return <div className="scroll-progress" ref={barRef} aria-hidden="true" />;
 }
 
 // Composant pour le bouton de retour en haut
@@ -181,27 +218,29 @@ function AdminLanguageNote() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <Router>
-          <div className="app-layout">
-            <Navigation />
-            <main className="main-content">
-              <AnimatedRoutes>
-                <Route path="/" element={<About />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/projects/:id" element={<ProjectDetail />} />
-                <Route path="/github/:owner/:repo/*" element={<Suspense fallback={<div className="state-container"><div className="loader"></div></div>}><RepoPage /></Suspense>} />
-                <Route path="/admin" element={<AdminLogin />} />
-                <Route path="/contact" element={<Contact />} />
-              </AnimatedRoutes>
-            </main>
-            <AdminLanguageNote />
-            <ScrollToTopButton /> 
-          </div>
-        </Router>
-      </AuthProvider>
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
+            <div className="app-layout">
+              <Navigation />
+              <main className="main-content">
+                <AnimatedRoutes>
+                  <Route path="/" element={<About />} />
+                  <Route path="/projects" element={<Projects />} />
+                  <Route path="/projects/:id" element={<ProjectDetail />} />
+                  <Route path="/github/:owner/:repo/*" element={<Suspense fallback={<div className="state-container"><div className="loader"></div></div>}><RepoPage /></Suspense>} />
+                  <Route path="/admin" element={<AdminLogin />} />
+                  <Route path="/contact" element={<Contact />} />
+                </AnimatedRoutes>
+              </main>
+              <AdminLanguageNote />
+              <ScrollToTopButton /> 
+            </div>
+          </Router>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

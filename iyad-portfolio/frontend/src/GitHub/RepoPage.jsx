@@ -178,7 +178,7 @@ function RepoPage() {
         {info && (
           <div className="gh-repo-meta">
             {info.language && (
-              <span className="gh-lang"><span className="gh-lang-dot" style={{ background: info.languageColor || '#00d2ff' }} />{info.language}</span>
+              <span className="gh-lang"><span className="gh-lang-dot" style={{ background: info.languageColor || 'var(--accent)' }} />{info.language}</span>
             )}
             <span>★ {info.stars}</span>
             <span>⑂ {info.forks}</span>
