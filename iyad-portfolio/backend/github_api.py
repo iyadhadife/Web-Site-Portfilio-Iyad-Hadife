@@ -9,6 +9,7 @@ Variables d'environnement (fichier .env) :
 - GITHUB_TOKEN  : token en lecture seule (recommandé, passe la limite de 60 à 5000 requêtes/h)
 - PINNED_REPOS  : liste manuelle "owner/repo,owner/repo" qui remplace la détection automatique
 """
+import json
 import os
 import re
 import time
@@ -28,6 +29,9 @@ RAW = "https://raw.githubusercontent.com"
 CACHE_TTL = 600  # 10 minutes
 MAX_FILE_SIZE = 5_000_000  # au-delà, on propose seulement le téléchargement (les notebooks avec images sont lourds)
 
+# Descriptions FR/EN affichées sur le portfolio, prioritaires sur celles de GitHub
+DESCRIPTIONS_FILE = os.path.join(os.path.dirname(__file__), "project_descriptions.json")
+
 _cache = {}
 _cache_lock = threading.Lock()
 
@@ -38,15 +42,49 @@ class GitHubError(Exception):
         self.status = status
 
 
+RETRY_AFTER_ERROR = 60  # en cas d'échec, on ressert l'ancienne valeur et on réessaie dans 1 minute
+DISK_CACHE_FILE = os.path.join(os.path.dirname(__file__), "github_cache.json")
+
+
 def _cached(key, loader, ttl=CACHE_TTL):
+    """Cache mémoire. Si GitHub échoue (limite de l'API, réseau...), on ressert la dernière
+    valeur connue plutôt que de faire disparaître les projets du site."""
     now = time.time()
     with _cache_lock:
         hit = _cache.get(key)
         if hit and now - hit[0] < ttl:
             return hit[1]
-    value = loader()
+    try:
+        value = loader()
+    except Exception:
+        if not hit:
+            raise
+        print(f"GitHub indisponible pour {key}, ancienne version servie")
+        with _cache_lock:
+            _cache[key] = (now - ttl + RETRY_AFTER_ERROR, hit[1])
+        return hit[1]
     with _cache_lock:
         _cache[key] = (now, value)
+    return value
+
+
+def _disk_cache(key, value=None):
+    """Copie sur disque de la liste des projets : survit aux redémarrages et sert de secours."""
+    try:
+        with open(DISK_CACHE_FILE, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        data = {}
+    if value is None:
+        return data.get(key)
+    data[key] = value
+    try:
+        tmp = f"{DISK_CACHE_FILE}.{os.getpid()}.tmp"
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False)
+        os.replace(tmp, DISK_CACHE_FILE)
+    except OSError as e:
+        print("Écriture du cache GitHub impossible :", e)
     return value
 
 
@@ -61,11 +99,30 @@ def _get(url, accept="application/vnd.github+json", params=None):
     res = requests.get(url, headers=_headers(accept), params=params, timeout=15)
     if res.status_code == 404:
         raise GitHubError("Introuvable sur GitHub", 404)
-    if res.status_code in (403, 429) and res.headers.get("X-RateLimit-Remaining") == "0":
+    if res.status_code == 429 or (res.status_code == 403 and res.headers.get("X-RateLimit-Remaining") == "0"):
         raise GitHubError("Limite de l'API GitHub atteinte, réessayez plus tard", 503)
     if not res.ok:
         raise GitHubError(f"Erreur GitHub ({res.status_code})")
     return res
+
+
+def _with_description(repo):
+    try:
+        with open(DESCRIPTIONS_FILE, 'r', encoding='utf-8') as f:
+            descriptions = {k.lower(): v for k, v in json.load(f).items()}
+    except (OSError, ValueError):
+        descriptions = {}
+    custom = descriptions.get(f"{repo['owner']}/{repo['name']}".lower())
+    if isinstance(custom, str):
+        custom = {"en": custom}
+    if not custom:
+        return repo
+    # "description" en anglais, "description_fr" pour la version française du site
+    return {
+        **repo,
+        "description": custom.get("en") or repo["description"],
+        "description_fr": custom.get("fr") or custom.get("en") or repo["description"],
+    }
 
 
 # --- PROJETS ÉPINGLÉS ---
@@ -130,6 +187,18 @@ def _pinned_names_from_profile():
     return names
 
 
+def _user_repos():
+    """Tous les dépôts publics du compte en une seule requête (au lieu d'une par dépôt)."""
+    def load():
+        repos = _get(f"{API}/users/{GITHUB_USER}/repos", params={"sort": "pushed", "per_page": 100}).json()
+        now = time.time()
+        with _cache_lock:
+            for r in repos:
+                _cache[f"meta:{r['owner']['login']}/{r['name']}".lower()] = (now, r)
+        return repos
+    return _cached("user_repos", load)
+
+
 def _repo_summary(owner, name):
     data = _repo_meta(owner, name)
     return {
@@ -156,23 +225,40 @@ def _load_pinned():
             return _pinned_from_graphql(), "graphql"
         except Exception as e:
             print("GraphQL pinned items indisponible :", e)
+    names = []
     try:
         names = _pinned_names_from_profile()
-        if names:
-            return [_repo_summary(o, n) for o, n in names], "profile"
     except Exception as e:
         print("Lecture du profil GitHub impossible :", e)
+    try:
+        repos = _user_repos()  # une seule requête API, qui remplit aussi le cache des dépôts
+    except GitHubError:
+        if not names:
+            raise
+        repos = []
+    if names:
+        return [_repo_summary(o, n) for o, n in names], "profile"
     # Dernier recours : les dépôts publics les plus récemment mis à jour
-    repos = _get(f"{API}/users/{GITHUB_USER}/repos", params={"sort": "pushed", "per_page": 6}).json()
-    return [_repo_summary(r["owner"]["login"], r["name"]) for r in repos if not r.get("fork")], "recent"
+    return [_repo_summary(r["owner"]["login"], r["name"]) for r in repos if not r.get("fork")][:6], "recent"
 
 
 def get_pinned():
-    return _cached("pinned", _load_pinned)
+    def load():
+        try:
+            repos, source = _load_pinned()
+        except Exception as e:
+            saved = _disk_cache("pinned")
+            if saved:
+                print("GitHub indisponible, liste des projets reprise du disque :", e)
+                return saved["repos"], saved["source"]
+            raise
+        _disk_cache("pinned", {"repos": repos, "source": source})
+        return repos, source
+    return _cached("pinned", load)
 
 
 def _repo_meta(owner, repo):
-    return _cached(f"meta:{owner}/{repo}", lambda: _get(f"{API}/repos/{owner}/{repo}").json())
+    return _cached(f"meta:{owner}/{repo}".lower(), lambda: _get(f"{API}/repos/{owner}/{repo}").json())
 
 
 def _check_allowed(owner, repo):
@@ -207,13 +293,13 @@ def _handle_network_error(e):
 @github_bp.route('/api/github/pinned', methods=['GET'])
 def pinned_repos():
     repos, source = get_pinned()
-    return jsonify({"user": GITHUB_USER, "repos": repos, "source": source})
+    return jsonify({"user": GITHUB_USER, "repos": [_with_description(r) for r in repos], "source": source})
 
 
 @github_bp.route('/api/github/repos/<owner>/<repo>', methods=['GET'])
 def repo_info(owner, repo):
     _check_allowed(owner, repo)
-    return jsonify(_repo_summary(owner, repo))
+    return jsonify(_with_description(_repo_summary(owner, repo)))
 
 
 @github_bp.route('/api/github/repos/<owner>/<repo>/readme', methods=['GET'])
@@ -222,10 +308,11 @@ def repo_readme(owner, repo):
     branch = _repo_meta(owner, repo).get("default_branch", "main")
 
     def load():
-        meta = _get(f"{API}/repos/{owner}/{repo}/readme", params={"ref": branch}).json()
         html = _get(f"{API}/repos/{owner}/{repo}/readme", accept="application/vnd.github.html",
                     params={"ref": branch}).text
-        return {"path": meta["path"], "branch": branch, "html": html}
+        # Le chemin du README est indiqué dans le HTML (data-path), pas besoin d'une 2e requête
+        match = re.search(r'data-path="([^"]+)"', html)
+        return {"path": match.group(1) if match else "README.md", "branch": branch, "html": html}
 
     try:
         return jsonify(_cached(f"readme:{owner}/{repo}", load))

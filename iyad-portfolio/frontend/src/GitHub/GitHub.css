@@ -346,3 +346,7 @@
   .nb-code { grid-template-columns: 1fr; }
   .nb-prompt { display: none; }
 }
+
+.gh-pinned-error { color: #9ca3af; }
+.gh-pinned-error a { color: #00d2ff; }
+.gh-pinned-error-detail { display: block; margin-top: 6px; font-size: 0.8rem; color: #6b7280; }

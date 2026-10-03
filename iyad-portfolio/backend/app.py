@@ -11,20 +11,36 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from github_api import github_bp  # après load_dotenv pour lire GITHUB_TOKEN
+from project_docs_api import docs_bp
+from i18n_sync import load_data, english_is_stale, sync_in_background
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "une_cle_secrete_par_defaut")  # Remplace par une clé robuste
 CORS(app, supports_credentials=True)
 app.register_blueprint(github_bp)
+app.register_blueprint(docs_bp)
 
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
+
+# --- VERSION ANGLAISE AUTOMATIQUE ---
+# data.json (français) est la source : après chaque modification réussie, data_en.json est retraduit.
+NO_SYNC_PREFIXES = ('/api/login', '/api/logout', '/api/github', '/api/check-auth')
+
+@app.after_request
+def translate_after_change(response):
+    if (request.method in ('POST', 'PUT', 'DELETE') and request.path.startswith('/api/')
+            and not request.path.startswith(NO_SYNC_PREFIXES) and '/docs' not in request.path
+            and response.status_code < 400):
+        sync_in_background()
+    return response
+
+if english_is_stale():
+    sync_in_background()
 
 @app.route('/api/portfolio', methods=['GET'])
 def get_portfolio_data():
     try:
-        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = load_data(request.args.get('lang', 'fr'))
         return jsonify(data)
     except FileNotFoundError:
         return jsonify({"error": "Data file not found"}), 404
@@ -34,9 +50,7 @@ def get_portfolio_data():
 @app.route('/api/projects', methods=['GET'])
 def get_projects():
     try:
-        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = load_data(request.args.get('lang', 'fr'))
         
         projects_list = data.get('projects', [])
         return jsonify({
@@ -49,9 +63,7 @@ def get_projects():
 @app.route('/api/projects/<project_id>', methods=['GET'])
 def get_project_by_id(project_id):
     try:
-        file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = load_data(request.args.get('lang', 'fr'))
         
         for project in data.get('projects', []):
             if project['id'] == project_id:
@@ -341,7 +353,8 @@ def update_item(section, index):
             
         items_list = data.get(section, [])
         if 0 <= index < len(items_list):
-            items_list[index] = updated_item
+            # Fusion : garde les champs non envoyés (ex. la traduction anglaise "_en")
+            items_list[index] = {**items_list[index], **updated_item}
             data[section] = items_list
             
             with open(file_path, 'w', encoding='utf-8') as f:

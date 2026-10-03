@@ -1,0 +1,198 @@
+{
+    "profile": {
+        "firstName": "IYAD",
+        "lastName": "HADIFÉ",
+        "title": "AI & Data Engineer",
+        "avatar": "/profile_picture.jpg",
+        "intro": "I am a final-year Master's student specializing in Data and Artificial Intelligence at ESILV. My work focuses on building innovative AI solutions, from graph neural networks (GNN) to the design of complex multi-agent architectures.",
+        "vision": "My goal is to bridge robust data engineering and generative AI applications to solve concrete industrial problems, especially in 3D environments and automation."
+    },
+    "contactInfo": {
+        "email": "iyad.hadife@edu.devinci.fr",
+        "phone": "+33 6 10 52 10 62",
+        "address": "12 passage voltaire, Puteaux, 92800",
+        "linkedin": "https://linkedin.com/in/iyad-hadifé",
+        "github": "https://github.com/iyadhadife"
+    },
+    "skills": [
+        {
+            "category": "AI & Machine Learning",
+            "items": [
+                "PyTorch",
+                "TensorFlow",
+                "Scikit-Learn",
+                "PyTorch Geometric",
+                "Pandas",
+                "NumPy"
+            ]
+        },
+        {
+            "category": "Backend & APIs",
+            "items": [
+                "Python",
+                "Flask",
+                "Node.js",
+                "FastMCP"
+            ]
+        },
+        {
+            "category": "Frontend & Web",
+            "items": [
+                "React",
+                "JavaScript",
+                "Vite",
+                "Streamlit"
+            ]
+        },
+        {
+            "category": "Cloud & DevOps",
+            "items": [
+                "Docker",
+                "Kubernetes",
+                "Git",
+                "Podman"
+            ]
+        },
+        {
+            "category": "Architecture & Data",
+            "items": [
+                "RAG",
+                "LangChain",
+                "Agent-to-Agent",
+                "PySpark"
+            ]
+        },
+        {
+            "category": "CAD",
+            "items": [
+                "Catia Visual Scripting",
+                "Catia Part Disign",
+                "Solidworks",
+                "Catia Generative Assembly"
+            ]
+        }
+    ],
+    "education": [
+        {
+            "role": "Master's Degree in Data & AI",
+            "company": "ESILV Paris",
+            "description": "Specialization in Deep Learning, NLP, Big Data and MLOps.",
+            "date": "2023 - 2026",
+            "status": "Graduated"
+        },
+        {
+            "role": "Integrated Preparatory Program",
+            "company": "ESILV",
+            "description": "Mathematics, physics, chemistry and computer science preparation for engineering school.",
+            "date": "2021 - 2023",
+            "status": "Graduated"
+        }
+    ],
+    "experience": [
+        {
+            "role": "AI R&D Engineering Intern",
+            "company": "Dassault Systèmes",
+            "description": "• Graph Neural Networks (GNN): designed and trained GNN models from scratch\nto classify complex 3D data from CATIA.\n\n• Data Engineering & Preprocessing: extracted, cleaned and structured complex,\nheterogeneous industrial data.\n\n• Project Management & Client Relations: worked with clients in the\nTransportation & Mobility industry to gather requirements, scope and lead\nstrategic projects.\n\n• Agentic Model Evaluation: tested usage scenarios on AI agents and structured\ntechnical feedback to guide the teams developing them.",
+            "date": "Feb 2026 - Aug 2026",
+            "status": "Previously"
+        },
+        {
+            "role": "Data Scientist & Data Engineer",
+            "company": "SFR",
+            "description": "• Anomaly Detection (ML): built a pipeline to analyze PCAP files and trained\nML models to proactively detect network incidents.\n\n• NLP Chatbot & Automation: developed an internal virtual assistant (NLP) to\nquery technical documentation and speed up access to information.",
+            "date": "Apr 2025 - Aug 2025",
+            "status": "Previously"
+        },
+        {
+            "role": "AI Developer & Tester",
+            "company": "Spacefit.ai ",
+            "description": "• AI & Development: optimized the core AI algorithm. Wrote unit and functional\ntests to make the application robust.\n\n• Strategy: took part in UX and architecture brainstorming.",
+            "date": "Dec 2023 - Feb 2024",
+            "status": "Previously"
+        },
+        {
+            "role": "Mathematics Tutor",
+            "company": "Complétude",
+            "description": "Tutoring for middle and high school students.",
+            "date": "Jun 2024 - Jun 2025",
+            "status": "Previously"
+        }
+    ],
+    "projects": [
+        {
+            "id": "gnn-cad-3d",
+            "title": "3D Assembly Detection with GNNs",
+            "shortDescription": "Graph neural network architectures to extract features from CAD models.",
+            "description": "<p>R&amp;D project building GNN architectures to extract geometric features and analyze B-Rep topology in CATIA. The project also explores <em>protocols </em>for Agent-to-Agent communication.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
+            "category": "Machine Learning & 3D",
+            "technologies": [
+                "PyTorch Geometric",
+                "3DEXPERIENCE",
+                "Agent-to-Agent"
+            ],
+            "features": [
+                "3D graph extraction",
+                "Topological analysis",
+                "Multi-agent systems"
+            ]
+        },
+        {
+            "id": "tiktok-financial-dca",
+            "title": "Financial Video Generator",
+            "shortDescription": "Automated pipeline that creates animated financial content for social media.",
+            "description": "Automated scripts that generate animations of financial performance (DCA) for TikTok. The system combines stock market data retrieval, animated chart generation and an LLM workflow for the voice-over.",
+            "category": "Generative AI",
+            "technologies": [
+                "Python",
+                "Plotly",
+                "yfinance",
+                "n8n",
+                "LLMs"
+            ],
+            "features": [
+                "Animated chart generation",
+                "Text-to-speech",
+                "Publishing automation"
+            ]
+        },
+        {
+            "id": "pygame-rhythm",
+            "title": "Rhythm Video Game",
+            "shortDescription": "Rhythm game built in Python and synchronized to the music.",
+            "description": "A custom rhythm video game where the gameplay is generated and synchronized directly from the analysis of the audio tracks.",
+            "category": "Game Development & Machine Learning",
+            "technologies": [
+                "Python",
+                "Pygame"
+            ],
+            "features": [
+                "Real-time audio analysis",
+                "2D rendering engine",
+                "Synchronized gameplay"
+            ]
+        },
+        {
+            "title": "Sports Results Prediction",
+            "shortDescription": "ML Model (Scikit-Learn).",
+            "description": "ML Model (Scikit-Learn).",
+            "category": "Machine Learning",
+            "technologies": [
+                "XGBoost",
+                "Random Forest",
+                "Scikit-Learn"
+            ],
+            "id": "prédiction-de-résultat-sportifs"
+        },
+        {
+            "title": "Big Data Analysis",
+            "shortDescription": "ETL pipeline (PySpark) for batch and streaming processing of massive transaction logs. Modeling for near real-time trend analysis, improving responsiveness to stock shortages.",
+            "description": "ETL pipeline (PySpark) for batch and streaming processing of massive transaction logs. Modeling for near real-time trend analysis, improving responsiveness to stock shortages.",
+            "category": "Big Data",
+            "technologies": [
+                "Apache Spark",
+                "PySpark"
+            ],
+            "id": "analyse-big-data-"
+        }
+    ]
+}

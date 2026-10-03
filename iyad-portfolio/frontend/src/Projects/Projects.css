@@ -769,3 +769,32 @@
 .tiptap-toolbar button {
   white-space: nowrap;
 }
+/* --- DESCRIPTION MARKDOWN (.md importé) --- */
+.doc-admin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.doc-admin-label { color: #9ca3af; font-size: 0.85rem; }
+.doc-delete-btn {
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  border: 1px solid #f87171;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.doc-delete-btn:hover { background: rgba(239, 68, 68, 0.2); }
+.doc-fallback-note {
+  color: #9ca3af;
+  font-style: italic;
+  font-size: 0.9rem;
+  border-left: 3px solid #00d2ff;
+  padding-left: 10px;
+  margin: 0 0 20px;
+}
+.project-doc { padding: 10px 5px; }

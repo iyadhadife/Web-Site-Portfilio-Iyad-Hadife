@@ -9,12 +9,14 @@ import AdminLogin from './Admin/AdminLogin';
 // Chargé à la demande : la coloration syntaxique et le rendu markdown alourdissent le bundle
 const RepoPage = lazy(() => import('./GitHub/RepoPage'));
 import useScrollReveal from './Animations/useScrollReveal';
+import { LanguageProvider, useLang } from './i18n/LanguageContext';
 import './App.css';
 import './Animations/animations.css';
 
 function Navigation() {
   const location = useLocation();
   const { isAdmin, logout } = useAuth();
+  const { lang, toggle, t } = useLang();
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -94,16 +96,21 @@ function Navigation() {
 
       {/* Conteneur des liens (Volet sur mobile) */}
       <div className={`nav-links-container ${isMobileMenuOpen ? 'open' : ''}`}>
-        <Link to="/#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}>Home</Link>
-        <Link to="/#experience" className={`nav-link ${activeSection === 'experience' ? 'active' : ''}`}>Experience</Link>
-        <Link to="/#education" className={`nav-link ${activeSection === 'education' ? 'active' : ''}`}>Education</Link>
-        <Link to="/#skills" className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}>Skills</Link>
-        <Link to="/projects" className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}>Projects</Link>
-        <Link to="/contact" className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}>Contact</Link>
+        <Link to="/#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}>{t('nav.home')}</Link>
+        <Link to="/#experience" className={`nav-link ${activeSection === 'experience' ? 'active' : ''}`}>{t('nav.experience')}</Link>
+        <Link to="/#education" className={`nav-link ${activeSection === 'education' ? 'active' : ''}`}>{t('nav.education')}</Link>
+        <Link to="/#skills" className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}>{t('nav.skills')}</Link>
+        <Link to="/projects" className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}>{t('nav.projects')}</Link>
+        <Link to="/contact" className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}>{t('nav.contact')}</Link>
         
         {isAdmin && (
-          <button onClick={logout} className="nav-link admin-logout-btn" style={{background:'none', border:'none', cursor:'pointer'}}>Déconnexion</button>
+          <button onClick={logout} className="nav-link admin-logout-btn" style={{background:'none', border:'none', cursor:'pointer'}}>{t('nav.logout')}</button>
         )}
+
+        <button type="button" className="lang-switch" onClick={toggle} title={t('nav.language')} aria-label={t('nav.language')}>
+          <span className={lang === 'fr' ? 'active' : ''}>FR</span>
+          <span className={lang === 'en' ? 'active' : ''}>EN</span>
+        </button>
       </div>
     </nav>
   );
@@ -111,6 +118,7 @@ function Navigation() {
 
 // Composant pour le bouton de retour en haut
 function ScrollToTopButton() {
+  const { t } = useLang();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -140,7 +148,7 @@ function ScrollToTopButton() {
     <button 
       onClick={scrollToTop} 
       className="scroll-to-top-btn"
-      title="Remonter en haut"
+      title={t('scrollTop')}
     >
       ↑
     </button>
@@ -163,26 +171,37 @@ function AnimatedRoutes({ children }) {
   );
 }
 
+// En anglais, l'admin voit pourquoi les boutons d'édition ont disparu
+function AdminLanguageNote() {
+  const { isAdmin } = useAuth();
+  const { lang, t } = useLang();
+  if (!isAdmin || lang !== 'en') return null;
+  return <div className="admin-lang-note">{t('admin.editInFrench')}</div>;
+}
+
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="app-layout">
-          <Navigation />
-          <main className="main-content">
-            <AnimatedRoutes>
-              <Route path="/" element={<About />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/projects/:id" element={<ProjectDetail />} />
-              <Route path="/github/:owner/:repo/*" element={<Suspense fallback={<div className="state-container"><div className="loader"></div></div>}><RepoPage /></Suspense>} />
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/contact" element={<Contact />} />
-            </AnimatedRoutes>
-          </main>
-          <ScrollToTopButton /> 
-        </div>
-      </Router>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <Router>
+          <div className="app-layout">
+            <Navigation />
+            <main className="main-content">
+              <AnimatedRoutes>
+                <Route path="/" element={<About />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
+                <Route path="/github/:owner/:repo/*" element={<Suspense fallback={<div className="state-container"><div className="loader"></div></div>}><RepoPage /></Suspense>} />
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/contact" element={<Contact />} />
+              </AnimatedRoutes>
+            </main>
+            <AdminLanguageNote />
+            <ScrollToTopButton /> 
+          </div>
+        </Router>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
 

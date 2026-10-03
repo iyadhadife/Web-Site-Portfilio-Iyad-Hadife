@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { useLang } from '../i18n/LanguageContext';
 import PinnedRepos from '../GitHub/PinnedRepos';
 import './Projects.css';
 
@@ -8,7 +9,10 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { isAdmin } = useAuth();
+  const { isAdmin: isLoggedIn } = useAuth();
+  const { lang, t } = useLang();
+  // L'édition se fait en français : la version anglaise est traduite automatiquement
+  const isAdmin = isLoggedIn && lang === 'fr';
 
   // Gestion de la modale (Création ou Édition)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +26,7 @@ function Projects() {
   const [technologies, setTechnologies] = useState('');
 
   const fetchProjects = () => {
-    fetch('/api/projects')
+    fetch(`/api/projects?lang=${lang}`)
       .then((res) => res.json())
       .then((data) => {
         setProjects(data.projects || []);
@@ -36,7 +40,7 @@ function Projects() {
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [lang]);
 
   // Ouvrir la modale pour l'ajout
   const handleOpenAdd = () => {
@@ -86,7 +90,7 @@ function Projects() {
       shortDescription,
       description,
       category,
-      technologies: technologies.split(',').map((t) => t.trim())
+      technologies: technologies.split(',').map((tech) => tech.trim())
     };
 
     const url = editingProject 
@@ -110,8 +114,8 @@ function Projects() {
       });
   };
 
-  if (loading) return <div className="state-container"><div className="loader"></div>Chargement des projets...</div>;
-  if (error) return <div className="state-container error">Erreur : {error}</div>;
+  if (loading) return <div className="state-container"><div className="loader"></div>{t('projects.loading')}</div>;
+  if (error) return <div className="state-container error">{t('common.error')} : {error}</div>;
 
   return (
     <div className="projects-page">
@@ -119,14 +123,14 @@ function Projects() {
 
       <div className="projects-header">
         <div className="header-title-flex">
-          <h2>Mes Projets</h2>
+          <h2>{t('projects.title')}</h2>
           {isAdmin && (
             <button className="inline-add-btn" onClick={handleOpenAdd} title="Ajouter un projet">
               +
             </button>
           )}
         </div>
-        <span className="project-count">{projects.length} projets disponibles</span>
+        <span className="project-count">{t('projects.count', { n: projects.length })}</span>
       </div>
 
       <div className="projects-grid">
@@ -165,7 +169,7 @@ function Projects() {
               </div>
             </div>
             <div className="card-footer">
-              <span className="view-details-text">Consulter les détails →</span>
+              <span className="view-details-text">{t('projects.details')}</span>
             </div>
           </Link>
         ))}

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { useLang } from '../i18n/LanguageContext';
 import './About.css';
 
 function About() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { isAdmin } = useAuth();
+  const { isAdmin: isLoggedIn } = useAuth();
+  const { lang, t } = useLang();
+  // L'édition se fait en français : la version anglaise est traduite automatiquement
+  const isAdmin = isLoggedIn && lang === 'fr';
+  const statusLabel = (status) => (['Current', 'Previously', 'Graduated'].includes(status) ? t(`status.${status}`) : status);
 
   const [modalType, setModalType] = useState(null); // 'skill', 'education', 'experience'
   const [targetCategory, setTargetCategory] = useState('');
@@ -26,7 +31,7 @@ function About() {
   const [isExpFullscreen, setIsExpFullscreen] = useState(false);
 
   const fetchData = () => {
-    fetch('/api/portfolio')
+    fetch(`/api/portfolio?lang=${lang}`)
       .then((res) => res.json())
       .then((jsonData) => {
         setData(jsonData);
@@ -36,7 +41,7 @@ function About() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [lang]);
 
   const handleMove = async (category, index, direction) => {
     try {
@@ -141,7 +146,7 @@ function About() {
     }
   };
 
-  if (loading) return <div className="state-container">Chargement...</div>;
+  if (loading) return <div className="state-container">{t('common.loading')}</div>;
 
   return (
     <div className="about-container" id="home">
@@ -166,10 +171,10 @@ function About() {
         {/* 1. EXPÉRIENCE PROFESSIONNELLE */}
         <section className={`journey-section ${isExpFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="experience">
           <div className="section-title-wrapper">
-            <h2>EXPÉRIENCE PROFESSIONNELLE</h2>
+            <h2>{t('about.experience')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsExpFullscreen(!isExpFullscreen)}>
-                {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isExpFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('experience')} title="Ajouter une expérience">+</button>
@@ -183,7 +188,7 @@ function About() {
                 <div className="timeline-frise-dot" data-status={item.status}></div>
                 <div className="timeline-frise-content">
                   <div className="journey-header-flex">
-                    <span className="status-badge">{item.status}</span>
+                    <span className="status-badge">{statusLabel(item.status)}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
                         {index > 0 && (
@@ -209,10 +214,10 @@ function About() {
         {/* 2. FORMATION ACADÉMIQUE */}
         <section className={`journey-section ${isEduFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="education">
           <div className="section-title-wrapper">
-            <h2>Formation Académique</h2>
+            <h2>{t('about.education')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsEduFullscreen(!isEduFullscreen)}>
-                {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isEduFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('education')} title="Ajouter une formation">+</button>
@@ -226,7 +231,7 @@ function About() {
                 <div className="timeline-frise-dot" data-status={item.status}></div>
                 <div className="timeline-frise-content">
                   <div className="journey-header-flex">
-                    <span className="status-badge">{item.status}</span>
+                    <span className="status-badge">{statusLabel(item.status)}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
                         {index > 0 && (
@@ -252,10 +257,10 @@ function About() {
         {/* 3. TECHNICAL SKILLS */}
         <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
           <div className="section-title-wrapper">
-            <h2>Compétences Techniques</h2>
+            <h2>{t('about.skills')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}>
-                {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isSkillsFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => { setTargetCategory('CUSTOM'); setModalType('skill'); }} title="Ajouter une catégorie">+</button>
@@ -289,7 +294,7 @@ function About() {
 
           {!isExpFullscreen && !isEduFullscreen && !isSkillsFullscreen && (
             <div className="view-projects-wrapper" style={{ marginTop: '40px' }}>
-              <Link to="/projects" className="view-projects-btn">Voir les projets →</Link>
+              <Link to="/projects" className="view-projects-btn">{t('about.viewProjects')}</Link>
             </div>
           )}
         </section>
