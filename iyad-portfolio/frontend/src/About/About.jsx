@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { useLang, localizedKey } from '../i18n/LanguageContext';
 import './About.css';
 
 function About() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { isAdmin } = useAuth();
+  const { lang, t, localize } = useLang();
+  const statusLabel = (status) => (['Current', 'Previously', 'Graduated'].includes(status) ? t(`status.${status}`) : status);
 
   const [modalType, setModalType] = useState(null); // 'skill', 'education', 'experience'
   const [targetCategory, setTargetCategory] = useState('');
@@ -98,10 +101,11 @@ function About() {
 
   const handleOpenEdit = (sectionType, item, index) => {
     setEditingIndex(index);
-    setItemRole(item.role || '');
+    // En anglais, on modifie les champs "_en" (la version française reste intacte)
+    setItemRole(localize(item, 'role') || '');
     setItemCompany(item.company || '');
-    setItemDesc(item.description || '');
-    setItemDate(item.date || '');
+    setItemDesc(localize(item, 'description') || '');
+    setItemDate(localize(item, 'date') || '');
     setItemStatus(item.status || 'Current');
     setModalType(sectionType);
   };
@@ -109,7 +113,17 @@ function About() {
   // --- SOUMISSION FORMULAIRE ÉDUCATION / EXPÉRIENCE ---
   const handleSaveItemSubmit = (e, section) => {
     e.preventDefault();
-    const payload = { role: itemRole, company: itemCompany, description: itemDesc, date: itemDate, status: itemStatus };
+    const payload = { company: itemCompany, status: itemStatus };
+    const texts = { role: itemRole, description: itemDesc, date: itemDate };
+    Object.entries(texts).forEach(([field, value]) => {
+      if (editingIndex !== null) {
+        payload[localizedKey(field, lang)] = value;
+      } else {
+        // Nouvel élément : le texte saisi sert pour les deux langues en attendant une traduction
+        payload[field] = value;
+        if (lang === 'en') payload[`${field}_en`] = value;
+      }
+    });
 
     const url = editingIndex !== null 
       ? `/api/${section}/${editingIndex}` 
@@ -141,7 +155,7 @@ function About() {
     }
   };
 
-  if (loading) return <div className="state-container">Chargement...</div>;
+  if (loading) return <div className="state-container">{t('common.loading')}</div>;
 
   return (
     <div className="about-container" id="home">
@@ -156,7 +170,7 @@ function About() {
             <span className="last-name">{data.profile.lastName}</span>
           </h1>
           <div className="profile-text">
-            <p>{data.profile.intro}</p>
+            <p>{localize(data.profile, 'intro')}</p>
           </div>
         </div>
       </section>
@@ -166,10 +180,10 @@ function About() {
         {/* 1. EXPÉRIENCE PROFESSIONNELLE */}
         <section className={`journey-section ${isExpFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="experience">
           <div className="section-title-wrapper">
-            <h2>EXPÉRIENCE PROFESSIONNELLE</h2>
+            <h2>{t('about.experience')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsExpFullscreen(!isExpFullscreen)}>
-                {isExpFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isExpFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('experience')} title="Ajouter une expérience">+</button>
@@ -183,7 +197,7 @@ function About() {
                 <div className="timeline-frise-dot" data-status={item.status}></div>
                 <div className="timeline-frise-content">
                   <div className="journey-header-flex">
-                    <span className="status-badge">{item.status}</span>
+                    <span className="status-badge">{statusLabel(item.status)}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
                         {index > 0 && (
@@ -197,9 +211,9 @@ function About() {
                       </div>
                     )}
                   </div>
-                  <span className="timeline-date-badge">{item.date}</span>
-                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
-                  <p>{item.description}</p>
+                  <span className="timeline-date-badge">{localize(item, 'date')}</span>
+                  <h4>{localize(item, 'role')} <span className="company-name">@ {item.company}</span></h4>
+                  <p>{localize(item, 'description')}</p>
                 </div>
               </div>
             ))}
@@ -209,10 +223,10 @@ function About() {
         {/* 2. FORMATION ACADÉMIQUE */}
         <section className={`journey-section ${isEduFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="education">
           <div className="section-title-wrapper">
-            <h2>Formation Académique</h2>
+            <h2>{t('about.education')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsEduFullscreen(!isEduFullscreen)}>
-                {isEduFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isEduFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => handleOpenAdd('education')} title="Ajouter une formation">+</button>
@@ -226,7 +240,7 @@ function About() {
                 <div className="timeline-frise-dot" data-status={item.status}></div>
                 <div className="timeline-frise-content">
                   <div className="journey-header-flex">
-                    <span className="status-badge">{item.status}</span>
+                    <span className="status-badge">{statusLabel(item.status)}</span>
                     {isAdmin && (
                       <div className="admin-inline-actions">
                         {index > 0 && (
@@ -240,9 +254,9 @@ function About() {
                       </div>
                     )}
                   </div>
-                  <span className="timeline-date-badge">{item.date}</span>
-                  <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
-                  <p>{item.description}</p>
+                  <span className="timeline-date-badge">{localize(item, 'date')}</span>
+                  <h4>{localize(item, 'role')} <span className="company-name">@ {item.company}</span></h4>
+                  <p>{localize(item, 'description')}</p>
                 </div>
               </div>
             ))}
@@ -252,10 +266,10 @@ function About() {
         {/* 3. TECHNICAL SKILLS */}
         <section className={`skills-section ${isSkillsFullscreen ? 'fullscreen-overlay-mode' : ''}`} id="skills">
           <div className="section-title-wrapper">
-            <h2>Compétences Techniques</h2>
+            <h2>{t('about.skills')}</h2>
             <div className="section-header-actions">
               <button className="fullscreen-toggle-btn" onClick={() => setIsSkillsFullscreen(!isSkillsFullscreen)}>
-                {isSkillsFullscreen ? "🗗 Réduire" : "⛶ Plein écran"}
+                {isSkillsFullscreen ? t('about.reduce') : t('about.fullscreen')}
               </button>
               {isAdmin && (
                 <button className="inline-add-btn" onClick={() => { setTargetCategory('CUSTOM'); setModalType('skill'); }} title="Ajouter une catégorie">+</button>
@@ -267,7 +281,7 @@ function About() {
             {data.skills?.map((skillGroup, index) => (
               <div key={index} className="skill-category zoom-card">
                 <div className="category-header-flex">
-                  <h3>{skillGroup.category}</h3>
+                  <h3>{localize(skillGroup, 'category')}</h3>
                   {isAdmin && (
                     <div className="admin-inline-actions">
                       <button className="small-plus-btn" onClick={() => { setTargetCategory(skillGroup.category); setModalType('skill'); }} title="Ajouter une compétence">+</button>
@@ -289,7 +303,7 @@ function About() {
 
           {!isExpFullscreen && !isEduFullscreen && !isSkillsFullscreen && (
             <div className="view-projects-wrapper" style={{ marginTop: '40px' }}>
-              <Link to="/projects" className="view-projects-btn">Voir les projets →</Link>
+              <Link to="/projects" className="view-projects-btn">{t('about.viewProjects')}</Link>
             </div>
           )}
         </section>

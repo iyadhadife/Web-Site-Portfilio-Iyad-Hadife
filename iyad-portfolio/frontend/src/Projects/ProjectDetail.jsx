@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import { useEditor, EditorContent } from '@tiptap/react';
@@ -9,6 +9,9 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import Image from '@tiptap/extension-image';
 import LinkExtension from '@tiptap/extension-link';
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
+import { useLang, localizedKey } from '../i18n/LanguageContext';
 import './Projects.css';
 
 const MenuBar = ({ editor }) => {
@@ -67,7 +70,10 @@ function ProjectDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { isAdmin } = useAuth();
+  const { lang, t, localize } = useLang();
   const [isEditing, setIsEditing] = useState(false);
+  const [doc, setDoc] = useState(null); // description Markdown importée (.md)
+  const fileInputRef = useRef(null);
 
   const [headings, setHeadings] = useState([]);
   const contentRef = useRef(null);
@@ -75,7 +81,7 @@ function ProjectDetail() {
   const fetchProject = () => {
     fetch(`/api/projects/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Projet introuvable.");
+        if (!res.ok) throw new Error(t('projects.notFound'));
         return res.json();
       })
       .then((data) => {
@@ -91,6 +97,51 @@ function ProjectDetail() {
   useEffect(() => {
     fetchProject();
   }, [id]);
+
+  const fetchDoc = () => {
+    fetch(`/api/projects/${encodeURIComponent(id)}/docs?lang=${lang}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setDoc(data))
+      .catch(() => setDoc(null));
+  };
+
+  useEffect(() => {
+    fetchDoc();
+  }, [id, lang]);
+
+  const docHtml = useMemo(
+    () => (doc?.markdown ? DOMPurify.sanitize(marked.parse(doc.markdown)) : ''),
+    [doc],
+  );
+
+  const handleDocUpload = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (!/\.(md|markdown)$/i.test(file.name)) {
+      alert(t('docs.onlyMd'));
+      return;
+    }
+    const form = new FormData();
+    form.append('file', file);
+    fetch(`/api/projects/${encodeURIComponent(id)}/docs/${lang}`, { method: 'POST', body: form, credentials: 'include' })
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || res.status);
+        fetchDoc();
+      })
+      .catch((err) => alert(`${t('common.error')} : ${err.message}`));
+  };
+
+  const handleDocDelete = () => {
+    if (!window.confirm(t('docs.confirmDelete', { lang: t(`lang.${lang}`) }))) return;
+    fetch(`/api/projects/${encodeURIComponent(id)}/docs/${lang}`, { method: 'DELETE', credentials: 'include' })
+      .then((res) => {
+        if (!res.ok) throw new Error(res.status);
+        fetchDoc();
+      })
+      .catch((err) => alert(`${t('common.error')} : ${err.message}`));
+  };
 
   const editor = useEditor({
     extensions: [
@@ -116,11 +167,12 @@ function ProjectDetail() {
     }
   });
 
+  // En anglais, l'éditeur affiche et modifie "description_en"
   useEffect(() => {
-    if (editor && project?.description) {
-      editor.commands.setContent(project.description);
+    if (editor && project) {
+      editor.commands.setContent(localize(project, 'description') || '');
     }
-  }, [project, editor]);
+  }, [project, editor, localize]);
 
   useEffect(() => {
     if (editor) {
@@ -132,7 +184,8 @@ function ProjectDetail() {
     const timer = setTimeout(() => {
       const container = contentRef.current;
       if (container) {
-        const elements = container.querySelectorAll('h1, h2, h3');
+        // Ignore les titres masqués (description de l'éditeur quand un .md est affiché)
+        const elements = [...container.querySelectorAll('h1, h2, h3')].filter((el) => !el.closest('[hidden]'));
         const list = [];
         elements.forEach((el, index) => {
           const headingId = `heading-${index}`;
@@ -147,7 +200,7 @@ function ProjectDetail() {
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [project, isEditing, editor?.getHTML()]);
+  }, [project, isEditing, editor?.getHTML(), docHtml]);
 
   const scrollToHeading = (headingId) => {
     const element = document.getElementById(headingId);
@@ -159,7 +212,7 @@ function ProjectDetail() {
   const handleSave = () => {
     if (!editor) return;
     const htmlContent = editor.getHTML();
-    const updatedProject = { ...project, description: htmlContent };
+    const updatedProject = { ...project, [localizedKey('description', lang)]: htmlContent };
 
     fetch(`/api/projects/${id}`, {
       method: 'PUT',
@@ -176,37 +229,53 @@ function ProjectDetail() {
     });
   };
 
-  if (loading) return <div className="state-container"><div className="loader"></div>Chargement...</div>;
-  if (error) return <div className="state-container error"><p>{error}</p><Link to="/projects" className="back-button">← Retour</Link></div>;
+  if (loading) return <div className="state-container"><div className="loader"></div>{t('common.loading')}</div>;
+  if (error) return <div className="state-container error"><p>{error}</p><Link to="/projects" className="back-button">{t('common.back')}</Link></div>;
+
+  const showDoc = Boolean(docHtml) && !isEditing;
 
   return (
     <div className="project-detail-page">
       <div className="detail-top-nav">
-        <Link to="/projects" className="back-button">← Retour aux projets</Link>
+        <Link to="/projects" className="back-button">{t('common.backToProjects')}</Link>
       </div>
 
       <div className="project-detail-header">
-        <span className="project-category">{project.category}</span>
+        <span className="project-category">{localize(project, 'category')}</span>
         
         <div className="project-title-row">
-          <h1>{project.title}</h1>
+          <h1>{localize(project, 'title')}</h1>
           {isAdmin && (
             <div className="admin-actions-flex">
               {!isEditing ? (
-                <button className="edit-mode-btn" onClick={() => setIsEditing(true)}>✎ Modifier la page</button>
+                <button className="edit-mode-btn" onClick={() => setIsEditing(true)}>{t('projects.edit')}</button>
               ) : (
                 <button className="save-changes-btn" onClick={handleSave}>💾 Save</button>
               )}
             </div>
           )}
         </div>
+
+        {isAdmin && (
+          <div className="doc-admin-bar">
+            <span className="doc-admin-label">{t('docs.title')}</span>
+            <button type="button" className="edit-mode-btn" onClick={() => fileInputRef.current?.click()}>
+              {doc?.available?.includes(lang) ? t('docs.replace', { lang: lang.toUpperCase() }) : t('docs.upload', { lang: lang.toUpperCase() })}
+            </button>
+            {doc?.available?.includes(lang) && (
+              <button type="button" className="doc-delete-btn" onClick={handleDocDelete}>{t('docs.delete', { lang: lang.toUpperCase() })}</button>
+            )}
+            <input ref={fileInputRef} type="file" accept=".md,.markdown,text/markdown" hidden onChange={handleDocUpload} />
+            {isEditing && <span className="doc-admin-label">{t('projects.editingLang', { lang: t(`lang.${lang}`) })}</span>}
+          </div>
+        )}
       </div>
 
       <div className="project-detail-layout">
         <aside className="project-toc-sidebar">
-          <h3>Sommaire</h3>
+          <h3>{t('projects.toc')}</h3>
           {headings.length === 0 ? (
-            <p className="toc-empty">Aucun titre dans la page</p>
+            <p className="toc-empty">{t('projects.tocEmpty')}</p>
           ) : (
             <ul>
               {headings.map((h) => (
@@ -222,8 +291,15 @@ function ProjectDetail() {
 
         <div className={`tiptap-editor-container ${isEditing ? 'editing-active' : ''}`} ref={contentRef}>
           {isEditing && <MenuBar editor={editor} />}
-          
-          <div className="tiptap-content-wrapper">
+
+          {showDoc && (
+            <>
+              {doc.lang !== lang && <p className="doc-fallback-note">{t('docs.fallback', { lang: t(`lang.${doc.lang}`) })}</p>}
+              <div className="gh-markdown project-doc" dangerouslySetInnerHTML={{ __html: docHtml }} />
+            </>
+          )}
+
+          <div className="tiptap-content-wrapper" hidden={showDoc}>
             <EditorContent editor={editor} />
           </div>
         </div>

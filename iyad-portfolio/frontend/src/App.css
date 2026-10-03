@@ -169,3 +169,27 @@ html, body {
   transform: translateY(-3px);
   box-shadow: 0 6px 20px rgba(0, 210, 255, 0.7);
 }
+/* Sélecteur de langue FR / EN */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.35);
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.lang-switch span {
+  padding: 4px 9px;
+  border-radius: 16px;
+  color: #9ca3af;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.lang-switch span.active {
+  background: #00d2ff;
+  color: #070b14;
+}
+.lang-switch:hover span:not(.active) { color: #fff; }

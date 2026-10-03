@@ -11,11 +11,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from github_api import github_bp  # après load_dotenv pour lire GITHUB_TOKEN
+from project_docs_api import docs_bp
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "une_cle_secrete_par_defaut")  # Remplace par une clé robuste
 CORS(app, supports_credentials=True)
 app.register_blueprint(github_bp)
+app.register_blueprint(docs_bp)
 
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
@@ -341,7 +343,8 @@ def update_item(section, index):
             
         items_list = data.get(section, [])
         if 0 <= index < len(items_list):
-            items_list[index] = updated_item
+            # Fusion : garde les champs non envoyés (ex. la traduction anglaise "_en")
+            items_list[index] = {**items_list[index], **updated_item}
             data[section] = items_list
             
             with open(file_path, 'w', encoding='utf-8') as f:

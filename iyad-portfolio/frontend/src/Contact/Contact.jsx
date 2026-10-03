@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../Context/AuthContext';
+import { useLang } from '../i18n/LanguageContext';
 import './Contact.css';
 
 function Contact() {
   const [contactData, setContactData] = useState(null);
   const [loading, setLoading] = useState(true);
   const { isAdmin } = useAuth();
+  const { t } = useLang();
 
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState('');
@@ -53,13 +55,13 @@ function Contact() {
       });
   };
 
-  if (loading) return <div className="state-container"><div className="loader"></div>Chargement...</div>;
+  if (loading) return <div className="state-container"><div className="loader"></div>{t('common.loading')}</div>;
 
   return (
     <div className="contact-page">
       <div className="contact-header">
-        <h2>Contact Me</h2>
-        <p>N'hésitez pas à me contacter pour toute opportunité ou collaboration.</p>
+        <h2>{t('contact.title')}</h2>
+        <p>{t('contact.subtitle')}</p>
         
         {isAdmin && !isEditing && (
           <button className="edit-mode-btn" onClick={() => setIsEditing(true)}>
@@ -110,7 +112,7 @@ function Contact() {
             <div className="contact-item">
               <span className="contact-icon">📞</span>
               <div>
-                <h4>Téléphone</h4>
+                <h4>{t('contact.phone')}</h4>
                 <a href={`tel:${contactData.phone}`}>{contactData.phone}</a>
               </div>
             </div>
@@ -118,7 +120,7 @@ function Contact() {
             <div className="contact-item">
               <span className="contact-icon">📍</span>
               <div>
-                <h4>Adresse postale</h4>
+                <h4>{t('contact.address')}</h4>
                 <p>{contactData.address}</p>
               </div>
             </div>
@@ -126,7 +128,7 @@ function Contact() {
             <div className="contact-item">
               <span className="contact-icon">🌐</span>
               <div>
-                <h4>Réseaux & Profils</h4>
+                <h4>{t('contact.networks')}</h4>
                 <div className="social-links">
                   {contactData.linkedin && <a href={contactData.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>}
                   {contactData.github && <a href={contactData.github} target="_blank" rel="noreferrer">GitHub</a>}

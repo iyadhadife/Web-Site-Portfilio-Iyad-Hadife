@@ -29,7 +29,7 @@ RAW = "https://raw.githubusercontent.com"
 CACHE_TTL = 600  # 10 minutes
 MAX_FILE_SIZE = 5_000_000  # au-delà, on propose seulement le téléchargement (les notebooks avec images sont lourds)
 
-# Descriptions en anglais affichées sur le portfolio, prioritaires sur celles de GitHub
+# Descriptions FR/EN affichées sur le portfolio, prioritaires sur celles de GitHub
 DESCRIPTIONS_FILE = os.path.join(os.path.dirname(__file__), "project_descriptions.json")
 
 _cache = {}
@@ -79,7 +79,16 @@ def _with_description(repo):
     except (OSError, ValueError):
         descriptions = {}
     custom = descriptions.get(f"{repo['owner']}/{repo['name']}".lower())
-    return {**repo, "description": custom} if custom else repo
+    if isinstance(custom, str):
+        custom = {"en": custom}
+    if not custom:
+        return repo
+    # "description" en anglais, "description_fr" pour la version française du site
+    return {
+        **repo,
+        "description": custom.get("en") or repo["description"],
+        "description_fr": custom.get("fr") or custom.get("en") or repo["description"],
+    }
 
 
 # --- PROJETS ÉPINGLÉS ---

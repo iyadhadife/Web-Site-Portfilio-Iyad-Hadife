@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchJson, repoRoute } from './githubUtils';
+import { useLang } from '../i18n/LanguageContext';
 import './GitHub.css';
 
 // Section "Projets épinglés sur GitHub" de la page Projets
 function PinnedRepos() {
   const [repos, setRepos] = useState(null);
   const [error, setError] = useState(null);
+  const { lang, t } = useLang();
 
   useEffect(() => {
     fetchJson('/api/github/pinned')
@@ -19,11 +21,11 @@ function PinnedRepos() {
   return (
     <section className="gh-pinned-section">
       <div className="projects-header">
-        <h2>Projets épinglés sur GitHub</h2>
-        {repos && <span className="project-count">{repos.length} dépôts</span>}
+        <h2>{t('pinned.title')}</h2>
+        {repos && <span className="project-count">{t('pinned.count', { n: repos.length })}</span>}
       </div>
 
-      {!repos && <div className="state-container"><div className="loader"></div>Chargement des dépôts GitHub...</div>}
+      {!repos && <div className="state-container"><div className="loader"></div>{t('pinned.loading')}</div>}
 
       {repos && (
         <div className="projects-grid">
@@ -38,16 +40,16 @@ function PinnedRepos() {
                   <span className="gh-pinned-stats">★ {r.stars}</span>
                 </div>
                 <h3>{r.name.replace(/[-_]/g, ' ')}</h3>
-                <p>{r.description || 'Aucune description.'}</p>
+                <p>{(lang === 'fr' && r.description_fr) || r.description || t('pinned.noDescription')}</p>
                 {r.topics?.length > 0 && (
                   <div className="tech-stack">
-                    {r.topics.slice(0, 3).map((t) => <span key={t} className="tech-pill">{t}</span>)}
+                    {r.topics.slice(0, 3).map((topic) => <span key={topic} className="tech-pill">{topic}</span>)}
                     {r.topics.length > 3 && <span className="tech-pill">+</span>}
                   </div>
                 )}
               </div>
               <div className="card-footer">
-                <span className="view-details-text">README & code source →</span>
+                <span className="view-details-text">{t('pinned.open')}</span>
               </div>
             </Link>
           ))}
