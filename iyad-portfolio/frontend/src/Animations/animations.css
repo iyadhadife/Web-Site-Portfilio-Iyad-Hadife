@@ -1,0 +1,159 @@
+/* --- ANIMATIONS DU SITE --- */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.6); }
+  70% { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes avatarGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.35), 0 0 25px rgba(0, 210, 255, 0.15); }
+  50% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0), 0 0 40px rgba(0, 210, 255, 0.3); }
+}
+
+@keyframes navDrop {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes textShine {
+  to { background-position: 200% center; }
+}
+
+/* Transition entre les pages : seulement l'opacité au départ,
+   "backwards" évite de garder un transform qui casserait le mode plein écran (position: fixed) */
+.page-transition {
+  animation: fadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Apparition au défilement (classes ajoutées par useScrollReveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s ease var(--reveal-delay, 0ms),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) !important;
+}
+
+/* Barre de navigation */
+.top-navbar {
+  animation: navDrop 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.nav-link {
+  position: relative;
+}
+.nav-link:not(.admin-logout-btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: #00d2ff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.nav-link:not(.active):hover::after { transform: scaleX(1); }
+
+/* Profil : photo qui « respire » et nom avec reflet lumineux */
+.profile-image {
+  animation: popIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards, avatarGlow 4s ease-in-out 1s infinite;
+}
+.profile-info .last-name {
+  background: linear-gradient(90deg, #00d2ff 0%, #ffffff 25%, #00d2ff 50%, #ffffff 75%, #00d2ff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShine 6s linear infinite;
+}
+
+/* Cartes de projets : reflet qui balaie la carte au survol */
+.project-card {
+  position: relative;
+  overflow: hidden;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(0, 210, 255, 0.12), transparent);
+  transform: skewX(-20deg);
+  pointer-events: none;
+  transition: left 0.7s ease;
+}
+.project-card:hover::before { left: 130%; }
+.project-card .view-details-text { display: inline-block; transition: transform 0.3s ease, opacity 0.3s, letter-spacing 0.3s; }
+.project-card:hover .view-details-text { transform: translateX(6px); }
+
+.tech-pill { transition: border-color 0.3s ease, background 0.3s ease; }
+.project-card:hover .tech-pill { border-color: rgba(0, 210, 255, 0.5); }
+
+/* Bouton retour en haut */
+.scroll-to-top-btn { animation: popIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Bouton "retour" : petite flèche qui recule */
+.back-button { transition: color 0.3s, transform 0.3s; }
+.back-button:hover { transform: translateX(-4px); }
+
+/* Pages GitHub : onglets, arborescence, fichiers */
+.gh-tabs a { position: relative; border-bottom-color: transparent !important; }
+.gh-tabs a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #00d2ff;
+  transform: scaleX(0);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gh-tabs a.active::after { transform: scaleX(1); }
+
+.gh-panel, .gh-main > *, .gh-sidebar { animation: fadeIn 0.4s ease backwards; }
+.gh-tree-item { animation: slideInLeft 0.25s ease backwards; transition: background 0.2s, color 0.2s; }
+.gh-tree-toggle { transition: transform 0.2s ease, color 0.2s; }
+.gh-tree-toggle:hover { color: #00d2ff; transform: scale(1.2); }
+.gh-dir-row { transition: background 0.2s ease, padding-left 0.2s ease; }
+.gh-dir-row:hover { padding-left: 22px; }
+.gh-external-btn { transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
+.gh-external-btn:hover { box-shadow: 0 0 18px rgba(0, 210, 255, 0.35); transform: translateY(-2px); }
+.gh-markdown img { transition: transform 0.3s ease; }
+
+/* Modales */
+.modal-overlay { animation: fadeIn 0.25s ease; }
+.modal-content { animation: fadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Accessibilité : pas d'animation pour ceux qui l'ont désactivée dans leur système */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
