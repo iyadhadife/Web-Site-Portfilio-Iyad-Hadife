@@ -313,7 +313,7 @@ function About() {
                   <input type="text" placeholder="Nom de la catégorie" value={customCategoryName} onChange={e => setCustomCategoryName(e.target.value)} required />
                 )}
                 <input type="text" placeholder="Nom de la compétence" value={newSkillName} onChange={e => setNewSkillName(e.target.value)} required />
-                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: '#000', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Ajouter</button>
+                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: 'var(--on-accent)', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>Ajouter</button>
               </form>
             )}
 
@@ -333,7 +333,7 @@ function About() {
                 <input type="text" placeholder="École / Entreprise" value={itemCompany} onChange={e => setItemCompany(e.target.value)} required />
                 <textarea placeholder="Description" value={itemDesc} onChange={e => setItemDesc(e.target.value)} rows="4" required />
                 <input type="text" placeholder="Période (ex: 2025 - 2026)" value={itemDate} onChange={e => setItemDate(e.target.value)} required />
-                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: '#000', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
+                <button type="submit" className="submit-btn" style={{ background: 'var(--neon-blue)', color: 'var(--on-accent)', fontWeight: 'bold', padding: '10px', border: 'none', borderRadius: '6px', cursor: 'pointer' }}>
                   {editingIndex !== null ? "Mettre à jour" : "Enregistrer"}
                 </button>
               </form>

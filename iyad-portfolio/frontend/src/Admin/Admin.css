@@ -2,17 +2,17 @@
   padding: 40px;
   max-width: 900px;
   margin: 0 auto;
-  color: #fff;
+  color: var(--heading);
 }
 
 .admin-container h1 {
   margin-bottom: 30px;
-  color: #00d2ff;
+  color: var(--accent);
 }
 
 .admin-section {
-  background: #111827;
-  border: 1px solid #1e3a8a;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 25px;
@@ -25,8 +25,8 @@
 }
 
 .add-btn {
-  background-color: #00d2ff;
-  color: #000;
+  background-color: var(--accent);
+  color: var(--on-accent);
   border: none;
   padding: 8px 16px;
   border-radius: 6px;
@@ -36,7 +36,7 @@
 }
 
 .add-btn:hover {
-  box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
 }
 
 .admin-form {
@@ -47,18 +47,18 @@
 }
 
 .admin-form input, .admin-form textarea, .admin-form select {
-  background: #070b14;
-  border: 1px solid #1e3a8a;
+  background: var(--bg);
+  border: 1px solid var(--border);
   padding: 10px;
-  color: #fff;
+  color: var(--heading);
   border-radius: 6px;
   font-family: inherit;
 }
 
 .submit-btn {
-  background: #1e3a8a;
-  color: #fff;
-  border: 1px solid #00d2ff;
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent);
   padding: 10px;
   border-radius: 6px;
   font-weight: bold;
@@ -66,6 +66,6 @@
 }
 
 .submit-btn:hover {
-  background: #00d2ff;
-  color: #000;
+  background: var(--accent);
+  color: var(--on-accent);
 }

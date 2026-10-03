@@ -50,6 +50,13 @@ Without a token, the pinned repositories are read from the public profile page.
 
 The English descriptions shown on the cards and repository pages come from `iyad-portfolio/backend/project_descriptions.json` (key `owner/repo`). They take priority over the GitHub description; repositories missing from the file fall back to GitHub's.
 
+## Light and dark themes
+
+The site uses the Mistral AI orange (`#FA500F`) on white (light theme) or black (dark theme).
+The sun/moon switch in the navigation bar changes the theme; the choice is saved in the browser,
+and on a first visit the site follows the system setting. All colors are CSS variables defined in
+`frontend/src/index.css`, so the palette can be changed in one place.
+
 ## French / English
 
 The FR / EN switch in the navigation bar changes the language of the whole site and is remembered in the browser (first visit: the browser language). Interface texts live in `iyad-portfolio/frontend/src/i18n/translations.js`.
