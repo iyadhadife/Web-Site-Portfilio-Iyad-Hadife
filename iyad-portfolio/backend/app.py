@@ -13,6 +13,7 @@ load_dotenv()
 from github_api import github_bp  # après load_dotenv pour lire GITHUB_TOKEN
 from project_docs_api import docs_bp
 from i18n_sync import load_data, english_is_stale, sync_in_background
+from data_store import DataFileError, read_json, write_json
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "une_cle_secrete_par_defaut")  # Remplace par une clé robuste
@@ -34,6 +35,11 @@ def translate_after_change(response):
         sync_in_background()
     return response
 
+@app.errorhandler(DataFileError)
+def data_file_error(e):
+    app.logger.error('Données du portfolio indisponibles : %s', e)
+    return jsonify({"error": str(e)}), 500
+
 if english_is_stale():
     sync_in_background()
 
@@ -42,8 +48,8 @@ def get_portfolio_data():
     try:
         data = load_data(request.args.get('lang', 'fr'))
         return jsonify(data)
-    except FileNotFoundError:
-        return jsonify({"error": "Data file not found"}), 404
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -57,6 +63,8 @@ def get_projects():
             "projects": projects_list,
             "count": len(projects_list)
         })
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -70,6 +78,8 @@ def get_project_by_id(project_id):
                 return jsonify(project)
                 
         return jsonify({"error": "Projet introuvable"}), 404
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -82,8 +92,7 @@ def create_project():
         new_project = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         if 'projects' not in data:
             data['projects'] = []
@@ -94,10 +103,11 @@ def create_project():
             
         data['projects'].append(new_project)
         
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Projet ajouté avec succès", "project": new_project}), 201
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -112,8 +122,7 @@ def create_skill():
         new_skill = req_data.get('skill')
         
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         skills_list = data.get('skills', [])
         found = False
@@ -133,10 +142,11 @@ def create_skill():
             })
             data['skills'] = skills_list
             
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Compétence ajoutée avec succès"}), 201
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -146,18 +156,18 @@ def create_journey():
         new_item = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         if 'journey' not in data:
             data['journey'] = []
             
         data['journey'].insert(0, new_item) # Ajoute tout en haut de la timeline
         
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Expérience ajoutée avec succès"}), 201
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -167,8 +177,7 @@ def update_project(project_id):
         updated_data = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         projects_list = data.get('projects', [])
         found = False
@@ -188,10 +197,11 @@ def update_project(project_id):
             return jsonify({"error": "Projet introuvable"}), 404
             
         # Écriture physique et persistante dans le fichier data.json
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Projet mis à jour avec succès dans le JSON", "project": projects_list[i]}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         print("Erreur backend:", str(e))
         return jsonify({"error": str(e)}), 500
@@ -205,8 +215,7 @@ def delete_skill():
         skill_name = req_data.get('skill') # Optionnel : si présent, supprime juste la compétence. Sinon, supprime toute la catégorie.
         
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         skills_list = data.get('skills', [])
         
@@ -222,10 +231,11 @@ def delete_skill():
             skills_list = [cat for cat in skills_list if cat.get('category') != category_name]
             data['skills'] = skills_list
             
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Suppression effectuée avec succès"}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -235,20 +245,20 @@ def delete_skill():
 def delete_journey(index):
     try:
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         journey_list = data.get('journey', [])
         if 0 <= index < len(journey_list):
             journey_list.pop(index)
             data['journey'] = journey_list
             
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
+            write_json(file_path, data)
                 
             return jsonify({"message": "Expérience supprimée avec succès"}), 200
         else:
             return jsonify({"error": "Index invalide"}), 404
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -256,8 +266,7 @@ def delete_journey(index):
 def delete_project(project_id):
     try:
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         projects_list = data.get('projects', [])
         initial_count = len(projects_list)
@@ -271,10 +280,11 @@ def delete_project(project_id):
         data['projects'] = projects_list
         
         # Enregistrer de façon persistante dans le fichier JSON
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Projet supprimé avec succès"}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -284,15 +294,15 @@ def update_contact():
         updated_data = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         data['contactInfo'] = updated_data
         
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Informations de contact mises à jour avec succès", "contactInfo": updated_data}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -304,15 +314,15 @@ def add_item(section):
     try:
         new_item = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         data.setdefault(section, []).append(new_item)
         
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        write_json(file_path, data)
             
         return jsonify({"message": "Ajouté avec succès", "item": new_item}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -323,20 +333,20 @@ def delete_item(section, index):
         return jsonify({"error": "Section invalide"}), 400
     try:
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         items_list = data.get(section, [])
         if 0 <= index < len(items_list):
             items_list.pop(index)
             data[section] = items_list
             
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
+            write_json(file_path, data)
                 
             return jsonify({"message": "Supprimé avec succès"}), 200
         else:
             return jsonify({"error": "Index invalide"}), 404
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -348,8 +358,7 @@ def update_item(section, index):
     try:
         updated_item = request.json
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-        with open(file_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+        data = read_json(file_path)
             
         items_list = data.get(section, [])
         if 0 <= index < len(items_list):
@@ -357,12 +366,13 @@ def update_item(section, index):
             items_list[index] = {**items_list[index], **updated_item}
             data[section] = items_list
             
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
+            write_json(file_path, data)
                 
             return jsonify({"message": "Mis à jour avec succès"}), 200
         else:
             return jsonify({"error": "Index invalide"}), 404
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -392,17 +402,11 @@ def check_auth():
 
 def load_portfolio_data():
     """Charge les données depuis le fichier JSON"""
-    file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-    if os.path.exists(file_path):
-        with open(file_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    return {}
+    return read_json(os.path.join(os.path.dirname(__file__), 'data.json'))
 
 def save_portfolio_data(data):
     """Sauvegarde les données dans le fichier JSON"""
-    file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+    write_json(os.path.join(os.path.dirname(__file__), 'data.json'), data)
 
 @app.route('/api/reorder', methods=['POST'])
 def reorder_items():
@@ -432,6 +436,8 @@ def reorder_items():
         save_portfolio_data(data) # Sauvegarde dans le JSON et synchronise Docker
         
         return jsonify({"success": True, "data": data}), 200
+    except DataFileError:
+        raise
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 

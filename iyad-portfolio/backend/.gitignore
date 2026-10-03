@@ -1,2 +1,6 @@
 .env
 github_cache.json
+__pycache__/
+*.pyc
+*.bak
+*.tmp

@@ -7,6 +7,7 @@ import './About.css';
 function About() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const { isAdmin: isLoggedIn } = useAuth();
   const { lang, t } = useLang();
   // L'édition se fait en français : la version anglaise est traduite automatiquement
@@ -32,9 +33,18 @@ function About() {
 
   const fetchData = () => {
     fetch(`/api/portfolio?lang=${lang}`)
-      .then((res) => res.json())
+      .then(async (res) => {
+        const jsonData = await res.json().catch(() => ({}));
+        if (!res.ok || !jsonData.profile) throw new Error(jsonData.error || `HTTP ${res.status}`);
+        return jsonData;
+      })
       .then((jsonData) => {
         setData(jsonData);
+        setLoadError(null);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoadError(err.message);
         setLoading(false);
       });
   };
@@ -147,6 +157,7 @@ function About() {
   };
 
   if (loading) return <div className="state-container">{t('common.loading')}</div>;
+  if (loadError || !data) return <div className="state-container error">{t('common.error')} : {loadError}</div>;
 
   return (
     <div className="about-container" id="home">
