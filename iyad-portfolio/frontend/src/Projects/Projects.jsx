@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
+import { useLang, localizedKey } from '../i18n/LanguageContext';
 import PinnedRepos from '../GitHub/PinnedRepos';
 import './Projects.css';
 
@@ -9,6 +10,7 @@ function Projects() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { isAdmin } = useAuth();
+  const { lang, t, localize } = useLang();
 
   // Gestion de la modale (Création ou Édition)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,10 +55,10 @@ function Projects() {
   const handleOpenEdit = (e, proj) => {
     e.preventDefault(); // Empêche de déclencher le lien de la carte
     setEditingProject(proj);
-    setTitle(proj.title || '');
-    setShortDescription(proj.shortDescription || '');
-    setDescription(proj.description || '');
-    setCategory(proj.category || '');
+    setTitle(localize(proj, 'title') || '');
+    setShortDescription(localize(proj, 'shortDescription') || '');
+    setDescription(localize(proj, 'description') || '');
+    setCategory(localize(proj, 'category') || '');
     setTechnologies(proj.technologies ? proj.technologies.join(', ') : '');
     setIsModalOpen(true);
   };
@@ -81,13 +83,17 @@ function Projects() {
   // Soumission du formulaire (Ajout ou Modification)
   const handleSubmit = (e) => {
     e.preventDefault();
-    const projectData = {
-      title,
-      shortDescription,
-      description,
-      category,
-      technologies: technologies.split(',').map((t) => t.trim())
-    };
+    const projectData = { technologies: technologies.split(',').map((tech) => tech.trim()) };
+    const texts = { title, shortDescription, description, category };
+    Object.entries(texts).forEach(([field, value]) => {
+      if (editingProject) {
+        // En anglais, on modifie les champs "_en" (la version française reste intacte)
+        projectData[localizedKey(field, lang)] = value;
+      } else {
+        projectData[field] = value;
+        if (lang === 'en') projectData[`${field}_en`] = value;
+      }
+    });
 
     const url = editingProject 
       ? `/api/projects/${editingProject.id}`
@@ -110,8 +116,8 @@ function Projects() {
       });
   };
 
-  if (loading) return <div className="state-container"><div className="loader"></div>Chargement des projets...</div>;
-  if (error) return <div className="state-container error">Erreur : {error}</div>;
+  if (loading) return <div className="state-container"><div className="loader"></div>{t('projects.loading')}</div>;
+  if (error) return <div className="state-container error">{t('common.error')} : {error}</div>;
 
   return (
     <div className="projects-page">
@@ -119,14 +125,14 @@ function Projects() {
 
       <div className="projects-header">
         <div className="header-title-flex">
-          <h2>Mes Projets</h2>
+          <h2>{t('projects.title')}</h2>
           {isAdmin && (
             <button className="inline-add-btn" onClick={handleOpenAdd} title="Ajouter un projet">
               +
             </button>
           )}
         </div>
-        <span className="project-count">{projects.length} projets disponibles</span>
+        <span className="project-count">{t('projects.count', { n: projects.length })}</span>
       </div>
 
       <div className="projects-grid">
@@ -134,7 +140,7 @@ function Projects() {
           <Link to={`/projects/${project.id}`} key={project.id} className="project-card">
             <div className="card-content">
               <div className="card-top-row">
-                <span className="project-category">{project.category}</span>
+                <span className="project-category">{localize(project, 'category')}</span>
                 {isAdmin && (
                   <div className="admin-card-actions">
                     <button 
@@ -154,8 +160,8 @@ function Projects() {
                   </div>
                 )}
               </div>
-              <h3>{project.title}</h3>
-              <p>{project.shortDescription}</p>
+              <h3>{localize(project, 'title')}</h3>
+              <p>{localize(project, 'shortDescription')}</p>
               
               <div className="tech-stack">
                 {project.technologies?.slice(0, 3).map((tech, i) => (
@@ -165,7 +171,7 @@ function Projects() {
               </div>
             </div>
             <div className="card-footer">
-              <span className="view-details-text">Consulter les détails →</span>
+              <span className="view-details-text">{t('projects.details')}</span>
             </div>
           </Link>
         ))}

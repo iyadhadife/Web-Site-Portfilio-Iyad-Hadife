@@ -47,3 +47,13 @@ GITHUB_TOKEN=github_pat_xxx
 ```
 
 Without a token, the pinned repositories are read from the public profile page.
+
+The English descriptions shown on the cards and repository pages come from `iyad-portfolio/backend/project_descriptions.json` (key `owner/repo`). They take priority over the GitHub description; repositories missing from the file fall back to GitHub's.
+
+## French / English
+
+The FR / EN switch in the navigation bar changes the language of the whole site and is remembered in the browser (first visit: the browser language). Interface texts live in `iyad-portfolio/frontend/src/i18n/translations.js`. Content from `data.json` uses an optional `<field>_en` next to each French field (for example `intro` / `intro_en`); when it is missing, the French text is shown. When logged in as admin, edits made while the site is in English update the `_en` fields and leave the French text untouched.
+
+## Markdown project descriptions
+
+On a project page, the admin can upload a `.md` file per language (buttons under the title). It is stored in `iyad-portfolio/backend/project_docs/<project id>/<fr|en>.md` and replaces the page description when present. If only one language exists, it is shown in both with a short note. Upload and delete require the admin session (`/admin` login); reading is public.

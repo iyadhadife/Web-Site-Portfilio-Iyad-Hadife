@@ -3,10 +3,12 @@ import { Link, useParams } from 'react-router-dom';
 import MarkdownView from './MarkdownView';
 import FileViewer from './FileViewer';
 import { dirname, fetchJson, formatSize, repoRoute } from './githubUtils';
+import { useLang } from '../i18n/LanguageContext';
 import './GitHub.css';
 
 // Arborescence repliable du dépôt (barre latérale)
 function TreeNode({ node, owner, repo, currentPath, depth }) {
+  const { t } = useLang();
   const isOnPath = currentPath === node.path || currentPath.startsWith(`${node.path}/`);
   const [open, setOpen] = useState(isOnPath);
 
@@ -32,7 +34,7 @@ function TreeNode({ node, owner, repo, currentPath, depth }) {
   return (
     <>
       <div className={`gh-tree-item gh-tree-dir ${currentPath === node.path ? 'active' : ''}`} style={style}>
-        <button type="button" className="gh-tree-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Replier' : 'Déplier'}>
+        <button type="button" className="gh-tree-toggle" onClick={() => setOpen(!open)} aria-label={open ? t('repo.collapse') : t('repo.expand')}>
           {open ? '▾' : '▸'}
         </button>
         <Link to={repoRoute(owner, repo, 'tree', node.path)} onClick={() => setOpen(true)} title={node.path}>
@@ -92,6 +94,7 @@ function RepoPage() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { lang, t } = useLang();
 
   useEffect(() => {
     setInfo(null);
@@ -149,7 +152,7 @@ function RepoPage() {
   if (error && !info) {
     return (
       <div className="gh-repo-page">
-        <Link to="/projects" className="back-button">← Retour aux projets</Link>
+        <Link to="/projects" className="back-button">{t('common.backToProjects')}</Link>
         <div className="state-container error">{error}</div>
       </div>
     );
@@ -160,7 +163,7 @@ function RepoPage() {
 
   return (
     <div className="gh-repo-page">
-      <Link to="/projects" className="back-button">← Retour aux projets</Link>
+      <Link to="/projects" className="back-button">{t('common.backToProjects')}</Link>
 
       <header className="gh-repo-header">
         <div className="gh-repo-title-row">
@@ -168,10 +171,10 @@ function RepoPage() {
             <span className="gh-repo-owner">{owner} /</span> {repo}
           </h1>
           {info && (
-            <a className="gh-external-btn" href={info.url} target="_blank" rel="noopener noreferrer">Voir sur GitHub ↗</a>
+            <a className="gh-external-btn" href={info.url} target="_blank" rel="noopener noreferrer">{t('repo.viewOnGitHub')}</a>
           )}
         </div>
-        {info?.description && <p className="gh-repo-description">{info.description}</p>}
+        {info?.description && <p className="gh-repo-description">{(lang === 'fr' && info.description_fr) || info.description}</p>}
         {info && (
           <div className="gh-repo-meta">
             {info.language && (
@@ -180,25 +183,25 @@ function RepoPage() {
             <span>★ {info.stars}</span>
             <span>⑂ {info.forks}</span>
             <span>⎇ {branch}</span>
-            {info.homepage && <a href={info.homepage} target="_blank" rel="noopener noreferrer">Site du projet ↗</a>}
+            {info.homepage && <a href={info.homepage} target="_blank" rel="noopener noreferrer">{t('repo.homepage')}</a>}
           </div>
         )}
         {info?.topics?.length > 0 && (
           <div className="tech-stack gh-topics">
-            {info.topics.map((t) => <span key={t} className="tech-pill">{t}</span>)}
+            {info.topics.map((topic) => <span key={topic} className="tech-pill">{topic}</span>)}
           </div>
         )}
       </header>
 
       <nav className="gh-tabs">
         <Link to={repoRoute(owner, repo)} className={view === 'readme' ? 'active' : ''}>README</Link>
-        <Link to={repoRoute(owner, repo, 'tree')} className={view !== 'readme' ? 'active' : ''}>Fichiers</Link>
+        <Link to={repoRoute(owner, repo, 'tree')} className={view !== 'readme' ? 'active' : ''}>{t('repo.files')}</Link>
       </nav>
 
       {view === 'readme' && (
         <section className="gh-panel">
-          {!readme && <div className="state-container"><div className="loader"></div>Chargement du README...</div>}
-          {readme && !readme.html && <div className="gh-file-message">Ce dépôt n'a pas de README.</div>}
+          {!readme && <div className="state-container"><div className="loader"></div>{t('repo.loadingReadme')}</div>}
+          {readme && !readme.html && <div className="gh-file-message">{t('repo.noReadme')}</div>}
           {readme?.html && (
             <MarkdownView html={readme.html} owner={owner} repo={repo} branch={branch} baseDir={dirname(readme.path || '')} isDir={isDir} />
           )}
@@ -208,35 +211,35 @@ function RepoPage() {
       {view !== 'readme' && (
         <div className="gh-explorer">
           <button type="button" className="gh-sidebar-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
-            {sidebarOpen ? '✕ Masquer l\'arborescence' : '☰ Arborescence'}
+            {sidebarOpen ? t('repo.hideTree') : t('repo.showTree')}
           </button>
           <aside className={`gh-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <input
               className="gh-filter"
               type="search"
-              placeholder="Rechercher un fichier..."
+              placeholder={t('repo.search')}
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             />
             <div className="gh-tree">
-              {!tree && <div className="gh-tree-loading">Chargement...</div>}
+              {!tree && <div className="gh-tree-loading">{t('common.loading')}</div>}
               {filtered && filtered.map((e) => (
                 <Link key={e.path} to={repoRoute(owner, repo, 'blob', e.path)} className={`gh-tree-item ${currentPath === e.path ? 'active' : ''}`} title={e.path}>
                   <span className="gh-tree-icon">📄</span>{e.path}
                 </Link>
               ))}
-              {filtered?.length === 0 && <div className="gh-tree-loading">Aucun fichier</div>}
+              {filtered?.length === 0 && <div className="gh-tree-loading">{t('repo.noFile')}</div>}
               {!filtered && treeRoot.children.map((node) => (
                 <TreeNode key={node.path} node={node} owner={owner} repo={repo} currentPath={currentPath} depth={0} />
               ))}
             </div>
-            {tree?.truncated && <p className="gh-tree-loading">Dépôt trop volumineux : arborescence partielle.</p>}
+            {tree?.truncated && <p className="gh-tree-loading">{t('repo.truncated')}</p>}
           </aside>
 
           <section className="gh-main">
             <Breadcrumb owner={owner} repo={repo} path={currentPath} />
 
-            {view === 'blob' && !tree && <div className="state-container"><div className="loader"></div>Chargement du fichier...</div>}
+            {view === 'blob' && !tree && <div className="state-container"><div className="loader"></div>{t('repo.loadingFile')}</div>}
             {view === 'blob' && tree && (
               <FileViewer
                 owner={owner}
@@ -248,8 +251,8 @@ function RepoPage() {
               />
             )}
 
-            {view === 'tree' && !tree && <div className="state-container"><div className="loader"></div>Chargement des fichiers...</div>}
-            {view === 'tree' && tree && !dirNode && <div className="gh-file-message error">Dossier introuvable.</div>}
+            {view === 'tree' && !tree && <div className="state-container"><div className="loader"></div>{t('repo.loadingFiles')}</div>}
+            {view === 'tree' && tree && !dirNode && <div className="gh-file-message error">{t('repo.dirNotFound')}</div>}
             {view === 'tree' && dirNode && (
               <>
                 <div className="gh-dir-list">
