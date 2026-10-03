@@ -53,6 +53,7 @@ const translations = {
     'pinned.loading': 'Chargement des dépôts GitHub...',
     'pinned.noDescription': 'Aucune description.',
     'pinned.open': 'README & code source →',
+    'pinned.unavailable': 'Les projets GitHub sont momentanément indisponibles. Retrouvez-les sur',
 
     'repo.viewOnGitHub': 'Voir sur GitHub ↗',
     'repo.homepage': 'Site du projet ↗',
@@ -137,6 +138,7 @@ const translations = {
     'pinned.loading': 'Loading GitHub repositories...',
     'pinned.noDescription': 'No description.',
     'pinned.open': 'README & source code →',
+    'pinned.unavailable': 'GitHub projects are temporarily unavailable. Find them on',
 
     'repo.viewOnGitHub': 'View on GitHub ↗',
     'repo.homepage': 'Project website ↗',

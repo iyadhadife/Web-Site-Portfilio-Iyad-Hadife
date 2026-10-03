@@ -16,8 +16,6 @@ function PinnedRepos() {
       .catch((err) => setError(err.message));
   }, []);
 
-  if (error) return null; // le reste de la page reste utilisable si GitHub est indisponible
-
   return (
     <section className="gh-pinned-section">
       <div className="projects-header">
@@ -25,7 +23,14 @@ function PinnedRepos() {
         {repos && <span className="project-count">{t('pinned.count', { n: repos.length })}</span>}
       </div>
 
-      {!repos && <div className="state-container"><div className="loader"></div>{t('pinned.loading')}</div>}
+      {!repos && !error && <div className="state-container"><div className="loader"></div>{t('pinned.loading')}</div>}
+      {error && (
+        <p className="gh-pinned-error">
+          {t('pinned.unavailable')}{' '}
+          <a href="https://github.com/iyadhadife" target="_blank" rel="noopener noreferrer">github.com/iyadhadife ↗</a>
+          <span className="gh-pinned-error-detail">({error})</span>
+        </p>
+      )}
 
       {repos && (
         <div className="projects-grid">
