@@ -10,9 +10,12 @@ from dotenv import load_dotenv
 # Charge les variables d'environnement depuis le fichier .env s'il existe
 load_dotenv()
 
+from github_api import github_bp  # après load_dotenv pour lire GITHUB_TOKEN
+
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "une_cle_secrete_par_defaut")  # Remplace par une clé robuste
 CORS(app, supports_credentials=True)
+app.register_blueprint(github_bp)
 
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 

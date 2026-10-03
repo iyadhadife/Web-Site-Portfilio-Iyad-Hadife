@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './Context/AuthContext';
 import About from './About/About';
@@ -6,7 +6,11 @@ import Contact from './Contact/Contact';
 import Projects from './Projects/Projects';
 import ProjectDetail from './Projects/ProjectDetail';
 import AdminLogin from './Admin/AdminLogin';
+// Chargé à la demande : la coloration syntaxique et le rendu markdown alourdissent le bundle
+const RepoPage = lazy(() => import('./GitHub/RepoPage'));
+import useScrollReveal from './Animations/useScrollReveal';
 import './App.css';
+import './Animations/animations.css';
 
 function Navigation() {
   const location = useLocation();
@@ -34,7 +38,7 @@ function Navigation() {
 
   // Gérer l'état actif des onglets et le scroll spy
   useEffect(() => {
-    if (location.pathname.includes('/projects')) {
+    if (location.pathname.includes('/projects') || location.pathname.startsWith('/github')) {
       setActiveSection('projects');
       return;
     }
@@ -143,6 +147,22 @@ function ScrollToTopButton() {
   );
 }
 
+// Rejoue l'animation d'entrée à chaque changement de page.
+// Dans un dépôt GitHub, naviguer entre fichiers garde la même page (pas de rechargement de l'arborescence).
+function AnimatedRoutes({ children }) {
+  const location = useLocation();
+  useScrollReveal();
+  const pageKey = location.pathname.startsWith('/github/')
+    ? location.pathname.split('/').slice(0, 4).join('/')
+    : location.pathname;
+
+  return (
+    <div key={pageKey} className="page-transition">
+      <Routes location={location}>{children}</Routes>
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -150,13 +170,14 @@ function App() {
         <div className="app-layout">
           <Navigation />
           <main className="main-content">
-            <Routes>
+            <AnimatedRoutes>
               <Route path="/" element={<About />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/projects/:id" element={<ProjectDetail />} />
+              <Route path="/github/:owner/:repo/*" element={<Suspense fallback={<div className="state-container"><div className="loader"></div></div>}><RepoPage /></Suspense>} />
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/contact" element={<Contact />} />
-            </Routes>
+            </AnimatedRoutes>
           </main>
           <ScrollToTopButton /> 
         </div>
