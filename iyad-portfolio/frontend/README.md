@@ -17,5 +17,5 @@ If you are developing a production application, we recommend using TypeScript wi
 
 
 ubuntu commande :
-docker compose up --build
+sudo docker compose up --build
 
