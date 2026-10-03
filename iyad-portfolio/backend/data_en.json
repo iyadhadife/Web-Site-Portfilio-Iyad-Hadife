@@ -120,25 +120,6 @@
     ],
     "projects": [
         {
-            "id": "terra-sphere",
-            "title": "Tumor Detection",
-            "shortDescription": "Classification (CNN) and localization (YOLO/PyTorch).",
-            "description": "Classification (CNN) and localization (YOLO/PyTorch).",
-            "category": "Machine Learning",
-            "technologies": [
-                "Sicit Learn",
-                "PyTorch",
-                "CNN",
-                "YoLo",
-                "Random Forest"
-            ],
-            "features": [
-                "Real-time call handling",
-                "Calendar integration",
-                "Automated workflows"
-            ]
-        },
-        {
             "id": "gnn-cad-3d",
             "title": "3D Assembly Detection with GNNs",
             "shortDescription": "Graph neural network architectures to extract features from CAD models.",
@@ -189,45 +170,6 @@
                 "2D rendering engine",
                 "Synchronized gameplay"
             ]
-        },
-        {
-            "title": "TikTok Automation (Finance)",
-            "shortDescription": "Autonomous n8n pipeline that creates viral finance videos through APIs (LLM script, AI voice and editing).",
-            "description": "Autonomous n8n pipeline that creates viral finance videos through APIs (LLM script, AI voice and editing).",
-            "category": "Automation & Generative AI",
-            "technologies": [
-                "n8n"
-            ],
-            "id": "automatisation-tiktok-(finance)"
-        },
-        {
-            "title": "Aerospace Dashboard (React) and SQL Chatbot",
-            "shortDescription": "Production KPIs dashboard. Text-to-SQL chatbot for automatic queries.",
-            "description": "Production KPIs dashboard. Text-to-SQL chatbot for automatic queries.",
-            "category": "AI & Machine Learning",
-            "technologies": [
-                "React",
-                "Flask",
-                "API",
-                "SQL",
-                "LLM",
-                "Json",
-                "csv"
-            ],
-            "id": "dashboard-aéronautique-(react)-et-chatbot-sql"
-        },
-        {
-            "title": "Sign Language Detection",
-            "shortDescription": "Real-time translation (RNN + OpenCV)",
-            "description": "Real-time translation (RNN + OpenCV).",
-            "category": "AI & Machine Learning",
-            "technologies": [
-                "RNN",
-                "OpenCV",
-                "Flask",
-                "HTML"
-            ],
-            "id": "detection-du-langage-des-signes"
         },
         {
             "title": "Sports Results Prediction",
