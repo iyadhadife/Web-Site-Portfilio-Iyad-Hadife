@@ -30,6 +30,7 @@ services:
       - "443:443"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
+
 ## GitHub projects in the portfolio
 
 The **Projects** page lists the repositories pinned on the GitHub profile. Each one opens an in-site page (`/github/<owner>/<repo>`) with its README and a file browser (code with syntax highlighting, Markdown, Jupyter notebooks, images).
