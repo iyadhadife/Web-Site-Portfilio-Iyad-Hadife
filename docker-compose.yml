@@ -5,6 +5,11 @@ services:
     restart: always
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      # Certificats SSL Let's Encrypt (créés par init-ssl.sh)
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
     depends_on:
       - backend
 
@@ -16,3 +21,13 @@ services:
     restart: always
     expose:
       - "5000"
+
+  # Renouvelle le certificat SSL automatiquement (vérification toutes les 12 h)
+  certbot:
+    image: certbot/certbot
+    container_name: portfolio_certbot
+    restart: unless-stopped
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $${!}; done'
