@@ -52,7 +52,7 @@ The English descriptions shown on the cards and repository pages come from `iyad
 
 ## Light and dark themes
 
-The site uses the Mistral AI orange (`#FA500F`) on white (light theme) or black (dark theme).
+The site uses a softened Mistral AI orange (`#D9581F`, `#CC6A3D` in dark mode) on white (light theme) or black (dark theme).
 The sun/moon switch in the navigation bar changes the theme; the choice is saved in the browser,
 and on a first visit the site follows the system setting. All colors are CSS variables defined in
 `frontend/src/index.css`, so the palette can be changed in one place.

@@ -49,7 +49,7 @@
 
 .project-card:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.15);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.075);
   transform: translateY(-5px);
 }
 
@@ -183,7 +183,7 @@
 
 .editor-wrapper-box.editing-active {
   border-color: var(--accent);
-  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
 }
 
 /* Barre d'action supérieure de l'éditeur */
@@ -217,7 +217,7 @@
 
 .save-changes-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.25);
 }
 
 .edit-mode-btn {
@@ -478,7 +478,7 @@
 
 .tiptap-editor-container.editing-active {
   border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.25);
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.125);
 }
 
 /* Barre d'outils supérieure (similaire au template) */

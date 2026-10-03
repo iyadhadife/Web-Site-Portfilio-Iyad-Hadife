@@ -22,8 +22,8 @@
 }
 
 @keyframes avatarGlow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.35), 0 0 25px rgba(var(--accent-rgb), 0.15); }
-  50% { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0), 0 0 40px rgba(var(--accent-rgb), 0.3); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.175), 0 0 25px rgba(var(--accent-rgb), 0.075); }
+  50% { box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0), 0 0 40px rgba(var(--accent-rgb), 0.15); }
 }
 
 @keyframes navDrop {
@@ -79,7 +79,7 @@
   animation: popIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards, avatarGlow 4s ease-in-out 1s infinite;
 }
 .profile-info .last-name {
-  background: linear-gradient(90deg, var(--accent) 0%, #FFAF00 25%, var(--accent) 50%, #E10500 75%, var(--accent) 100%);
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-soft-1) 25%, var(--accent) 50%, var(--accent-hover) 75%, var(--accent) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -140,7 +140,7 @@
 .gh-dir-row { transition: background 0.2s ease, padding-left 0.2s ease; }
 .gh-dir-row:hover { padding-left: 22px; }
 .gh-external-btn { transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
-.gh-external-btn:hover { box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.35); transform: translateY(-2px); }
+.gh-external-btn:hover { box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.175); transform: translateY(-2px); }
 .gh-markdown img { transition: transform 0.3s ease; }
 
 /* Modales */
@@ -189,14 +189,14 @@
   border-radius: 50%;
   filter: blur(60px);
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.25;
 }
 .profile-header::before {
   width: 280px;
   height: 280px;
   top: -60px;
   left: -60px;
-  background: radial-gradient(circle, #FF8205, transparent 70%);
+  background: radial-gradient(circle, var(--accent-soft-1), transparent 70%);
   animation: floatBlob 14s ease-in-out infinite;
 }
 .profile-header::after {
@@ -204,11 +204,11 @@
   height: 220px;
   bottom: -40px;
   right: 10%;
-  background: radial-gradient(circle, #FFD800, transparent 70%);
+  background: radial-gradient(circle, var(--accent-soft-2), transparent 70%);
   animation: floatBlob 18s ease-in-out -6s infinite reverse;
 }
 :root[data-theme="dark"] .profile-header::before,
-:root[data-theme="dark"] .profile-header::after { opacity: 0.22; }
+:root[data-theme="dark"] .profile-header::after { opacity: 0.12; }
 
 /* Bande dégradée façon Mistral sous le profil */
 .about-container > .profile-header {
@@ -276,7 +276,7 @@
 .skill-category { position: relative; overflow: hidden; }
 .project-card:hover::after,
 .skill-category:hover::after { transform: scaleX(1); }
-.project-card:hover { box-shadow: 0 14px 34px rgba(var(--accent-rgb), 0.16); }
+.project-card:hover { box-shadow: 0 14px 34px rgba(var(--accent-rgb), 0.08); }
 
 /* Boutons orange : reflet qui passe au survol */
 .view-projects-btn,
@@ -296,11 +296,11 @@
 }
 .view-projects-btn:hover::after,
 .submit-btn:hover::after { animation: shine 0.7s ease; }
-.view-projects-btn:hover { box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.35); transform: translateY(-2px); }
+.view-projects-btn:hover { box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.175); transform: translateY(-2px); }
 
 /* Contact : icônes qui sautillent au survol */
 .contact-item { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
-.contact-item:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(var(--accent-rgb), 0.14); }
+.contact-item:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(var(--accent-rgb), 0.07); }
 
 /* Sur les écrans tactiles, pas d'effets de survol qui restent « collés » après un tap */
 @media (hover: none) {
