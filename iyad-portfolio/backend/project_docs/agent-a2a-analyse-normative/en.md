@@ -7,6 +7,14 @@
 
 Show an industrial partner that an AI agent can check technical reports (stored in Dassault Systèmes software) against the customer's standards (stored in the customer's own databases) and flag missing items. The strategic goal was also to prove that Dassault Systèmes masters **Agent-to-Agent (A2A)** architectures and can make its agents work with a customer's agents.
 
+<div class="confidential-note">
+
+🔒 **Confidential details.** The rest (method, detailed contribution, results) covers an internal Dassault Systèmes and customer project, so it is intentionally blurred. [Contact me](/contact) and I will gladly walk you through it in person.
+
+</div>
+
+<div class="confidential" aria-hidden="true">
+
 ## How the project evolved
 
 - **Start:** a single agent calling our tools through **MCP** (Model Context Protocol) servers.
@@ -31,3 +39,5 @@ Results are **mixed**: the timeline was short, the strategy changed mid-project,
 Python, LangChain, LangGraph, FastAPI, MCP, Agent-to-Agent, Mistral Medium, Git
 
 > Internal, confidential project: the code is not published.
+
+</div>

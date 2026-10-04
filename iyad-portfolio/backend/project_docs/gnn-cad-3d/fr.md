@@ -7,6 +7,14 @@
 
 Dans une maquette numérique de véhicule, les ingénieurs réalisent à la main des mesures de contrôle entre pièces, par exemple l'espace entre les genoux du passager arrière et le dossier du siège avant (*Knee Clearance*). L'objectif était de faire reconnaître automatiquement les pièces concernées par un modèle de Machine Learning, puis de générer la mesure sans intervention manuelle.
 
+<div class="confidential-note">
+
+🔒 **Détails confidentiels.** La suite (méthode, contribution détaillée, résultats) concerne un projet interne de Dassault Systèmes et de son client : elle est volontairement floutée. [Contactez-moi](/contact) pour que je vous en parle plus en détail à l'oral.
+
+</div>
+
+<div class="confidential" aria-hidden="true">
+
 ## Qui a fait quoi
 
 Le projet est un travail d'équipe :
@@ -47,3 +55,5 @@ Le projet est un travail d'équipe :
 PyTorch, PyTorch Geometric, Python, CATIA Visual Scripting, CATIA Part Design, Generative Assembly, 3DEXPERIENCE, Git, Jira
 
 > Le code et les données sont confidentiels (Dassault Systèmes et son client) et ne sont pas publiés.
+
+</div>

@@ -4,8 +4,8 @@
         "lastName": "HADIFÉ",
         "title": "AI & Data Engineer",
         "avatar": "/profile_picture.jpg",
-        "intro": "I am a final-year Master's student specializing in Data and Artificial Intelligence at ESILV. My work focuses on building innovative AI solutions, from graph neural networks (GNN) to the design of complex multi-agent architectures.",
-        "vision": "My goal is to bridge robust data engineering and generative AI applications to solve concrete industrial problems, especially in 3D environments and automation."
+        "intro": "As a Data & AI Engineer with a degree from ESILV, I transform raw industrial data (CATIA 3D models, telecom network data) into AI models that automate tasks that were previously performed manually. From graph neural networks (GNNs) to multi-agent architectures, I have led these projects at Dassault Systèmes and SFR.",
+        "vision": "My goal: to combine robust data engineering with generative AI to deliver tools that save engineers time—without replacing them—particularly in 3D and industrial automation."
     },
     "contactInfo": {
         "email": "iyad.hadife@edu.devinci.fr",
@@ -92,28 +92,28 @@
         {
             "role": "AI R&D Engineering Intern",
             "company": "Dassault Systèmes",
-            "description": "• Graph Neural Networks (GNN): designed and trained GNN models from scratch\nto classify complex 3D data from CATIA.\n\n• Data Engineering & Preprocessing: extracted, cleaned and structured complex,\nheterogeneous industrial data.\n\n• Project Management & Client Relations: worked with clients in the\nTransportation & Mobility industry to gather requirements, scope and lead\nstrategic projects.\n\n• Agentic Model Evaluation: tested usage scenarios on AI agents and structured\ntechnical feedback to guide the teams developing them.",
+            "description": "• 3D Machine Learning (GNN): Improvement and extension to new vehicles of a GNN model that recognizes parts in a CATIA model to automate 3D measurements. Faster and more robust pipeline for previously unseen vehicles.\n\n• CAD Data Engineering: Redesign of geometric feature extraction using CATIA Visual Scripting. Lighter data and a more accurate model.\n\n• Agent-Based AI: Development of a multi-agent orchestrator (Agent-to-Agent, MCP, LangGraph) for a proof of concept in regulatory verification for an industrial client.\n\n• AI Agent Evaluation: Design of test scenarios, identification of limitations, and provision of structured feedback to development teams.\n\n• Client Relations: Preparation of demonstrations and supporting materials for key accounts in the Transportation & Mobility sector.",
             "date": "Feb 2026 - Aug 2026",
             "status": "Previously"
         },
         {
             "role": "Data Scientist & Data Engineer",
             "company": "SFR",
-            "description": "• Anomaly Detection (ML): built a pipeline to analyze PCAP files and trained\nML models to proactively detect network incidents.\n\n• NLP Chatbot & Automation: developed an internal virtual assistant (NLP) to\nquery technical documentation and speed up access to information.",
+            "description": "• Anomaly detection from scratch: design of a complete pipeline (PCAP → graphs) and a GNN that identifies the type of anomaly from among 40 classes with approximately 81% accuracy.\n\n• LLM-based localization: an unsupervised prototype that highlights suspicious areas of a call within a Flask web interface.\n\n• MLOps: automated training via GitLab and Jenkins. Results were presented twice to management, which deemed the project worthy of future investment.\n\n• RAG Chatbot: an on-premises assistant delivered in one week to answer questions about the Lab’s processes.",
             "date": "Apr 2025 - Aug 2025",
             "status": "Previously"
         },
         {
             "role": "AI Developer & Tester",
             "company": "Spacefit.ai ",
-            "description": "• AI & Development: optimized the core AI algorithm. Wrote unit and functional\ntests to make the application robust.\n\n• Strategy: took part in UX and architecture brainstorming.",
+            "description": "• Optimized the application's core AI algorithm.\n\n• Improved reliability through unit and functional testing.\n\n• Contributed to UX and architecture decisions during brainstorming sessions.",
             "date": "Dec 2023 - Feb 2024",
             "status": "Previously"
         },
         {
             "role": "Mathematics Tutor",
             "company": "Complétude",
-            "description": "Tutoring for middle and high school students.",
+            "description": "Tutoring middle school and high school students in mathematics.",
             "date": "Jun 2024 - Jun 2025",
             "status": "Previously"
         }
@@ -121,54 +121,81 @@
     "projects": [
         {
             "id": "gnn-cad-3d",
-            "title": "3D Assembly Detection with GNNs",
-            "shortDescription": "Graph neural network architectures to extract features from CAD models.",
-            "description": "<p>R&amp;D project building GNN architectures to extract geometric features and analyze B-Rep topology in CATIA. The project also explores <em>protocols </em>for Agent-to-Agent communication.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
+            "title": "3D Part Detection Using GNN in CATIA",
+            "shortDescription": "Automatic recognition of vehicle parts in a CATIA model using a graph neural network to automate 3D measurements. Internship at Dassault Systèmes (details confidential).",
+            "description": "<p>Internship at Dassault Systèmes (Innovation Lab, Transport &amp; Mobility), completed as part of a team. Objective: to enable a GNN to automatically recognize the parts of a vehicle model in order to generate 3D inspection measurements without manual intervention. The details are confidential: please contact me to discuss this in person.</p>",
             "category": "Machine Learning & 3D",
             "technologies": [
                 "PyTorch Geometric",
+                "PyTorch",
+                "CATIA Visual Scripting",
                 "3DEXPERIENCE",
-                "Agent-to-Agent"
+                "Python"
             ],
             "features": [
-                "3D graph extraction",
-                "Topological analysis",
-                "Multi-agent systems"
+                "Extraction of geometric features (0D to 3D)",
+                "Graph Representation and Classification of Parts",
+                "Automatic 3D Measurement (Knee Clearance)"
             ]
         },
         {
-            "id": "tiktok-financial-dca",
-            "title": "Financial Video Generator",
-            "shortDescription": "Automated pipeline that creates animated financial content for social media.",
-            "description": "Automated scripts that generate animations of financial performance (DCA) for TikTok. The system combines stock market data retrieval, animated chart generation and an LLM workflow for the voice-over.",
+            "id": "agent-a2a-analyse-normative",
+            "title": "Normative Analysis AI Agent (Agent-to-Agent)",
+            "shortDescription": "Proof of concept for a multi-agent AI system (A2A) to verify that technical reports comply with a client's standards. Internship at Dassault Systèmes (details confidential).",
+            "description": "<p>Proof of concept launched toward the end of my internship at Dassault Systèmes. Objective: to demonstrate that an AI agent can verify the compliance of technical reports with a client’s standards by having agents collaborate via an Agent-to-Agent architecture. The details are confidential: please contact me to discuss this in person.</p>",
+            "category": "Agent-Based AI",
+            "technologies": [
+                "LangChain",
+                "LangGraph",
+                "FastAPI",
+                "MCP",
+                "Agent-to-Agent",
+                "Mistral Medium",
+                "Python"
+            ],
+            "features": [
+                "Multi-agent orchestrator",
+                "Fake MCP servers simulating a client",
+                "Declarative configuration (factory, schemas, plugins)"
+            ]
+        },
+        {
+            "id": "sfr-detection-anomalies-pcap",
+            "title": "Detection of Network Anomalies in PCAP Files",
+            "shortDescription": "Classification of anomaly types (GNN) and error localization (unsupervised LLM) in call recordings. SFR internship project, built from scratch.",
+            "description": "<p>Internship at SFR (Vélizy Lab, April–August 2025). Starting from scratch, I built a complete pipeline: PCAP → JSON (Tshark) → graphs, sequences, or vectors, and then compared GNNs, RNNs, and DNNs. The GNN classifies 40 classes of SIP anomalies with approximately 81% accuracy. A second tool, still in the prototype stage, locates errors using a language model trained on normal calls and displays them in a Flask web interface.</p>",
+            "category": "Machine Learning",
+            "technologies": [
+                "PyTorch",
+                "PyTorch Geometric",
+                "Hugging Face",
+                "Tshark",
+                "Flask",
+                "GitLab",
+                "Jenkins"
+            ],
+            "features": [
+                "Classification of 40 anomaly classes",
+                "Comparison of GNNs, RNNs, DNNs, and Autoencoders",
+                "Error Localization via Reconstruction (MLM)"
+            ]
+        },
+        {
+            "id": "sfr-chatbot-rag",
+            "title": "SFR Lab's Internal RAG Chatbot",
+            "shortDescription": "A local assistant that answers questions about the Lab's processes and terminology, developed in just a few days toward the end of an internship at SFR.",
+            "description": "<p>I built this during the last week of my internship at SFR. The chatbot searches for relevant passages in a local database, supplements the context using web scraping, and generates a response using an LLM via LangChain and Hugging Face—all entirely on-premises. It answers questions about Lab processes, business definitions, and practical issues; the ability to read PCAP files still needed to be developed.</p>",
             "category": "Generative AI",
             "technologies": [
-                "Python",
-                "Plotly",
-                "yfinance",
-                "n8n",
-                "LLMs"
+                "LangChain",
+                "Hugging Face",
+                "RAG",
+                "Python"
             ],
             "features": [
-                "Animated chart generation",
-                "Text-to-speech",
-                "Publishing automation"
-            ]
-        },
-        {
-            "id": "pygame-rhythm",
-            "title": "Rhythm Video Game",
-            "shortDescription": "Rhythm game built in Python and synchronized to the music.",
-            "description": "A custom rhythm video game where the gameplay is generated and synchronized directly from the analysis of the audio tracks.",
-            "category": "Game Development & Machine Learning",
-            "technologies": [
-                "Python",
-                "Pygame"
-            ],
-            "features": [
-                "Real-time audio analysis",
-                "2D rendering engine",
-                "Synchronized gameplay"
+                "Search a local database",
+                "Data Enrichment Through Web Scraping",
+                "100% Local Execution"
             ]
         },
         {

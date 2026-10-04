@@ -1,0 +1,3 @@
+# Les scripts shell doivent garder des fins de ligne Unix, sinon Linux ne les exécute pas
+*.sh text eol=lf
+*.envsh text eol=lf

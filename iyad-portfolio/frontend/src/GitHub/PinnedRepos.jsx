@@ -42,7 +42,9 @@ function PinnedRepos() {
                     {r.language && <span className="gh-lang-dot" style={{ background: r.languageColor || 'var(--accent)' }} />}
                     {r.language || 'GitHub'}
                   </span>
-                  <span className="gh-pinned-stats">★ {r.stars}</span>
+                  <span className="gh-pinned-stats">
+                    {r.pinned && <span className="gh-pinned-badge">{t('pinned.badge')}</span>}★ {r.stars}
+                  </span>
                 </div>
                 <h3>{r.name.replace(/[-_]/g, ' ')}</h3>
                 <p>{(lang === 'fr' && r.description_fr) || r.description || t('pinned.noDescription')}</p>

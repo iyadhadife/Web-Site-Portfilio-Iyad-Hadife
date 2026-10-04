@@ -7,6 +7,14 @@
 
 In a vehicle's digital mock-up, engineers take control measurements between parts by hand, for example the space between a rear passenger's knees and the front seat back (*Knee Clearance*). The goal was to let a Machine Learning model recognize the relevant parts automatically, then generate the measurement without manual work.
 
+<div class="confidential-note">
+
+🔒 **Confidential details.** The rest (method, detailed contribution, results) covers an internal Dassault Systèmes and customer project, so it is intentionally blurred. [Contact me](/contact) and I will gladly walk you through it in person.
+
+</div>
+
+<div class="confidential" aria-hidden="true">
+
 ## Who did what
 
 This was a team project:
@@ -47,3 +55,5 @@ This was a team project:
 PyTorch, PyTorch Geometric, Python, CATIA Visual Scripting, CATIA Part Design, Generative Assembly, 3DEXPERIENCE, Git, Jira
 
 > Code and data are confidential (Dassault Systèmes and its customer) and are not published.
+
+</div>

@@ -2,6 +2,7 @@
 .gh-pinned-section { margin-bottom: 60px; }
 
 .gh-pinned-stats { color: var(--text-muted); font-size: 0.85rem; }
+.gh-pinned-badge { color: var(--accent); margin-right: 10px; font-weight: 600; }
 
 .gh-lang-dot {
   display: inline-block;
