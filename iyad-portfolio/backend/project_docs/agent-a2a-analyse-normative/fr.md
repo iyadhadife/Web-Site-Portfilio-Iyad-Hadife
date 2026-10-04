@@ -7,6 +7,14 @@
 
 Démontrer à un partenaire industriel qu'un agent IA peut vérifier la conformité de rapports techniques (stockés dans un logiciel Dassault Systèmes) par rapport aux normes du client (stockées dans ses propres bases), et repérer les éléments manquants. L'enjeu stratégique était aussi de montrer que Dassault Systèmes maîtrise les architectures **Agent-to-Agent (A2A)** et sait faire collaborer ses agents avec ceux d'un client.
 
+<div class="confidential-note">
+
+🔒 **Détails confidentiels.** La suite (méthode, contribution détaillée, résultats) concerne un projet interne de Dassault Systèmes et de son client : elle est volontairement floutée. [Contactez-moi](/contact) pour que je vous en parle plus en détail à l'oral.
+
+</div>
+
+<div class="confidential" aria-hidden="true">
+
 ## Évolution du projet
 
 - **Départ :** un agent unique appelant nos outils via des serveurs **MCP** (Model Context Protocol).
@@ -31,3 +39,5 @@ Les résultats sont **mitigés** : la durée était courte, la stratégie a chan
 Python, LangChain, LangGraph, FastAPI, MCP, Agent-to-Agent, Mistral Medium, Git
 
 > Projet interne et confidentiel : le code n'est pas publié.
+
+</div>

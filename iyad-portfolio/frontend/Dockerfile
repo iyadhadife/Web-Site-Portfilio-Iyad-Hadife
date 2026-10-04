@@ -13,7 +13,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx/site.conf /etc/nginx/snippets/site.conf
 COPY nginx/http.conf nginx/https.conf /etc/nginx/templates-ssl/
 COPY nginx/40-choose-ssl.sh /docker-entrypoint.d/40-choose-ssl.sh
-RUN chmod +x /docker-entrypoint.d/40-choose-ssl.sh && cp /etc/nginx/templates-ssl/http.conf /etc/nginx/conf.d/default.conf
+RUN sed -i 's/\r$//' /docker-entrypoint.d/40-choose-ssl.sh && chmod +x /docker-entrypoint.d/40-choose-ssl.sh && cp /etc/nginx/templates-ssl/http.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]

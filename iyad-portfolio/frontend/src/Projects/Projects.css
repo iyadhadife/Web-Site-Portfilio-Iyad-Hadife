@@ -804,3 +804,18 @@
   margin: 0 0 20px;
 }
 .project-doc { padding: 10px 5px; }
+
+/* Parties confidentielles d'une description Markdown : <div class="confidential">…</div> */
+.project-doc .confidential-note {
+  border: 1px solid rgba(var(--accent-rgb), 0.4);
+  background: rgba(var(--accent-rgb), 0.08);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 24px 0 16px;
+}
+.project-doc .confidential-note p { margin: 0; }
+.project-doc .confidential {
+  filter: blur(6px);
+  user-select: none;
+  pointer-events: none;
+}

@@ -1,5 +1,5 @@
 """
-Proxy GitHub pour le portfolio : projets épinglés, README et navigation dans les fichiers.
+Proxy GitHub pour le portfolio : tous les dépôts publics (épinglés en premier), README et navigation dans les fichiers.
 
 Le navigateur n'appelle jamais GitHub directement : le token (optionnel) reste côté serveur
 et les réponses sont mises en cache pour rester sous les limites de l'API.
@@ -7,7 +7,7 @@ et les réponses sont mises en cache pour rester sous les limites de l'API.
 Variables d'environnement (fichier .env) :
 - GITHUB_USER   : compte dont on affiche les projets épinglés (défaut : iyadhadife)
 - GITHUB_TOKEN  : token en lecture seule (recommandé, passe la limite de 60 à 5000 requêtes/h)
-- PINNED_REPOS  : liste manuelle "owner/repo,owner/repo" qui remplace la détection automatique
+- PINNED_REPOS  : liste manuelle "owner/repo,owner/repo" des dépôts à mettre en avant en premier
 """
 import json
 import os
@@ -217,35 +217,48 @@ def _repo_summary(owner, name):
 
 
 def _load_pinned():
+    """Dépôts épinglés, dans l'ordre du profil (liste vide si on ne peut pas les déterminer)."""
     if PINNED_REPOS:
-        names = [tuple(r.strip().split("/", 1)) for r in PINNED_REPOS.split(",") if "/" in r]
-        return [_repo_summary(o, n) for o, n in names], "config"
+        return [tuple(r.strip().split("/", 1)) for r in PINNED_REPOS.split(",") if "/" in r]
     if GITHUB_TOKEN:
         try:
-            return _pinned_from_graphql(), "graphql"
+            return [(r["owner"], r["name"]) for r in _pinned_from_graphql()]
         except Exception as e:
             print("GraphQL pinned items indisponible :", e)
-    names = []
     try:
-        names = _pinned_names_from_profile()
+        return _pinned_names_from_profile()
     except Exception as e:
         print("Lecture du profil GitHub impossible :", e)
-    try:
-        repos = _user_repos()  # une seule requête API, qui remplit aussi le cache des dépôts
-    except GitHubError:
-        if not names:
-            raise
-        repos = []
-    if names:
-        return [_repo_summary(o, n) for o, n in names], "profile"
-    # Dernier recours : les dépôts publics les plus récemment mis à jour
-    return [_repo_summary(r["owner"]["login"], r["name"]) for r in repos if not r.get("fork")][:6], "recent"
+        return []
+
+
+def _load_repos():
+    """Tous les dépôts publics (hors forks) : les épinglés d'abord, puis les plus récemment mis à jour."""
+    pinned = _load_pinned()
+    repos = [r for r in _user_repos() if not r.get("fork") and not r.get("private")]
+    order = {(o.lower(), n.lower()): i for i, (o, n) in enumerate(pinned)}
+    key = lambda r: (r["owner"]["login"].lower(), r["name"].lower())
+    repos.sort(key=lambda r: order.get(key(r), len(order)))  # tri stable : l'ordre "récent" est conservé
+    result = []
+    # Dépôts épinglés d'un autre compte (organisation, contribution) : ajoutés en tête
+    own = {key(r) for r in repos}
+    for o, n in pinned:
+        if (o.lower(), n.lower()) not in own:
+            try:
+                result.append({**_repo_summary(o, n), "pinned": True})
+            except GitHubError as e:
+                print(f"Dépôt épinglé {o}/{n} ignoré :", e)
+    for r in repos:
+        summary = _repo_summary(r["owner"]["login"], r["name"])
+        summary["pinned"] = key(r) in order
+        result.append(summary)
+    return result, ("pinned+all" if order else "all")
 
 
 def get_pinned():
     def load():
         try:
-            repos, source = _load_pinned()
+            repos, source = _load_repos()
         except Exception as e:
             saved = _disk_cache("pinned")
             if saved:

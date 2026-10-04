@@ -48,10 +48,11 @@ const translations = {
     'docs.fallback': 'Cette description n\'existe qu\'en {lang}.',
     'docs.onlyMd': 'Seuls les fichiers .md sont acceptés.',
 
-    'pinned.title': 'Projets épinglés sur GitHub',
+    'pinned.title': 'Mes projets sur GitHub',
     'pinned.count': '{n} dépôts',
     'pinned.loading': 'Chargement des dépôts GitHub...',
     'pinned.noDescription': 'Aucune description.',
+    'pinned.badge': '📌 Épinglé',
     'pinned.open': 'README & code source →',
     'pinned.unavailable': 'Les projets GitHub sont momentanément indisponibles. Retrouvez-les sur',
 
@@ -135,10 +136,11 @@ const translations = {
     'docs.fallback': 'This description is only available in {lang}.',
     'docs.onlyMd': 'Only .md files are accepted.',
 
-    'pinned.title': 'Pinned on GitHub',
+    'pinned.title': 'My projects on GitHub',
     'pinned.count': '{n} repositories',
     'pinned.loading': 'Loading GitHub repositories...',
     'pinned.noDescription': 'No description.',
+    'pinned.badge': '📌 Pinned',
     'pinned.open': 'README & source code →',
     'pinned.unavailable': 'GitHub projects are temporarily unavailable. Find them on',
 
