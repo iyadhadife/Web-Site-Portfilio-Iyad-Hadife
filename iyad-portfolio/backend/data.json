@@ -121,19 +121,81 @@
   "projects": [
     {
       "id": "gnn-cad-3d",
-      "title": "Détection d'Assemblages 3D via GNN",
-      "shortDescription": "Architectures Graph Neural Networks pour l'extraction de caractéristiques sur modèles CAO.",
-      "description": "<p>Projet de R&amp;D visant à créer des architectures GNN pour l'extraction de caractéristiques géométriques et l'analyse de topologie B-Rep sur CATIA. Le projet explore également des <em>protocoles </em>de communication Agent-to-Agent.</p><h1>Test</h1><ul><li><p><em>test1</em></p></li><li><p><strong>Test2</strong></p></li></ul><h2>Test</h2><h3>test</h3><table style=\"min-width: 50px;\"><colgroup><col style=\"min-width: 25px;\"><col style=\"min-width: 25px;\"></colgroup><tbody><tr><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th><th colspan=\"1\" rowspan=\"1\"><p>Test1</p></th></tr><tr><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td><td colspan=\"1\" rowspan=\"1\"><p>Test1</p></td></tr></tbody></table><h1>jhgugjh</h1><h2>;,oijkoi</h2>",
+      "title": "Détection de pièces 3D par GNN sous CATIA",
+      "shortDescription": "Amélioration d'un pipeline existant (extraction CATIA Visual Scripting + GNN) qui reconnaît des pièces de véhicule pour automatiser des mesures 3D. Stage Dassault Systèmes.",
+      "description": "<p>Mission de stage chez Dassault Systèmes (Innovation Lab, Transport &amp; Mobilité). Le modèle GNN et les scripts d'extraction avaient été créés par un expert de l'équipe CATIA. Mon rôle : fiabiliser et étendre ce pipeline à de nouveaux véhicules, retravailler l'extraction des features sous CATIA Visual Scripting, constituer le jeu d'entraînement et réduire le temps d'inférence (de 5–10 min à 3–7 min).</p>",
       "category": "Machine Learning & 3D",
       "technologies": [
         "PyTorch Geometric",
+        "PyTorch",
+        "CATIA Visual Scripting",
         "3DEXPERIENCE",
-        "Agent-to-Agent"
+        "Python"
       ],
       "features": [
-        "Extraction de graphes 3D",
-        "Analyse topologique",
-        "Systèmes multi-agents"
+        "Extraction de features géométriques (0D à 3D)",
+        "Conversion en graphe et classification de pièces",
+        "Mesure 3D automatique (Knee Clearance)"
+      ]
+    },
+    {
+      "id": "agent-a2a-analyse-normative",
+      "title": "Agent IA d'analyse normative (Agent-to-Agent)",
+      "shortDescription": "Template d'orchestrateur multi-agents visant à vérifier la conformité de rapports techniques face aux normes d'un client. PoC de stage chez Dassault Systèmes.",
+      "description": "<p>Preuve de concept commencée en fin de stage chez Dassault Systèmes (environ un mois et demi). À partir de templates partagés par l'équipe Innovation Lab Japon, j'ai construit un orchestrateur capable d'appeler des outils et des agents via A2A. Livré sous forme de template connecté aux LLM internes ; la connexion A2A aux agents du client et le déploiement n'ont pas pu être réalisés pendant le stage.</p>",
+      "category": "IA Agentique",
+      "technologies": [
+        "LangChain",
+        "LangGraph",
+        "FastAPI",
+        "MCP",
+        "Agent-to-Agent",
+        "Mistral Medium",
+        "Python"
+      ],
+      "features": [
+        "Orchestrateur multi-agents",
+        "Faux serveurs MCP simulant un client",
+        "Configuration déclarative (factory, schemas, plugins)"
+      ]
+    },
+    {
+      "id": "sfr-detection-anomalies-pcap",
+      "title": "Détection d'anomalies réseau dans des fichiers PCAP",
+      "shortDescription": "Classification du type d'anomalie (GNN) et localisation des erreurs (LLM non supervisé) dans des captures d'appels. Stage SFR, réalisé from scratch.",
+      "description": "<p>Stage chez SFR (Lab de Vélizy, avril–août 2025). Partant d'une feuille blanche, j'ai construit un pipeline complet : PCAP → JSON (Tshark) → graphes, séquences ou vecteurs, puis comparé GNN, RNN et DNN. Le GNN classe 40 classes d'anomalies SIP avec environ 81 % de réussite. Un second outil, encore au stade de prototype, localise les erreurs avec un modèle de langage entraîné sur des appels sains et les affiche dans une interface web Flask.</p>",
+      "category": "Machine Learning",
+      "technologies": [
+        "PyTorch",
+        "PyTorch Geometric",
+        "Hugging Face",
+        "Tshark",
+        "Flask",
+        "GitLab",
+        "Jenkins"
+      ],
+      "features": [
+        "Classification de 40 classes d'anomalies",
+        "Comparaison GNN / RNN / DNN / autoencodeurs",
+        "Localisation d'erreurs par reconstruction (MLM)"
+      ]
+    },
+    {
+      "id": "sfr-chatbot-rag",
+      "title": "Chatbot RAG interne du Lab SFR",
+      "shortDescription": "Assistant local qui répond aux questions sur les processus et le vocabulaire du Lab, développé en quelques jours en fin de stage chez SFR.",
+      "description": "<p>Réalisé la dernière semaine de mon stage chez SFR. Le chatbot cherche les passages pertinents dans une base locale, complète le contexte par du scraping web et génère la réponse avec un LLM via LangChain et Hugging Face, entièrement en local. Il répond sur les processus du Lab, les définitions métier et des questions pratiques ; la lecture de fichiers PCAP restait à développer.</p>",
+      "category": "IA Generative",
+      "technologies": [
+        "LangChain",
+        "Hugging Face",
+        "RAG",
+        "Python"
+      ],
+      "features": [
+        "Recherche dans une base documentaire locale",
+        "Enrichissement par scraping web",
+        "Exécution 100 % locale"
       ]
     },
     {
