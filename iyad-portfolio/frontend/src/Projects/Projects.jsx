@@ -159,6 +159,9 @@ function Projects() {
                 )}
               </div>
               <h3>{project.title}</h3>
+              {project.experience && (
+                <span className="project-experience-badge">💼 {t('projects.madeAt', { company: project.experience.company })}</span>
+              )}
               <p>{project.shortDescription}</p>
               
               <div className="tech-stack">

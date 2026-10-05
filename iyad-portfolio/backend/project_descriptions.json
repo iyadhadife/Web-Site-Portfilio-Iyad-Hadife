@@ -1,26 +1,117 @@
 {
   "iyadhadife/tumor_detection": {
     "en": "Deep learning pipeline that classifies brain MRI scans as healthy or tumor. It benchmarks classical ML, custom CNNs with CBAM attention, transfer learning (DenseNet-121, ResNet-50) and a Vision Transformer, and explains predictions with Grad-CAM.",
-    "fr": "Pipeline de deep learning qui classe des IRM cérébrales en sain ou tumeur. Il compare du ML classique, des CNN avec attention CBAM, du transfer learning (DenseNet-121, ResNet-50) et un Vision Transformer, et explique les prédictions avec Grad-CAM."
+    "fr": "Pipeline de deep learning qui classe des IRM cérébrales en sain ou tumeur. Il compare du ML classique, des CNN avec attention CBAM, du transfer learning (DenseNet-121, ResNet-50) et un Vision Transformer, et explique les prédictions avec Grad-CAM.",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "Scikit-Learn",
+      "Pandas",
+      "NumPy",
+      "OpenCV",
+      "Jupyter"
+    ]
   },
   "iyadhadife/Sign-Language-Detection": {
     "en": "SignIA translates sign language from a webcam into text in real time. MediaPipe Holistic tracks the body, face and hands, and a lightweight LSTM classifies the gestures on CPU, with a web app to record, train and test new signs.",
-    "fr": "SignIA traduit la langue des signes filmée par une webcam en texte, en temps réel. MediaPipe Holistic suit le corps, le visage et les mains, et un LSTM léger classe les gestes sur CPU, avec une application web pour enregistrer, entraîner et tester de nouveaux signes."
+    "fr": "SignIA traduit la langue des signes filmée par une webcam en texte, en temps réel. MediaPipe Holistic suit le corps, le visage et les mains, et un LSTM léger classe les gestes sur CPU, avec une application web pour enregistrer, entraîner et tester de nouveaux signes.",
+    "skills": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "MediaPipe",
+      "NumPy",
+      "FastAPI",
+      "React",
+      "TypeScript",
+      "Vite",
+      "Docker"
+    ]
   },
   "iyadhadife/plm-production-analytics": {
     "en": "Analytics dashboard for an aircraft assembly line that joins MES, PLM and ERP data. It shows station and step reports, cross analyses and a Gemini chatbot that answers questions about the files. Built with Flask, pandas, Plotly and React.",
-    "fr": "Tableau de bord d'analyse pour une ligne d'assemblage aéronautique qui croise les données MES, PLM et ERP. Il affiche des rapports par poste et par étape, des analyses croisées et un chatbot Gemini qui répond aux questions sur les fichiers. Réalisé avec Flask, pandas, Plotly et React."
+    "fr": "Tableau de bord d'analyse pour une ligne d'assemblage aéronautique qui croise les données MES, PLM et ERP. Il affiche des rapports par poste et par étape, des analyses croisées et un chatbot Gemini qui répond aux questions sur les fichiers. Réalisé avec Flask, pandas, Plotly et React.",
+    "skills": [
+      "Python",
+      "Flask",
+      "Pandas",
+      "NumPy",
+      "Plotly",
+      "Gemini",
+      "Pytest",
+      "React",
+      "JavaScript",
+      "Vite",
+      "Docker"
+    ]
   },
   "iyadhadife/Image_Extaction_Workflow": {
     "en": "Intelligent document processing app that extracts structured JSON from ID cards and invoices. It combines vision LLMs (Groq) with EasyOCR, validates the output against JSON schemas and offers a React interface for batch uploads and review.",
-    "fr": "Application de traitement intelligent de documents qui extrait du JSON structuré à partir de cartes d'identité et de factures. Elle combine des LLM de vision (Groq) et EasyOCR, valide le résultat avec des schémas JSON et propose une interface React pour importer et vérifier les documents par lots."
+    "fr": "Application de traitement intelligent de documents qui extrait du JSON structuré à partir de cartes d'identité et de factures. Elle combine des LLM de vision (Groq) et EasyOCR, valide le résultat avec des schémas JSON et propose une interface React pour importer et vérifier les documents par lots.",
+    "skills": [
+      "Python",
+      "FastAPI",
+      "EasyOCR",
+      "Groq",
+      "Ollama",
+      "Hugging Face",
+      "PyTorch",
+      "TensorFlow",
+      "Streamlit",
+      "Pandas",
+      "React",
+      "TypeScript",
+      "Vite",
+      "Docker",
+      "Jupyter"
+    ]
   },
   "iyadhadife/chatbot_with_rag_mcp_template": {
     "en": "Local Linux administration assistant built on RAG and the Model Context Protocol. A FastMCP server exposes a search tool over a knowledge base of Linux commands to a local Ollama model, with answers streamed in the terminal.",
-    "fr": "Assistant local d'administration Linux basé sur le RAG et le Model Context Protocol. Un serveur FastMCP expose un outil de recherche sur une base de commandes Linux à un modèle Ollama local, avec des réponses affichées en streaming dans le terminal."
+    "fr": "Assistant local d'administration Linux basé sur le RAG et le Model Context Protocol. Un serveur FastMCP expose un outil de recherche sur une base de commandes Linux à un modèle Ollama local, avec des réponses affichées en streaming dans le terminal.",
+    "skills": [
+      "Python",
+      "RAG",
+      "LangChain",
+      "MCP",
+      "FastMCP",
+      "Ollama",
+      "ChromaDB",
+      "Flask",
+      "React",
+      "JavaScript",
+      "Vite",
+      "Tailwind CSS",
+      "Docker"
+    ]
   },
   "iyadhadife/Web-Site-Portfilio-Iyad-Hadife": {
     "en": "My personal portfolio website, built with React and Flask. It presents my experience, skills and projects, and lets visitors read the README and browse the code of my GitHub projects directly on the site.",
-    "fr": "Mon site portfolio personnel, réalisé avec React et Flask. Il présente mon parcours, mes compétences et mes projets, et permet de lire le README et de parcourir le code de mes projets GitHub directement sur le site."
+    "fr": "Mon site portfolio personnel, réalisé avec React et Flask. Il présente mon parcours, mes compétences et mes projets, et permet de lire le README et de parcourir le code de mes projets GitHub directement sur le site.",
+    "skills": [
+      "React",
+      "JavaScript",
+      "Vite",
+      "Flask",
+      "Python",
+      "Docker",
+      "Nginx"
+    ]
+  },
+  "iyadhadife/ProjetGenerationTiktok": {
+    "skills": [
+      "Python",
+      "PyTorch",
+      "Hugging Face",
+      "librosa",
+      "Pygame",
+      "NumPy",
+      "Flask",
+      "React",
+      "JavaScript",
+      "Vite",
+      "Docker",
+      "Jupyter"
+    ]
   }
 }

@@ -536,3 +536,129 @@ h2 {
   color: var(--on-accent);
   transform: scale(1.1);
 }
+/* --- LIENS EXPÉRIENCE -> PROJETS --- */
+.experience-projects {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.experience-projects-label {
+  font-size: 0.85rem;
+  color: var(--text-muted, var(--text));
+  opacity: 0.8;
+}
+
+.experience-project-link {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.experience-project-link:hover,
+.experience-project-link:focus-visible {
+  background-color: rgba(var(--accent-rgb), 0.15);
+}
+
+/* --- COMPÉTENCES : PROJETS AU SURVOL --- */
+.skill-pill-editable.has-projects {
+  position: relative;
+  cursor: default;
+}
+
+/* La carte de catégorie ne doit pas couper la liste des projets, qui passe au-dessus des cartes voisines */
+.skill-category:has(.has-projects) {
+  overflow: visible;
+  position: relative;
+}
+
+.skill-category:has(.has-projects:hover),
+.skill-category:has(.has-projects:focus-within) {
+  z-index: 20;
+}
+
+.skill-project-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  padding: 1px 5px;
+  border-radius: 9px;
+  text-align: center;
+  background: rgba(var(--accent-rgb), 0.25);
+  color: var(--accent);
+}
+
+.skill-projects-popover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: max-content;
+  max-width: min(280px, 80vw);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--card-bg, var(--bg));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+}
+
+/* Zone tampon : la souris peut aller de la pastille au popover sans le fermer */
+.skill-projects-popover::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
+.skill-pill-editable.has-projects:hover .skill-projects-popover,
+.skill-pill-editable.has-projects:focus-within .skill-projects-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.skill-projects-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+
+.skill-projects-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-decoration: none;
+  white-space: normal;
+}
+
+.skill-projects-link:hover,
+.skill-projects-link:focus-visible {
+  color: var(--accent);
+}
+
+.skill-projects-src {
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  opacity: 0.8;
+}

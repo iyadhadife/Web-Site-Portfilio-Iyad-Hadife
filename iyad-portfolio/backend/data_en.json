@@ -23,7 +23,15 @@
                 "Scikit-Learn",
                 "PyTorch Geometric",
                 "Pandas",
-                "NumPy"
+                "NumPy",
+                "Keras",
+                "XGBoost",
+                "Random Forest",
+                "Hugging Face",
+                "OpenCV",
+                "MediaPipe",
+                "EasyOCR",
+                "Jupyter"
             ]
         },
         {
@@ -32,7 +40,10 @@
                 "Python",
                 "Flask",
                 "Node.js",
-                "FastMCP"
+                "FastMCP",
+                "FastAPI",
+                "MCP",
+                "Pytest"
             ]
         },
         {
@@ -41,7 +52,10 @@
                 "React",
                 "JavaScript",
                 "Vite",
-                "Streamlit"
+                "Streamlit",
+                "TypeScript",
+                "Tailwind CSS",
+                "Plotly"
             ]
         },
         {
@@ -50,7 +64,10 @@
                 "Docker",
                 "Kubernetes",
                 "Git",
-                "Podman"
+                "Podman",
+                "GitLab",
+                "Jenkins",
+                "Nginx"
             ]
         },
         {
@@ -59,16 +76,37 @@
                 "RAG",
                 "LangChain",
                 "Agent-to-Agent",
-                "PySpark"
+                "PySpark",
+                "LangGraph",
+                "ChromaDB",
+                "Apache Spark",
+                "Tshark"
             ]
         },
         {
             "category": "CAD",
             "items": [
                 "Catia Visual Scripting",
-                "Catia Part Disign",
+                "Catia Part Design",
                 "Solidworks",
-                "Catia Generative Assembly"
+                "Catia Generative Assembly",
+                "3DEXPERIENCE"
+            ]
+        },
+        {
+            "category": "LLM & Generative AI",
+            "items": [
+                "Mistral",
+                "Gemini",
+                "Groq",
+                "Ollama"
+            ]
+        },
+        {
+            "category": "Audio & Video",
+            "items": [
+                "librosa",
+                "Pygame"
             ]
         }
     ],
@@ -94,14 +132,22 @@
             "company": "Dassault Systèmes",
             "description": "• 3D Machine Learning (GNN): Improvement and extension to new vehicles of a GNN model that recognizes parts in a CATIA model to automate 3D measurements. Faster and more robust pipeline for previously unseen vehicles.\n\n• CAD Data Engineering: Redesign of geometric feature extraction using CATIA Visual Scripting. Lighter data and a more accurate model.\n\n• Agent-Based AI: Development of a multi-agent orchestrator (Agent-to-Agent, MCP, LangGraph) for a proof of concept in regulatory verification for an industrial client.\n\n• AI Agent Evaluation: Design of test scenarios, identification of limitations, and provision of structured feedback to development teams.\n\n• Client Relations: Preparation of demonstrations and supporting materials for key accounts in the Transportation & Mobility sector.",
             "date": "Feb 2026 - Aug 2026",
-            "status": "Previously"
+            "status": "Previously",
+            "projects": [
+                "gnn-cad-3d",
+                "agent-a2a-analyse-normative"
+            ]
         },
         {
             "role": "Data Scientist & Data Engineer",
             "company": "SFR",
             "description": "• Anomaly detection from scratch: design of a complete pipeline (PCAP → graphs) and a GNN that identifies the type of anomaly from among 40 classes with approximately 81% accuracy.\n\n• LLM-based localization: an unsupervised prototype that highlights suspicious areas of a call within a Flask web interface.\n\n• MLOps: automated training via GitLab and Jenkins. Results were presented twice to management, which deemed the project worthy of future investment.\n\n• RAG Chatbot: an on-premises assistant delivered in one week to answer questions about the Lab’s processes.",
             "date": "Apr 2025 - Aug 2025",
-            "status": "Previously"
+            "status": "Previously",
+            "projects": [
+                "sfr-detection-anomalies-pcap",
+                "sfr-chatbot-rag"
+            ]
         },
         {
             "role": "AI Developer & Tester",
@@ -128,7 +174,7 @@
             "technologies": [
                 "PyTorch Geometric",
                 "PyTorch",
-                "CATIA Visual Scripting",
+                "Catia Visual Scripting",
                 "3DEXPERIENCE",
                 "Python"
             ],
@@ -150,7 +196,7 @@
                 "FastAPI",
                 "MCP",
                 "Agent-to-Agent",
-                "Mistral Medium",
+                "Mistral",
                 "Python"
             ],
             "features": [
@@ -172,7 +218,8 @@
                 "Tshark",
                 "Flask",
                 "GitLab",
-                "Jenkins"
+                "Jenkins",
+                "Python"
             ],
             "features": [
                 "Classification of 40 anomaly classes",
@@ -206,7 +253,8 @@
             "technologies": [
                 "XGBoost",
                 "Random Forest",
-                "Scikit-Learn"
+                "Scikit-Learn",
+                "Python"
             ],
             "id": "prédiction-de-résultat-sportifs"
         },
@@ -217,7 +265,8 @@
             "category": "Big Data",
             "technologies": [
                 "Apache Spark",
-                "PySpark"
+                "PySpark",
+                "Python"
             ],
             "id": "analyse-big-data-"
         }

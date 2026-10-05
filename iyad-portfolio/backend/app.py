@@ -53,12 +53,20 @@ def get_portfolio_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+def with_experience(projects, data):
+    """Ajoute à chaque projet l'expérience professionnelle dans laquelle il a été réalisé (champ calculé,
+    jamais enregistré) : les expériences listent leurs projets dans "projects"."""
+    origin = {pid: {"role": e.get("role", ""), "company": e.get("company", "").strip()}
+              for e in data.get('experience', []) for pid in e.get('projects', [])}
+    return [{**p, "experience": origin[p['id']]} if p.get('id') in origin else p for p in projects]
+
+
 @app.route('/api/projects', methods=['GET'])
 def get_projects():
     try:
         data = load_data(request.args.get('lang', 'fr'))
         
-        projects_list = data.get('projects', [])
+        projects_list = with_experience(data.get('projects', []), data)
         return jsonify({
             "projects": projects_list,
             "count": len(projects_list)
@@ -73,7 +81,7 @@ def get_project_by_id(project_id):
     try:
         data = load_data(request.args.get('lang', 'fr'))
         
-        for project in data.get('projects', []):
+        for project in with_experience(data.get('projects', []), data):
             if project['id'] == project_id:
                 return jsonify(project)
                 
@@ -175,6 +183,7 @@ def create_journey():
 def update_project(project_id):
     try:
         updated_data = request.json
+        updated_data.pop('experience', None)  # champ calculé à la lecture, jamais enregistré
         file_path = os.path.join(os.path.dirname(__file__), 'data.json')
         
         data = read_json(file_path)

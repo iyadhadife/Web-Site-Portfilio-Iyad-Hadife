@@ -5,6 +5,10 @@ import { useLang } from '../i18n/LanguageContext';
 import './GitHub.css';
 
 // Section "Projets épinglés sur GitHub" de la page Projets
+
+// Compétences du dépôt (project_descriptions.json), sinon ses topics GitHub
+const tags = (r) => (r.skills?.length ? r.skills : r.topics || []);
+
 function PinnedRepos() {
   const [repos, setRepos] = useState(null);
   const [error, setError] = useState(null);
@@ -48,10 +52,10 @@ function PinnedRepos() {
                 </div>
                 <h3>{r.name.replace(/[-_]/g, ' ')}</h3>
                 <p>{(lang === 'fr' && r.description_fr) || r.description || t('pinned.noDescription')}</p>
-                {r.topics?.length > 0 && (
+                {tags(r).length > 0 && (
                   <div className="tech-stack">
-                    {r.topics.slice(0, 3).map((topic) => <span key={topic} className="tech-pill">{topic}</span>)}
-                    {r.topics.length > 3 && <span className="tech-pill">+</span>}
+                    {tags(r).slice(0, 3).map((tag) => <span key={tag} className="tech-pill">{tag}</span>)}
+                    {tags(r).length > 3 && <span className="tech-pill">+</span>}
                   </div>
                 )}
               </div>

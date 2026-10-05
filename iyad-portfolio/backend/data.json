@@ -23,7 +23,15 @@
                 "Scikit-Learn",
                 "PyTorch Geometric",
                 "Pandas",
-                "NumPy"
+                "NumPy",
+                "Keras",
+                "XGBoost",
+                "Random Forest",
+                "Hugging Face",
+                "OpenCV",
+                "MediaPipe",
+                "EasyOCR",
+                "Jupyter"
             ]
         },
         {
@@ -32,7 +40,10 @@
                 "Python",
                 "Flask",
                 "Node.js",
-                "FastMCP"
+                "FastMCP",
+                "FastAPI",
+                "MCP",
+                "Pytest"
             ]
         },
         {
@@ -41,7 +52,10 @@
                 "React",
                 "JavaScript",
                 "Vite",
-                "Streamlit"
+                "Streamlit",
+                "TypeScript",
+                "Tailwind CSS",
+                "Plotly"
             ]
         },
         {
@@ -50,7 +64,10 @@
                 "Docker",
                 "Kubernetes",
                 "Git",
-                "Podman"
+                "Podman",
+                "GitLab",
+                "Jenkins",
+                "Nginx"
             ]
         },
         {
@@ -59,16 +76,37 @@
                 "RAG",
                 "LangChain",
                 "Agent-to-Agent",
-                "PySpark"
+                "PySpark",
+                "LangGraph",
+                "ChromaDB",
+                "Apache Spark",
+                "Tshark"
             ]
         },
         {
             "category": "CAO",
             "items": [
                 "Catia Visual Scripting",
-                "Catia Part Disign",
+                "Catia Part Design",
                 "Solidworks",
-                "Catia Generative Assembly"
+                "Catia Generative Assembly",
+                "3DEXPERIENCE"
+            ]
+        },
+        {
+            "category": "LLM & IA générative",
+            "items": [
+                "Mistral",
+                "Gemini",
+                "Groq",
+                "Ollama"
+            ]
+        },
+        {
+            "category": "Audio & Vidéo",
+            "items": [
+                "librosa",
+                "Pygame"
             ]
         }
     ],
@@ -94,14 +132,22 @@
             "company": "Dassault Systèmes",
             "description": "• Machine Learning 3D (GNN) : amélioration et extension à de nouveaux véhicules d'un modèle GNN qui reconnaît les pièces d'une maquette CATIA pour automatiser des mesures 3D. Pipeline plus rapide et plus robuste sur des véhicules inédits.\n\n• Data Engineering CAO : refonte de l'extraction des features géométriques sous CATIA Visual Scripting. Données plus légères et modèle plus précis.\n\n• IA agentique : développement d'un orchestrateur multi-agents (Agent-to-Agent, MCP, LangGraph) pour une preuve de concept de vérification normative destinée à un client industriel.\n\n• Évaluation d'agents IA : conception de scénarios de test, identification des limites et remontée de retours structurés aux équipes de développement.\n\n• Relation client : préparation de démonstrations et de supports pour des grands comptes du secteur Transport & Mobilité.",
             "date": "Fév 2026 - Août 2026",
-            "status": "Previously"
+            "status": "Previously",
+            "projects": [
+                "gnn-cad-3d",
+                "agent-a2a-analyse-normative"
+            ]
         },
         {
             "role": "Data Scientist & Data Engineer",
             "company": "SFR",
             "description": "• Détection d'anomalies from scratch : conception d'un pipeline complet (PCAP → graphes) et d'un GNN qui identifie le type d'anomalie parmi 40 classes avec environ 81 % de réussite.\n\n• Localisation par LLM : prototype non supervisé qui surligne les zones suspectes d'un appel dans une interface web Flask.\n\n• MLOps : entraînements automatisés via GitLab et Jenkins. Résultats présentés deux fois à la direction, qui a jugé le projet digne d'investissements futurs.\n\n• Chatbot RAG : assistant local livré en une semaine pour répondre aux questions sur les processus du Lab.",
             "date": "Avril 2025 - Août 2025",
-            "status": "Previously"
+            "status": "Previously",
+            "projects": [
+                "sfr-detection-anomalies-pcap",
+                "sfr-chatbot-rag"
+            ]
         },
         {
             "role": "IA et Testeur",
@@ -128,7 +174,7 @@
             "technologies": [
                 "PyTorch Geometric",
                 "PyTorch",
-                "CATIA Visual Scripting",
+                "Catia Visual Scripting",
                 "3DEXPERIENCE",
                 "Python"
             ],
@@ -150,7 +196,7 @@
                 "FastAPI",
                 "MCP",
                 "Agent-to-Agent",
-                "Mistral Medium",
+                "Mistral",
                 "Python"
             ],
             "features": [
@@ -172,7 +218,8 @@
                 "Tshark",
                 "Flask",
                 "GitLab",
-                "Jenkins"
+                "Jenkins",
+                "Python"
             ],
             "features": [
                 "Classification de 40 classes d'anomalies",
@@ -206,7 +253,8 @@
             "technologies": [
                 "XGBoost",
                 "Random Forest",
-                "Scikit-Learn"
+                "Scikit-Learn",
+                "Python"
             ],
             "id": "prédiction-de-résultat-sportifs"
         },
@@ -217,7 +265,8 @@
             "category": "Big Data",
             "technologies": [
                 "Apache Spark",
-                "PySpark"
+                "PySpark",
+                "Python"
             ],
             "id": "analyse-big-data-"
         }
