@@ -93,6 +93,11 @@ function Navigation() {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Nouvelle page sans ancre (ex. /projects) : on arrive directement en haut, sans défilement animé
+  useEffect(() => {
+    if (!location.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   // Gérer le défilement fluide vers une ancre (ex: /#skills, /#experience, etc.)
   useEffect(() => {
     if (location.hash) {

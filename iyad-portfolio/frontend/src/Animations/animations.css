@@ -482,7 +482,7 @@
 .timeline-frise { perspective: 1200px; }
 .project-card,
 .skill-category,
-.timeline-frise-item { transform-style: preserve-3d; transition: rotate 0.25s ease-out, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.3s ease; }
+.timeline-frise-item { transform-style: preserve-3d; transition: rotate 0.08s linear, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.3s ease; }
 
 /* Fond 3D plus présent : il est l'élément principal de mouvement */
 .neural-background { opacity: 0.5; }
