@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import { useLang } from '../i18n/LanguageContext';
 import { fetchJson, repoRoute } from '../GitHub/githubUtils';
+import { SplitText } from '../Animations/Motion';
 import './About.css';
 
 function About() {
@@ -186,7 +187,7 @@ function About() {
         </div>
         <div className="profile-info">
           <h1>
-            <span className="first-name">{data.profile.firstName}</span>
+            <span className="first-name"><SplitText text={data.profile.firstName} delay={250} /></span>
             <br />
             <span className="last-name">{data.profile.lastName}</span>
           </h1>

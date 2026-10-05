@@ -9,6 +9,7 @@ import AdminLogin from './Admin/AdminLogin';
 // Chargé à la demande : la coloration syntaxique et le rendu markdown alourdissent le bundle
 const RepoPage = lazy(() => import('./GitHub/RepoPage'));
 import useScrollReveal from './Animations/useScrollReveal';
+import { NeuralBackground, CursorGlow, useMotionEffects } from './Animations/Motion';
 import { LanguageProvider, useLang } from './i18n/LanguageContext';
 import { ThemeProvider } from './Theme/ThemeContext';
 import ThemeToggle from './Theme/ThemeToggle';
@@ -273,6 +274,7 @@ function ScrollToTopButton() {
 function AnimatedRoutes({ children }) {
   const location = useLocation();
   useScrollReveal();
+  useMotionEffects();
   const pageKey = location.pathname.startsWith('/github/')
     ? location.pathname.split('/').slice(0, 4).join('/')
     : location.pathname;
@@ -299,6 +301,8 @@ function App() {
         <AuthProvider>
           <Router>
             <div className="app-layout">
+              <NeuralBackground />
+              <CursorGlow />
               <Navigation />
               <main className="main-content">
                 <AnimatedRoutes>
