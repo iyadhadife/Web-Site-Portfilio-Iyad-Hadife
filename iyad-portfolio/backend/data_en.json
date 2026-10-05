@@ -23,15 +23,7 @@
                 "Scikit-Learn",
                 "PyTorch Geometric",
                 "Pandas",
-                "NumPy",
-                "Keras",
-                "XGBoost",
-                "Random Forest",
-                "Hugging Face",
-                "OpenCV",
-                "MediaPipe",
-                "EasyOCR",
-                "Jupyter"
+                "NumPy"
             ]
         },
         {
@@ -40,10 +32,7 @@
                 "Python",
                 "Flask",
                 "Node.js",
-                "FastMCP",
-                "FastAPI",
-                "MCP",
-                "Pytest"
+                "FastMCP"
             ]
         },
         {
@@ -52,10 +41,7 @@
                 "React",
                 "JavaScript",
                 "Vite",
-                "Streamlit",
-                "TypeScript",
-                "Tailwind CSS",
-                "Plotly"
+                "Streamlit"
             ]
         },
         {
@@ -64,10 +50,7 @@
                 "Docker",
                 "Kubernetes",
                 "Git",
-                "Podman",
-                "GitLab",
-                "Jenkins",
-                "Nginx"
+                "Podman"
             ]
         },
         {
@@ -76,37 +59,16 @@
                 "RAG",
                 "LangChain",
                 "Agent-to-Agent",
-                "PySpark",
-                "LangGraph",
-                "ChromaDB",
-                "Apache Spark",
-                "Tshark"
+                "PySpark"
             ]
         },
         {
             "category": "CAD",
             "items": [
                 "Catia Visual Scripting",
-                "Catia Part Design",
+                "Catia Part Disign",
                 "Solidworks",
-                "Catia Generative Assembly",
-                "3DEXPERIENCE"
-            ]
-        },
-        {
-            "category": "LLM & Generative AI",
-            "items": [
-                "Mistral",
-                "Gemini",
-                "Groq",
-                "Ollama"
-            ]
-        },
-        {
-            "category": "Audio & Video",
-            "items": [
-                "librosa",
-                "Pygame"
+                "Catia Generative Assembly"
             ]
         }
     ],
@@ -174,7 +136,7 @@
             "technologies": [
                 "PyTorch Geometric",
                 "PyTorch",
-                "Catia Visual Scripting",
+                "CATIA Visual Scripting",
                 "3DEXPERIENCE",
                 "Python"
             ],
@@ -196,7 +158,7 @@
                 "FastAPI",
                 "MCP",
                 "Agent-to-Agent",
-                "Mistral",
+                "Mistral Medium",
                 "Python"
             ],
             "features": [
@@ -218,8 +180,7 @@
                 "Tshark",
                 "Flask",
                 "GitLab",
-                "Jenkins",
-                "Python"
+                "Jenkins"
             ],
             "features": [
                 "Classification of 40 anomaly classes",
@@ -246,27 +207,13 @@
             ]
         },
         {
-            "title": "Sports Results Prediction",
-            "shortDescription": "ML Model (Scikit-Learn).",
-            "description": "ML Model (Scikit-Learn).",
-            "category": "Machine Learning",
-            "technologies": [
-                "XGBoost",
-                "Random Forest",
-                "Scikit-Learn",
-                "Python"
-            ],
-            "id": "prédiction-de-résultat-sportifs"
-        },
-        {
             "title": "Big Data Analysis",
             "shortDescription": "ETL pipeline (PySpark) for batch and streaming processing of massive transaction logs. Modeling for near real-time trend analysis, improving responsiveness to stock shortages.",
             "description": "ETL pipeline (PySpark) for batch and streaming processing of massive transaction logs. Modeling for near real-time trend analysis, improving responsiveness to stock shortages.",
             "category": "Big Data",
             "technologies": [
                 "Apache Spark",
-                "PySpark",
-                "Python"
+                "PySpark"
             ],
             "id": "analyse-big-data-"
         }

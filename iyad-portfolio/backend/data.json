@@ -23,15 +23,7 @@
                 "Scikit-Learn",
                 "PyTorch Geometric",
                 "Pandas",
-                "NumPy",
-                "Keras",
-                "XGBoost",
-                "Random Forest",
-                "Hugging Face",
-                "OpenCV",
-                "MediaPipe",
-                "EasyOCR",
-                "Jupyter"
+                "NumPy"
             ]
         },
         {
@@ -40,10 +32,7 @@
                 "Python",
                 "Flask",
                 "Node.js",
-                "FastMCP",
-                "FastAPI",
-                "MCP",
-                "Pytest"
+                "FastMCP"
             ]
         },
         {
@@ -52,10 +41,7 @@
                 "React",
                 "JavaScript",
                 "Vite",
-                "Streamlit",
-                "TypeScript",
-                "Tailwind CSS",
-                "Plotly"
+                "Streamlit"
             ]
         },
         {
@@ -64,10 +50,7 @@
                 "Docker",
                 "Kubernetes",
                 "Git",
-                "Podman",
-                "GitLab",
-                "Jenkins",
-                "Nginx"
+                "Podman"
             ]
         },
         {
@@ -76,37 +59,16 @@
                 "RAG",
                 "LangChain",
                 "Agent-to-Agent",
-                "PySpark",
-                "LangGraph",
-                "ChromaDB",
-                "Apache Spark",
-                "Tshark"
+                "PySpark"
             ]
         },
         {
             "category": "CAO",
             "items": [
                 "Catia Visual Scripting",
-                "Catia Part Design",
+                "Catia Part Disign",
                 "Solidworks",
-                "Catia Generative Assembly",
-                "3DEXPERIENCE"
-            ]
-        },
-        {
-            "category": "LLM & IA générative",
-            "items": [
-                "Mistral",
-                "Gemini",
-                "Groq",
-                "Ollama"
-            ]
-        },
-        {
-            "category": "Audio & Vidéo",
-            "items": [
-                "librosa",
-                "Pygame"
+                "Catia Generative Assembly"
             ]
         }
     ],
@@ -174,7 +136,7 @@
             "technologies": [
                 "PyTorch Geometric",
                 "PyTorch",
-                "Catia Visual Scripting",
+                "CATIA Visual Scripting",
                 "3DEXPERIENCE",
                 "Python"
             ],
@@ -196,7 +158,7 @@
                 "FastAPI",
                 "MCP",
                 "Agent-to-Agent",
-                "Mistral",
+                "Mistral Medium",
                 "Python"
             ],
             "features": [
@@ -218,8 +180,7 @@
                 "Tshark",
                 "Flask",
                 "GitLab",
-                "Jenkins",
-                "Python"
+                "Jenkins"
             ],
             "features": [
                 "Classification de 40 classes d'anomalies",
@@ -246,27 +207,13 @@
             ]
         },
         {
-            "title": "Prédiction de résultat sportifs",
-            "shortDescription": "ML Model (Scikit-Learn).",
-            "description": "ML Model (Scikit-Learn).",
-            "category": "Machine Learning",
-            "technologies": [
-                "XGBoost",
-                "Random Forest",
-                "Scikit-Learn",
-                "Python"
-            ],
-            "id": "prédiction-de-résultat-sportifs"
-        },
-        {
             "title": "Analyse Big Data ",
             "shortDescription": "Conception d’un pipeline ETL (PySpark) pour le traitement Batch et Streaming de logs de transactions massives. Modélisation pour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur les ruptures de stock.",
             "description": "Conception d’un pipeline ETL (PySpark)\npour le traitement Batch et Streaming de logs de transactions massives. Modélisation\npour l’analyse de tendances en temps quasi-réel, améliorant la réactivité sur\nles ruptures de stock.",
             "category": "Big Data",
             "technologies": [
                 "Apache Spark",
-                "PySpark",
-                "Python"
+                "PySpark"
             ],
             "id": "analyse-big-data-"
         }
