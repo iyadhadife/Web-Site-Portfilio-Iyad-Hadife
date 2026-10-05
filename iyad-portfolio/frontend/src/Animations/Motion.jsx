@@ -73,7 +73,7 @@ export function NeuralBackground() {
       pointer.y * 2 - 1,
       Math.sin(t * 2.3),
       Math.cos(t * 1.7),
-      (window.scrollY / Math.max(1, document.documentElement.scrollHeight - height)) * 2 - 1,
+      scrollProgress * 2 - 1,
     ];
 
     // Passe avant complète (les valeurs sont révélées ensuite couche par couche à l'écran)
@@ -118,10 +118,25 @@ export function NeuralBackground() {
     const matvec = (m, v) => m.map((row) => row.reduce((s, w, i) => s + w * v[i], 0));
     const tokenPos = Array.from({ length: TOKENS }, (_, i) => ({ x: (i - (TOKENS - 1) / 2) * 72, y: 130, z: 0 }));
 
+    // Défilement : lu seulement dans l'écouteur de scroll (jamais pendant le dessin, ce qui forcerait un
+    // recalcul de la mise en page à chaque image). Sur téléphone, le défilement n'agit pas sur la scène.
+    let scrollProgress = 0;
+    let maxScroll = 1;
+    const onScroll = () => {
+      if (mobile) return;
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);  // le contenu arrive après coup
+      scrollProgress = Math.min(1, window.scrollY / maxScroll);
+    };
+
     const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      const newWidth = window.innerWidth;
+      // Téléphone : la barre d'adresse qui apparaît / disparaît en défilant change seulement la hauteur ;
+      // on garde alors le canvas tel quel (le réallouer à chaque fois fait ramer l'animation)
+      if (mobile && newWidth === width) return;
+      width = newWidth;
       mobile = width < 768;
+      height = mobile ? Math.max(window.innerHeight, window.screen?.height || 0) : window.innerHeight;
+      maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       canvas.style.width = `${width}px`;
@@ -143,7 +158,12 @@ export function NeuralBackground() {
 
     const draw = (time = 0) => {
       const t = time / 1000;
-      const scroll = window.scrollY / Math.max(1, document.documentElement.scrollHeight - height);
+      // Téléphone : une image sur deux (30 i/s), largement suffisant pour un fond et deux fois moins coûteux
+      if (mobile && !still) {
+        skip = !skip;
+        if (skip) { frame = requestAnimationFrame(draw); return; }
+      }
+      const scroll = scrollProgress;
       // Rotation rapide et réactive
       view.yaw += (target.yaw + t * 0.45 + scroll * 2.4 - view.yaw) * 0.12;
       view.pitch += (target.pitch + 0.28 - scroll * 0.4 - view.pitch) * 0.12;
@@ -377,8 +397,10 @@ export function NeuralBackground() {
       if (!still) frame = requestAnimationFrame(draw);
     };
 
+    let skip = false;
     const onPointer = (e) => {
-      const p = e.touches ? e.touches[0] : e;
+      if (e.pointerType === 'touch') return;     // glisser le doigt ne fait pas bouger la scène
+      const p = e;
       pointer.x = p.clientX / width;
       pointer.y = p.clientY / height;
       target.yaw = (pointer.x - 0.5) * 0.9;
@@ -403,7 +425,7 @@ export function NeuralBackground() {
     if (still) draw(); else frame = requestAnimationFrame(draw);
     window.addEventListener('resize', resize);
     window.addEventListener('pointermove', onPointer, { passive: true });
-    window.addEventListener('touchmove', onPointer, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('deviceorientation', onTilt, { passive: true });
     document.addEventListener('visibilitychange', onVisibility);
     return () => {
@@ -411,7 +433,7 @@ export function NeuralBackground() {
       themeObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onPointer);
-      window.removeEventListener('touchmove', onPointer);
+      window.removeEventListener('scroll', onScroll);
       window.removeEventListener('deviceorientation', onTilt);
       document.removeEventListener('visibilitychange', onVisibility);
     };
