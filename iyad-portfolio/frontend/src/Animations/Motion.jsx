@@ -24,6 +24,8 @@ const softmax = (v) => {
 };
 const NEGATIVE_RGB = '120, 170, 255';           // activations et poids négatifs : bleu froid
 const CLASSES = ['IA', 'Data', 'Cloud', '3D'];  // sorties du réseau (neutres en français et en anglais)
+const WORDS = ['Data', '→', 'GNN', '+', 'LLM', '=', 'IA'];        // phrase lue par le Transformer
+const NEXT_WORDS = ['impact', '3D', 'agents', 'cloud', 'RAG', 'MLOps', 'IA'];
 
 export function NeuralBackground() {
   const canvasRef = useRef(null);
@@ -109,7 +111,10 @@ export function NeuralBackground() {
       z: (h - 1) * 48,
       wq: Array.from({ length: D }, () => Array.from({ length: D }, () => randn() / Math.sqrt(D))),
       wk: Array.from({ length: D }, () => Array.from({ length: D }, () => randn() / Math.sqrt(D))),
+      wv: Array.from({ length: D }, () => Array.from({ length: D }, () => randn() / Math.sqrt(D))),
     }));
+    // Vocabulaire de sortie : un vecteur par mot candidat pour la suite de la phrase
+    const vocab = NEXT_WORDS.map(() => Array.from({ length: D }, randn));
     const matvec = (m, v) => m.map((row) => row.reduce((s, w, i) => s + w * v[i], 0));
     const tokenPos = Array.from({ length: TOKENS }, (_, i) => ({ x: (i - (TOKENS - 1) / 2) * 72, y: 130, z: 0 }));
 
@@ -132,7 +137,7 @@ export function NeuralBackground() {
       const y1 = p.y * cp - z1 * sp;
       const z2 = p.y * sp + z1 * cp;
       const f = 700 / (700 + z2);
-      return { x: width / 2 + x1 * f * scale, y: height / 2 + y1 * f * scale, f };
+      return { x: width / 2 + x1 * f * scale, y: height / 2 + (y1 - 70) * f * scale, f };
     };
     const rgba = (value, alpha) => `rgba(${value >= 0 ? color : NEGATIVE_RGB}, ${alpha})`;
 
@@ -239,11 +244,30 @@ export function NeuralBackground() {
       }
 
       // ================= Transformer =================
-      const emb = tokenBase.map((base, i) => base.map((b, k) => b + 0.9 * Math.sin(t * tokenFreq[i][k] + k)));
+      // Embeddings qui évoluent + encodage de position, puis Q, K, V par tête, attention, sortie
+      const emb = tokenBase.map((base, i) => base.map((b, k) => b + 0.9 * Math.sin(t * tokenFreq[i][k] + k)
+        + 0.3 * Math.sin(i / 10000 ** (k / D))));
       const query = Math.floor(t * 3) % TOKENS;           // jeton dont on calcule l'attention en ce moment
+      const shownHead = Math.floor(t / 1.6) % heads.length; // tête affichée dans la carte de chaleur
       const T = tokenPos.map((tk) => project(tk, scale));
+      const label = (text, p, size, alpha, align = 'center', weight = 600) => {
+        ctx.font = `${weight} ${Math.max(8, size * p.f)}px Inter, sans-serif`;
+        ctx.textAlign = align;
+        ctx.fillStyle = `rgba(${color}, ${alpha})`;
+        ctx.fillText(text, p.x, p.y);
+      };
+
+      // Attention réellement calculée pour chaque tête : A = softmax(Q·Kᵀ / √d), sortie = A·V
+      const attention = heads.map((head) => {
+        const q = emb.map((e) => matvec(head.wq, e));
+        const k = emb.map((e) => matvec(head.wk, e));
+        const v = emb.map((e) => matvec(head.wv, e));
+        const A = q.map((qi) => softmax(k.map((kj) => kj.reduce((s, x, d) => s + x * qi[d], 0) / Math.sqrt(D))));
+        return { q, k, v, A };
+      });
+
+      // Jetons : boîte, mot, pile d'embeddings (une barre par dimension)
       emb.forEach((e, i) => {
-        // Pile d'embeddings : chaque barre est une dimension du vecteur du jeton
         e.forEach((v, k) => {
           const p = project({ x: tokenPos[i].x, y: tokenPos[i].y + 16 + k * 8, z: 0 }, scale);
           const w = Math.min(1, Math.abs(v) / 2) * 26 * p.f * scale;
@@ -255,20 +279,21 @@ export function NeuralBackground() {
         ctx.strokeStyle = `rgba(${color}, ${i === query ? 0.95 : 0.45})`;
         ctx.lineWidth = i === query ? 2 : 1.1;
         ctx.strokeRect(p.x - s, p.y - s, s * 2, s * 2);
+        label(WORDS[i], project({ x: tokenPos[i].x, y: tokenPos[i].y - 20, z: 0 }, scale), font, i === query ? 0.95 : 0.5);
       });
-      heads.forEach((head) => {
-        const q = emb.map((e) => matvec(head.wq, e));
-        const k = emb.map((e) => matvec(head.wk, e));
+
+      // Arcs d'attention de chaque tête (plans décalés en profondeur)
+      attention.forEach(({ A }, h) => {
+        const z = heads[h].z;
         for (let i = 0; i < TOKENS; i++) {
-          const att = softmax(k.map((kj) => kj.reduce((s, v, d) => s + v * q[i][d], 0) / Math.sqrt(D)));
-          att.forEach((weight, j) => {
+          A[i].forEach((weight, j) => {
             if (i === j || weight < 0.12) return;
             const focus = i === query;
-            const a = project({ ...tokenPos[i], z: head.z }, scale);
-            const b = project({ ...tokenPos[j], z: head.z }, scale);
-            const lift = project({ x: (tokenPos[i].x + tokenPos[j].x) / 2, y: 100 - Math.abs(i - j) * 17, z: head.z }, scale);
-            ctx.strokeStyle = `rgba(${color}, ${(focus ? 0.25 + weight * 0.7 : weight * 0.22) * a.f})`;
-            ctx.lineWidth = (focus ? 1 : 0.5) + weight * (focus ? 3 : 1.2);
+            const a = project({ ...tokenPos[i], z }, scale);
+            const b = project({ ...tokenPos[j], z }, scale);
+            const lift = project({ x: (tokenPos[i].x + tokenPos[j].x) / 2, y: 100 - Math.abs(i - j) * 17, z }, scale);
+            ctx.strokeStyle = `rgba(${color}, ${(focus ? 0.25 + weight * 0.7 : weight * 0.2) * a.f})`;
+            ctx.lineWidth = (focus ? 1 : 0.5) + weight * (focus ? 3 : 1.1);
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.quadraticCurveTo(lift.x * 2 - (a.x + b.x) / 2, lift.y * 2 - (a.y + b.y) / 2, b.x, b.y);
@@ -276,6 +301,78 @@ export function NeuralBackground() {
           });
         }
       });
+
+      // Vecteurs Q, K, V du jeton courant (tête affichée), à gauche de la phrase
+      const qkv = attention[shownHead];
+      ['Q', 'K', 'V'].forEach((name, c) => {
+        const vec = [qkv.q, qkv.k, qkv.v][c][query];
+        const x0 = tokenPos[0].x - 120 + c * 26;
+        label(name, project({ x: x0, y: 108, z: 0 }, scale), font, 0.85, 'center', 700);
+        vec.forEach((v, d) => {
+          const p = project({ x: x0, y: 122 + d * 9, z: 0 }, scale);
+          const w = Math.min(1, Math.abs(v) / 1.5) * 18 * p.f * scale;
+          ctx.fillStyle = rgba(v, 0.3 + Math.min(1, Math.abs(v)) * 0.6);
+          ctx.fillRect(p.x - w / 2, p.y - 2.5 * p.f, w, 5 * p.f);
+        });
+      });
+      label(`« ${WORDS[query]} »`, project({ x: tokenPos[0].x - 94, y: 190, z: 0 }, scale), font - 1, 0.6);
+
+      // Carte de chaleur de la matrice d'attention (lignes = requêtes, colonnes = clés), à droite
+      const cell = 19;
+      const gx = tokenPos[TOKENS - 1].x + 60;
+      const gy = 60;
+      label(`Attention · tête ${shownHead + 1}`, project({ x: gx + (cell * TOKENS) / 2, y: gy - 14, z: 0 }, scale), font, 0.8, 'center', 700);
+      qkv.A.forEach((row, i) => row.forEach((weight, j) => {
+        const a = project({ x: gx + j * cell, y: gy + i * cell, z: 0 }, scale);
+        const b = project({ x: gx + (j + 1) * cell - 1.5, y: gy + (i + 1) * cell - 1.5, z: 0 }, scale);
+        ctx.fillStyle = `rgba(${color}, ${0.06 + weight * 0.9})`;
+        ctx.fillRect(a.x, a.y, b.x - a.x, b.y - a.y);
+      }));
+      const r0 = project({ x: gx - 1, y: gy + query * cell - 1, z: 0 }, scale);
+      const r1 = project({ x: gx + TOKENS * cell, y: gy + (query + 1) * cell, z: 0 }, scale);
+      ctx.strokeStyle = `rgba(${color}, 0.95)`;
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(r0.x, r0.y, r1.x - r0.x, r1.y - r0.y);
+
+      // Pile de blocs du Transformer, traversée par le flux de calcul
+      const BLOCKS = ['Embedding + Position', 'Multi-Head Attention', 'Add & Norm', 'Feed-Forward', 'Add & Norm', 'Softmax'];
+      const flow = (t * 2.2) % (BLOCKS.length + 1);
+      BLOCKS.forEach((name, b) => {
+        const y = 215 + b * 27;
+        const active = Math.floor(flow) === b;
+        const tl = project({ x: -130, y: y - 10, z: 0 }, scale);
+        const br = project({ x: 130, y: y + 10, z: 0 }, scale);
+        ctx.fillStyle = `rgba(${color}, ${active ? 0.22 : 0.06})`;
+        ctx.fillRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
+        ctx.strokeStyle = `rgba(${color}, ${active ? 0.9 : 0.3})`;
+        ctx.lineWidth = active ? 1.6 : 1;
+        ctx.strokeRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
+        label(name, project({ x: 0, y: y + 1, z: 0 }, scale), font, active ? 0.95 : 0.55, 'center', active ? 700 : 500);
+        if (b === 3) {
+          // Feed-forward : activations cachées (ReLU) du jeton courant
+          const hidden = qkv.v[query].map((x, d) => Math.max(0, x + emb[query][d] * 0.5));
+          hidden.forEach((hv, d) => {
+            const p = project({ x: 80 + d * 7, y: y + 6, z: 0 }, scale);
+            const hgt = Math.min(1, hv) * 14 * p.f * scale;
+            ctx.fillStyle = `rgba(${color}, ${0.3 + Math.min(1, hv) * 0.6})`;
+            ctx.fillRect(p.x, p.y - hgt, 4 * p.f, hgt);
+          });
+        }
+      });
+      // Point lumineux qui descend d'un bloc à l'autre
+      const fp = project({ x: -145, y: 215 + Math.min(flow, BLOCKS.length - 1) * 27, z: 0 }, scale);
+      ctx.fillStyle = `rgba(${color}, 0.95)`;
+      ctx.shadowColor = `rgba(${color}, 0.9)`;
+      ctx.shadowBlur = 12;
+      ctx.beginPath(); ctx.arc(fp.x, fp.y, 3.2 * fp.f, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Prédiction du mot suivant : sortie d'attention du dernier jeton comparée au vocabulaire
+      const ctxVec = qkv.v[0].map((_, d) => qkv.A[TOKENS - 1].reduce((s, w, j) => s + w * qkv.v[j][d], 0));
+      const next = softmax(vocab.map((wv) => wv.reduce((s, x, d) => s + x * ctxVec[d], 0) * 2.5));
+      const top = next.indexOf(Math.max(...next));
+      label(`→ « ${NEXT_WORDS[top]} » ${Math.round(next[top] * 100)}%`,
+        project({ x: 0, y: 215 + BLOCKS.length * 27 + 4, z: 0 }, scale), font + 1, 0.9, 'center', 700);
 
       if (!still) frame = requestAnimationFrame(draw);
     };

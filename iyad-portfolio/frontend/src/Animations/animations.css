@@ -381,8 +381,9 @@
 
 /* --- Nom : prénom lettre par lettre, nom qui se dévoile en balayage --- */
 @keyframes charIn {
-  from { opacity: 0; transform: translateY(0.7em) rotateX(-90deg) scale(0.6); filter: blur(6px); }
-  60% { opacity: 1; filter: blur(0); }
+  from { opacity: 0; transform: translateY(0.7em) rotateX(-90deg) scale(0.6); filter: blur(3px); }
+  25% { filter: blur(0); }
+  60% { opacity: 1; }
   to { opacity: 1; transform: none; filter: none; }
 }
 @keyframes wipeIn {
@@ -422,12 +423,12 @@
   filter: none;
   transition: opacity 0.25s ease var(--reveal-delay, 0ms),
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    filter 0.25s ease var(--reveal-delay, 0ms) !important;
+    filter 0.12s linear var(--reveal-delay, 0ms) !important;
 }
-.timeline-frise-item.reveal { transform: translateX(-40px) rotate(-1.5deg); filter: blur(3px); }
+.timeline-frise-item.reveal { transform: translateX(-40px) rotate(-1.5deg); filter: blur(2px); }
 .timeline-frise-item.reveal:nth-child(even) { transform: translateX(40px) rotate(1.5deg); }
-.skill-category.reveal { transform: perspective(900px) rotateX(38deg) translateY(50px) scale(0.94); transform-origin: 50% 100%; }
-.project-card.reveal { transform: translateY(40px) scale(0.94); filter: blur(4px); }
+.skill-category.reveal { transform: none; }
+.project-card.reveal { transform: translateY(40px) scale(0.94); filter: blur(2px); }
 .section-title-wrapper.reveal,
 .projects-header.reveal { transform: translateX(-50px); }
 .contact-item.reveal { transform: scale(0.8) rotate(-3deg); }
@@ -452,7 +453,7 @@
   .timeline-frise-item.reveal,
   .timeline-frise-item.reveal:nth-child(even) { transform: translateX(-40px) rotate(-1.5deg); filter: none; }
   .project-card.reveal { transform: translateY(50px) scale(0.92); filter: none; }
-  .skill-category.reveal { transform: perspective(700px) rotateX(30deg) translateY(36px); }
+  .skill-category.reveal { transform: none; }
   .profile-image-container::before { inset: -9px; }
 }
 
@@ -475,3 +476,7 @@
   .skill-category,
   .timeline-frise-item { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 }
+
+/* Compétences : les cartes restent immobiles (pas de soulèvement au survol ni au toucher) */
+.skill-category.zoom-card:hover,
+.skill-category.zoom-card:active { transform: none; }
