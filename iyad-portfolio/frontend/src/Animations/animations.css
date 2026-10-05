@@ -420,9 +420,9 @@
 /* --- Apparitions au défilement : un mouvement différent par type d'élément --- */
 .reveal.reveal-in {
   filter: none;
-  transition: opacity 0.4s ease var(--reveal-delay, 0ms),
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    filter 0.4s ease var(--reveal-delay, 0ms) !important;
+  transition: opacity 0.25s ease var(--reveal-delay, 0ms),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    filter 0.25s ease var(--reveal-delay, 0ms) !important;
 }
 .timeline-frise-item.reveal { transform: translateX(-40px) rotate(-1.5deg); filter: blur(3px); }
 .timeline-frise-item.reveal:nth-child(even) { transform: translateX(40px) rotate(1.5deg); }
@@ -485,8 +485,8 @@
 .timeline-frise-item { transform-style: preserve-3d; transition: rotate 0.25s ease-out, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease, border-color 0.3s ease; }
 
 /* Fond 3D plus présent : il est l'élément principal de mouvement */
-.neural-background { opacity: 0.8; }
-:root[data-theme="dark"] .neural-background { opacity: 0.9; }
+.neural-background { opacity: 0.5; }
+:root[data-theme="dark"] .neural-background { opacity: 0.6; }
 @media (max-width: 768px) { .neural-background, :root[data-theme="dark"] .neural-background { opacity: 0.45; } }
 
 /* Cartes en verre dépoli : la scène 3D reste visible à travers */
