@@ -15,8 +15,8 @@ const REVEAL_SELECTOR = [
   '.nb-cell',
 ].join(',');
 
-const STAGGER_MS = 80;
-const MAX_STAGGER = 6;
+const STAGGER_MS = 40;
+const MAX_STAGGER = 5;
 
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -51,7 +51,7 @@ export default function useScrollReveal(rootSelector = '.main-content') {
           finish(el);
         };
         el.addEventListener('transitionend', onEnd);
-        setTimeout(() => finish(el), 1200 + index * STAGGER_MS);
+        setTimeout(() => finish(el), 700 + index * STAGGER_MS);
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 

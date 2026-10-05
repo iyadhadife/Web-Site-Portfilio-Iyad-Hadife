@@ -187,7 +187,7 @@ function About() {
         </div>
         <div className="profile-info">
           <h1>
-            <span className="first-name"><SplitText text={data.profile.firstName} delay={250} /></span>
+            <span className="first-name"><SplitText text={data.profile.firstName} delay={60} step={30} /></span>
             <br />
             <span className="last-name">{data.profile.lastName}</span>
           </h1>
