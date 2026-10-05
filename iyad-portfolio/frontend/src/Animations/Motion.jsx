@@ -343,46 +343,12 @@ export function CursorGlow() {
   return <div ref={ref} className="cursor-glow" aria-hidden="true" />;
 }
 
-// --- Cartes en 3D (souris), profondeur au défilement (ordinateur et téléphone) et parallaxe de la photo ---
-const TILT_SELECTOR = '.project-card, .skill-category, .timeline-frise-item, .contact-item';
-const DEPTH_SELECTOR = '.project-card, .skill-category, .timeline-frise-item';
+// --- Parallaxe de la photo au défilement (les cartes restent fixes pour que leurs boutons restent cliquables) ---
 
 export function useMotionEffects() {
   useEffect(() => {
     if (reducedMotion()) return undefined;
     const cleanups = [];
-
-    if (finePointer()) {
-      // Inclinaison 3D qui suit la souris, avec un reflet lumineux (variables CSS --gx / --gy)
-      let current = null;
-      const reset = (el) => {
-        el.classList.remove('tilting');
-        el.style.removeProperty('--rx');
-        el.style.removeProperty('--ry');
-      };
-      const onMove = (e) => {
-        const el = e.target.closest?.(TILT_SELECTOR);
-        if (current && current !== el) reset(current);
-        current = el;
-        if (!el || el.closest('.fullscreen-overlay-mode') || el.classList.contains('reveal')) return;
-        const r = el.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;
-        const py = (e.clientY - r.top) / r.height;
-        const strength = el.matches('.timeline-frise-item') ? 4 : 8;
-        el.classList.add('tilting');
-        el.style.setProperty('--rx', `${(0.5 - py) * strength}deg`);
-        el.style.setProperty('--ry', `${(px - 0.5) * strength}deg`);
-        el.style.setProperty('--gx', `${px * 100}%`);
-        el.style.setProperty('--gy', `${py * 100}%`);
-      };
-      const onOut = () => { if (current) reset(current); current = null; };
-      window.addEventListener('pointermove', onMove, { passive: true });
-      document.addEventListener('pointerleave', onOut);
-      cleanups.push(() => {
-        window.removeEventListener('pointermove', onMove);
-        document.removeEventListener('pointerleave', onOut);
-      });
-    }
 
     // Parallaxe au défilement (ordinateur et téléphone) : photo et halo du profil
     let frame = 0;
@@ -397,16 +363,6 @@ export function useMotionEffects() {
           photo.style.translate = `0 ${y * 0.18}px`;
           photo.style.scale = `${1 - Math.min(y, 600) / 3000}`;
         }
-        // Profondeur légère : chaque carte s'incline un peu selon sa position dans l'écran,
-        // comme si on la regardait de face au centre et de biais en haut ou en bas
-        const vh = window.innerHeight;
-        document.querySelectorAll(DEPTH_SELECTOR).forEach((el) => {
-          if (el.classList.contains('reveal') || el.closest('.fullscreen-overlay-mode')) return;
-          const r = el.getBoundingClientRect();
-          if (r.bottom < -100 || r.top > vh + 100) return;
-          const offset = (r.top + r.height / 2 - vh / 2) / vh;      // -0.5 en haut, +0.5 en bas
-          el.style.rotate = `x ${(-offset * 10).toFixed(2)}deg`;
-        });
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
