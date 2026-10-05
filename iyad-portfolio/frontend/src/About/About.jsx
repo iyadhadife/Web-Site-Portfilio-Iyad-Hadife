@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../Context/AuthContext';
 import { useLang } from '../i18n/LanguageContext';
+import { fetchJson, repoRoute } from '../GitHub/githubUtils';
 import './About.css';
 
 function About() {
@@ -30,6 +31,24 @@ function About() {
   const [isSkillsFullscreen, setIsSkillsFullscreen] = useState(false);
   const [isEduFullscreen, setIsEduFullscreen] = useState(false);
   const [isExpFullscreen, setIsExpFullscreen] = useState(false);
+
+  // Dépôts GitHub (avec leurs compétences) : reliés aux compétences comme les projets du portfolio
+  const [repos, setRepos] = useState([]);
+  useEffect(() => {
+    fetchJson('/api/github/pinned').then((d) => setRepos(d.repos || [])).catch(() => setRepos([]));
+  }, []);
+
+  // Compétence (en minuscules) -> projets et dépôts où elle a été mise en œuvre
+  const projectsBySkill = useMemo(() => {
+    const map = {};
+    const add = (skill, entry) => {
+      const key = skill.trim().toLowerCase();
+      (map[key] = map[key] || []).push(entry);
+    };
+    data?.projects?.forEach((p) => p.technologies?.forEach((s) => add(s, { key: `p:${p.id}`, title: p.title, to: `/projects/${p.id}` })));
+    repos.forEach((r) => r.skills?.forEach((s) => add(s, { key: `r:${r.owner}/${r.name}`, title: r.name.replace(/[-_]/g, ' '), to: repoRoute(r.owner, r.name), github: true })));
+    return map;
+  }, [data, repos]);
 
   const fetchData = () => {
     fetch(`/api/portfolio?lang=${lang}`)
@@ -216,6 +235,17 @@ function About() {
                   <span className="timeline-date-badge">{item.date}</span>
                   <h4>{item.role} <span className="company-name">@ {item.company}</span></h4>
                   <p>{item.description}</p>
+                  {item.projects?.length > 0 && (
+                    <div className="experience-projects">
+                      <span className="experience-projects-label">{t('about.relatedProjects')}</span>
+                      {item.projects.map((id) => {
+                        const project = data.projects?.find((p) => p.id === id);
+                        return project && (
+                          <Link key={id} to={`/projects/${id}`} className="experience-project-link">{project.title} →</Link>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -292,12 +322,27 @@ function About() {
                   )}
                 </div>
                 <div className="pills-container">
-                  {skillGroup.items.map((item, i) => (
-                    <span key={i} className="skill-pill-editable zoom-pill">
-                      {item}
-                      {isAdmin && <button className="pill-delete-btn" onClick={() => handleDeleteSkill(skillGroup.category, item)}>×</button>}
-                    </span>
-                  ))}
+                  {skillGroup.items.map((item, i) => {
+                    const used = projectsBySkill[item.trim().toLowerCase()] || [];
+                    return (
+                      <span key={i} className={`skill-pill-editable zoom-pill ${used.length ? 'has-projects' : ''}`}
+                        tabIndex={used.length ? 0 : undefined}>
+                        {item}
+                        {used.length > 0 && <span className="skill-project-count">{used.length}</span>}
+                        {isAdmin && <button className="pill-delete-btn" onClick={() => handleDeleteSkill(skillGroup.category, item)}>×</button>}
+                        {used.length > 0 && (
+                          <span className="skill-projects-popover" role="tooltip">
+                            <span className="skill-projects-title">{t('about.skillUsedIn', { n: used.length })}</span>
+                            {used.map((entry) => (
+                              <Link key={entry.key} to={entry.to} className="skill-projects-link">
+                                {entry.title}{entry.github && <span className="skill-projects-src">GitHub</span>}
+                              </Link>
+                            ))}
+                          </span>
+                        )}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             ))}

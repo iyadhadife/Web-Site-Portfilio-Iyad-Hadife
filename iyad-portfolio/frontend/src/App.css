@@ -38,10 +38,20 @@ html, body {
   justify-content: center;
   align-items: center;
   padding: 20px 40px;
-  background-color: var(--nav-bg);
-  backdrop-filter: blur(10px);             /* Effet de flou moderne */
   border-bottom: 1px solid rgba(var(--accent-rgb), 0.15); /* Subtile bordure orange */
   z-index: 9999;                           /* Reste toujours au-dessus */
+}
+
+/* Fond flouté de la barre, sur un pseudo-élément : un backdrop-filter sur la barre elle-même limiterait
+   ses enfants en position fixed (le volet mobile et son voile) à la hauteur de la barre */
+.top-navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--nav-bg);
+  backdrop-filter: blur(10px);             /* Effet de flou moderne */
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Conteneur des liens de navigation sur Bureau (PC) */
@@ -163,6 +173,8 @@ html, body {
 
 .nav-brand-mobile {
   display: none;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
   font-weight: bold;
   color: var(--accent);
   font-size: 1.2rem;
@@ -193,55 +205,184 @@ html, body {
     display: block;
   }
 
-  /* Le volet de navigation en colonne sur mobile */
+  /* Volet latéral : glisse depuis la droite, sur toute la hauteur */
   .nav-links-container {
     position: fixed;
-    top: 65px;
-    left: 0;
-    width: 100%;
-    background-color: var(--surface-2);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(78vw, 320px);
+    padding: calc(80px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom));
     flex-direction: column;
-    align-items: center;
-    padding: 25px 0;
-    gap: 15px; /* Espace vertical entre les liens sur mobile */
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 10px 25px var(--shadow-strong);
-    max-height: calc(100vh - 65px);
+    align-items: stretch;
+    gap: 6px;
+    background-color: var(--surface-2);
+    border-left: 1px solid rgba(var(--accent-rgb), 0.2);
+    box-shadow: -12px 0 40px var(--shadow-strong);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 1001;
+    transform: translateX(105%);
+    visibility: hidden;
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.42s;
+  }
+
+  .nav-links-container.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  /* Pendant le glissement du doigt, le volet suit sans délai */
+  .nav-links-container.dragging {
+    transition: none;
+  }
+
+  /* Voile sombre et flou derrière le volet */
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
     z-index: 1000;
-    /* Masqué par défaut : le volet glisse depuis le haut */
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-12px);
-    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.3s;
+    transition: opacity 0.35s ease, visibility 0.35s;
   }
 
-  /* Affichage du volet lorsqu'il est ouvert */
-  .nav-links-container.open {
+  .nav-backdrop.open {
     opacity: 1;
     visibility: visible;
-    transform: none;
   }
+
+  /* Les liens arrivent en cascade depuis la droite */
   .nav-links-container.open .nav-link {
-    animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation: navSlideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
-  .nav-links-container.open .nav-link:nth-child(2) { animation-delay: 0.04s; }
-  .nav-links-container.open .nav-link:nth-child(3) { animation-delay: 0.08s; }
-  .nav-links-container.open .nav-link:nth-child(4) { animation-delay: 0.12s; }
-  .nav-links-container.open .nav-link:nth-child(5) { animation-delay: 0.16s; }
-  .nav-links-container.open .nav-link:nth-child(6) { animation-delay: 0.2s; }
-  .nav-links-container.open .nav-link:nth-child(7) { animation-delay: 0.24s; }
+  .nav-links-container.open .nav-link:nth-child(1) { animation-delay: 0.06s; }
+  .nav-links-container.open .nav-link:nth-child(2) { animation-delay: 0.1s; }
+  .nav-links-container.open .nav-link:nth-child(3) { animation-delay: 0.14s; }
+  .nav-links-container.open .nav-link:nth-child(4) { animation-delay: 0.18s; }
+  .nav-links-container.open .nav-link:nth-child(5) { animation-delay: 0.22s; }
+  .nav-links-container.open .nav-link:nth-child(6) { animation-delay: 0.26s; }
+  .nav-links-container.open .nav-link:nth-child(7) { animation-delay: 0.3s; }
 
   .nav-link {
-    padding: 12px 0;
-    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
     width: 100%;
-    text-align: center;
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    text-align: left;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
   }
-  
+
+  /* Retour visuel au toucher */
+  .nav-link:active {
+    transform: scale(0.97);
+    background-color: rgba(var(--accent-rgb), 0.12);
+  }
+
+  .nav-link-icon {
+    display: inline-flex;
+    width: 22px;
+    justify-content: center;
+    font-size: 1.05rem;
+  }
+
   .nav-link.active {
     border-bottom: none;
-    background-color: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.12);
+  }
+
+  /* Barre orange à gauche du lien actif */
+  .nav-link.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 22%;
+    bottom: 22%;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--accent);
+    animation: navIndicator 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.3s backwards;
+  }
+
+  .nav-swipe-hint {
+    display: block;
+    margin-top: auto;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  /* La barre se cache en descendant et revient en remontant */
+  .top-navbar {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .top-navbar.nav-hidden {
+    transform: translateY(-100%);
+  }
+
+  .hamburger-btn {
+    z-index: 1002;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease, background-color 0.25s ease;
+  }
+
+  .hamburger-btn:active {
+    transform: scale(0.92);
+  }
+
+  .hamburger-btn.open {
+    background-color: rgba(var(--accent-rgb), 0.12);
+  }
+
+  /* Les ancres ne passent pas sous la barre fixe */
+  section[id], div[id='home'] {
+    scroll-margin-top: 80px;
+  }
+}
+
+@keyframes navSlideIn {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes navIndicator {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+/* Éléments propres au volet mobile, masqués sur ordinateur */
+.nav-backdrop,
+.nav-swipe-hint,
+.nav-link-icon {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .nav-link-icon { display: inline-flex; }
+  .nav-backdrop, .nav-swipe-hint { display: block; }
+}
+
+/* Mouvements réduits si l'utilisateur l'a demandé au système */
+@media (prefers-reduced-motion: reduce) {
+  .nav-links-container,
+  .nav-backdrop,
+  .top-navbar,
+  .nav-link {
+    transition-duration: 0.01ms !important;
+    animation: none !important;
   }
 }
 

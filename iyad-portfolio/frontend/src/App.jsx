@@ -21,6 +21,71 @@ function Navigation() {
   const { lang, toggle, t } = useLang();
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNavHidden, setIsNavHidden] = useState(false);
+  const [dragX, setDragX] = useState(0);          // glissement du volet en cours (px, vers la droite)
+  const touchStart = useRef(null);
+
+  // Mobile : la barre se cache quand on descend et réapparaît dès qu'on remonte
+  useEffect(() => {
+    let lastY = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 6) return;
+      setIsNavHidden(y > lastY && y > 120 && window.innerWidth <= 768);
+      lastY = y;
+    };
+    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(frame); };
+  }, []);
+
+  // Volet ouvert : la page derrière ne défile plus, Échap le ferme
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e) => { if (e.key === 'Escape') setIsMobileMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = previous; window.removeEventListener('keydown', onKey); };
+  }, [isMobileMenuOpen]);
+
+  const toggleMenu = () => {
+    setIsMobileMenuOpen((open) => !open);
+    navigator.vibrate?.(8);                        // petit retour haptique (Android)
+  };
+
+  // Glisser le volet vers la droite pour le fermer (il suit le doigt)
+  const onTouchStart = (e) => { touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; };
+  const onTouchMove = (e) => {
+    if (!touchStart.current) return;
+    const dx = e.touches[0].clientX - touchStart.current.x;
+    const dy = e.touches[0].clientY - touchStart.current.y;
+    if (Math.abs(dx) > Math.abs(dy)) setDragX(Math.max(0, dx));
+  };
+  const onTouchEnd = () => {
+    if (dragX > 70) setIsMobileMenuOpen(false);
+    setDragX(0);
+    touchStart.current = null;
+  };
+
+  // Un lien vers la section déjà affichée ne change pas l'URL : on ferme le volet et on y défile quand même
+  const onNavClick = (hash) => () => {
+    setIsMobileMenuOpen(false);
+    if (hash && location.pathname === '/' && location.hash === hash) {
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const links = [
+    { to: '/#home', id: 'home', icon: '⌂', label: t('nav.home') },
+    { to: '/#experience', id: 'experience', icon: '💼', label: t('nav.experience') },
+    { to: '/#education', id: 'education', icon: '🎓', label: t('nav.education') },
+    { to: '/#skills', id: 'skills', icon: '⚙', label: t('nav.skills') },
+    { to: '/projects', id: 'projects', icon: '🗂', label: t('nav.projects') },
+    { to: '/contact', id: 'contact', icon: '✉', label: t('nav.contact') },
+  ];
 
   // Fermer le volet mobile automatiquement lors d'un changement de route/hash
   useEffect(() => {
@@ -84,22 +149,33 @@ function Navigation() {
   }, [location]);
 
   return (
-    <nav className="top-navbar">
-      <div className="nav-brand-mobile">Portfolio</div>
+    <nav className={`top-navbar ${isNavHidden && !isMobileMenuOpen ? 'nav-hidden' : ''}`}>
+      <Link to="/#home" className="nav-brand-mobile" onClick={onNavClick('#home')}>Portfolio</Link>
 
-      {/* Conteneur des liens (Volet sur mobile) */}
-      <div className={`nav-links-container ${isMobileMenuOpen ? 'open' : ''}`}>
-        <Link to="/#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}>{t('nav.home')}</Link>
-        <Link to="/#experience" className={`nav-link ${activeSection === 'experience' ? 'active' : ''}`}>{t('nav.experience')}</Link>
-        <Link to="/#education" className={`nav-link ${activeSection === 'education' ? 'active' : ''}`}>{t('nav.education')}</Link>
-        <Link to="/#skills" className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}>{t('nav.skills')}</Link>
-        <Link to="/projects" className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}>{t('nav.projects')}</Link>
-        <Link to="/contact" className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}>{t('nav.contact')}</Link>
+      {/* Voile derrière le volet mobile : un toucher le referme */}
+      <div className={`nav-backdrop ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)} aria-hidden="true" />
+
+      {/* Conteneur des liens (volet latéral sur mobile) */}
+      <div
+        className={`nav-links-container ${isMobileMenuOpen ? 'open' : ''} ${dragX ? 'dragging' : ''}`}
+        style={dragX ? { transform: `translateX(${dragX}px)` } : undefined}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        {links.map((link) => (
+          <Link key={link.id} to={link.to} onClick={onNavClick(link.to.includes('#') ? link.to.slice(link.to.indexOf('#')) : '')}
+            className={`nav-link ${activeSection === link.id ? 'active' : ''}`}>
+            <span className="nav-link-icon" aria-hidden="true">{link.icon}</span>
+            <span className="nav-link-label">{link.label}</span>
+          </Link>
+        ))}
         
         {isAdmin && (
           <button onClick={logout} className="nav-link admin-logout-btn" style={{background:'none', border:'none', cursor:'pointer'}}>{t('nav.logout')}</button>
         )}
 
+        <span className="nav-swipe-hint" aria-hidden="true">{t('nav.swipeHint')}</span>
       </div>
 
       {/* Langue et thème : toujours visibles, aussi sur mobile */}
@@ -113,7 +189,7 @@ function Navigation() {
         {/* Bouton Hamburger pour mobile */}
         <button
           className={`hamburger-btn ${isMobileMenuOpen ? 'open' : ''}`}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={toggleMenu}
           title="Menu"
           aria-label="Menu"
           aria-expanded={isMobileMenuOpen}

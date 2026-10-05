@@ -306,8 +306,30 @@
 @media (hover: none) {
   .project-card:hover,
   .contact-item:hover,
-  .view-projects-btn:hover { transform: none; }
+  .view-projects-btn:hover,
+  .zoom-card:hover,
+  .zoom-pill:hover,
+  .zoom-timeline-card:hover { transform: none; }
   .project-card:hover::before { left: -75%; }
+
+  /* À la place : un léger enfoncement au toucher, qui confirme le tap */
+  .project-card,
+  .contact-item,
+  .zoom-card,
+  .zoom-timeline-card,
+  .view-projects-btn,
+  .experience-project-link,
+  .skill-projects-link {
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project-card:active,
+  .contact-item:active,
+  .zoom-card:active,
+  .zoom-timeline-card:active,
+  .view-projects-btn:active { transform: scale(0.98); }
+  .experience-project-link:active,
+  .skill-projects-link:active { transform: scale(0.95); }
 }
 
 /* Accessibilité : pas d'animation pour ceux qui l'ont désactivée dans leur système */

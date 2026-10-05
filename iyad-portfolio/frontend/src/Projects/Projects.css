@@ -819,3 +819,12 @@
   user-select: none;
   pointer-events: none;
 }
+
+/* Badge "Réalisé chez ..." (cartes et page projet) */
+.project-experience-badge {
+  display: inline-block;
+  margin: 4px 0 8px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-decoration: none;
+}

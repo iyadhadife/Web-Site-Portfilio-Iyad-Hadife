@@ -116,12 +116,14 @@ def _with_description(repo):
     if isinstance(custom, str):
         custom = {"en": custom}
     if not custom:
-        return repo
-    # "description" en anglais, "description_fr" pour la version française du site
+        return {**repo, "skills": []}
+    # "description" en anglais, "description_fr" pour la version française du site ;
+    # "skills" : compétences mises en œuvre dans le dépôt (reliées à la section Compétences)
     return {
         **repo,
         "description": custom.get("en") or repo["description"],
         "description_fr": custom.get("fr") or custom.get("en") or repo["description"],
+        "skills": custom.get("skills", []),
     }
 
 

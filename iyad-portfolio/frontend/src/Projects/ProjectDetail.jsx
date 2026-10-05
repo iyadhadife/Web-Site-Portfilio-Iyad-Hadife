@@ -244,6 +244,11 @@ function ProjectDetail() {
 
       <div className="project-detail-header">
         <span className="project-category">{project.category}</span>
+        {project.experience && (
+          <Link to="/#experience" className="project-experience-badge">
+            💼 {t('projects.madeAt', { company: project.experience.company })} · {project.experience.role}
+          </Link>
+        )}
         
         <div className="project-title-row">
           <h1>{project.title}</h1>
